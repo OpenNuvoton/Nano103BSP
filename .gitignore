@@ -18,6 +18,9 @@ setting/
 *.txt
 *.old
 *.bin
+!SampleCode/StdDriver/FMC_IAP/IAR/Release/
+!SampleCode/StdDriver/FMC_IAP/IAR/Release/Exe/
+!SampleCode/StdDriver/FMC_IAP/IAR/Release/Exe/LDROM_code.bin
 *.obj
 *.orig
 *.ok
