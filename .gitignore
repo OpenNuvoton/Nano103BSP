@@ -22,7 +22,6 @@ setting/
 *.orig
 *.ok
 *~
-*.a
 *.o
 *.i
 *.lst
