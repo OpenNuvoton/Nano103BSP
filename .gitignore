@@ -1,0 +1,46 @@
+#For Keil
+obj/
+lst/
+
+#For IAR
+Debug/
+Release/
+setting/
+
+#For OSX
+.DS_Store
+
+#Files
+*.log
+*.dep
+*.bak
+*.uvopt
+*.txt
+*.old
+*.bin
+*.obj
+*.orig
+*.ok
+*~
+*.a
+*.o
+*.i
+*.lst
+*.map
+*.d
+*.crf
+*.axf
+*.out
+*.pbi
+*.cout
+*.browse
+*.scc
+
+#Large stuff
+*.zip
+*.gz
+*.bz
+*.gzip
+*.7z
+*.rar
+
