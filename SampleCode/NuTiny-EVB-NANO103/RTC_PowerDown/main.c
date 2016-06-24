@@ -24,7 +24,7 @@
 #define DEBUG_MSG(...)
 #endif
 
-/* Power down current of this sample code is around XXX uA */
+/* Power down current of this sample code is around 2.2 uA */
 
 /* External functions */
 void planNextRTCInterrupt(S_RTC_TIME_DATA_T *sCurTime);
@@ -241,7 +241,7 @@ void Enter_PowerDown()
     SYS->GPD_MFPH = 0;
     SYS->GPE_MFPL = 0;
     SYS->GPD_MFPH = 0;
-    SYS->GPF_MFPL = 0x0000FF00;
+    SYS->GPF_MFPL = 0x77007700; // PF6:X32O, PF7:X32I, PF2:XT1_OUT, PF3:XT1_IN
 
     /* Enable GPIO pull up */
     PA->PUEN = 0xFFFF;
@@ -249,13 +249,13 @@ void Enter_PowerDown()
     PC->PUEN = 0xFFFF;
     PD->PUEN = 0xFFFF;
     PE->PUEN = 0xFFFF;
-    PF->PUEN = 0x0033;      /* exclude GPF2 and GPF3 which are HXT OUT/IN */
+    PF->PUEN = 0x0033;      /* exclude GPF2 and GPF3 which are HXT OUT/IN */ /* exclude GPF6 and GPF7 which are LXT OUT/IN */
 
     SYS_UnlockReg();
 
     /* Disable clock */
     //CLK->PWRCTL &= ~CLK_PWRCTL_LXTEN_Msk; /* disable LXT - 32Khz */
-    //CLK->PWRCTL &= ~CLK_PWRCTL_LIRCEN_Msk;  /* disable LIRC - 10KHz */
+    CLK->PWRCTL &= ~CLK_PWRCTL_LIRCEN_Msk;  /* disable LIRC - 10KHz */
     CLK->PWRCTL |= CLK_PWRCTL_PDWKIEN_Msk; /* Enable wake up interrupt source */
     NVIC_EnableIRQ(PDWU_IRQn);              /* Enable IRQ request for PDWU interupt */
 
