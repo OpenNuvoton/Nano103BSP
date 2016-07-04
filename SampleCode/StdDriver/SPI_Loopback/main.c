@@ -186,7 +186,7 @@ int main(void)
     for(u32TestCount=0; u32TestCount<10000; u32TestCount++) {
         /* set the source data and clear the destination buffer */
         for(u32DataCount=0; u32DataCount<TEST_COUNT; u32DataCount++) {
-            g_au32SourceData[u32DataCount] = u32DataCount;  //set sourc data to 1,2,3,4,5...
+            g_au32SourceData[u32DataCount] = u32DataCount;  //set source data to 1,2,3,4,5...
             g_au32DestinationData0[u32DataCount] = 0;  //Clear destinationData0 buffer to '0'
             g_au32DestinationData1[u32DataCount] = 0;  //Clear destinationData1 buffer to '0'
         }

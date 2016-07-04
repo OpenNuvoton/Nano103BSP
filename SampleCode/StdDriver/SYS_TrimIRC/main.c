@@ -208,7 +208,7 @@ int32_t main (void)
 
     UART0_Init(); /* Init UART0 for printf */
 
-    /* User need to select IRC taget frequency to configure specific trim control register. */
+    /* User need to select IRC target frequency to configure specific trim control register. */
     printf("+----------------------------------------+\n");
     printf("|      Nano103 Trim IRC Sample Code      |\n");    		
     printf("|     Please select Trim target IRC      |\n");

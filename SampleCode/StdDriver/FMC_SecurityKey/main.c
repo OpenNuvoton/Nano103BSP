@@ -81,7 +81,7 @@ void dump_key_status()
 	printf("KECNT: 0x%x, KEMAX: 0x%x\n", (FMC->KECNT & FMC_KECNT_KECNT_Msk) >> FMC_KECNT_KECNT_Pos,    /* KECNT(FMC_KECNT[5:0])  */
 										 (FMC->KECNT & FMC_KECNT_KEMAX_Msk) >> FMC_KECNT_KEMAX_Pos);   /* KEMAX(FMC_KECNT[13:8]) */
 	printf("\nPress any key to continue...\n\n");     /* Wait user press any key on UART0 debug console */
-	getchar();                                        /* block on gettong any one character from UART0 */
+	getchar();                                        /* block on getting any one character from UART0 */
 }
 
 int main()

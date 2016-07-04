@@ -94,7 +94,7 @@ int main()
     printf("\nLDROM (0x100000 ~ 0x101200) CRC32 checksum =>  ");
 
     /* 
-     *  Request FMC hardware to run CRC32 caculation on flash range from FMC_LDROM_BASE and
+     *  Request FMC hardware to run CRC32 calculation on flash range from FMC_LDROM_BASE and
      *  length is FMC_LDROM_SIZE. The CRC32 calculation result will be put in u32ChkSum.
      */
     ret = FMC_GetChkSum(FMC_LDROM_BASE, FMC_LDROM_SIZE, &u32ChkSum);
@@ -107,7 +107,7 @@ int main()
     printf("\nSPROM (0x200000 ~ 0x200200) CRC32 checksum =>  ");
     
     /* 
-     *  Request FMC hardware to run CRC32 caculation on flash range from FMC_SPROM_BASE and
+     *  Request FMC hardware to run CRC32 calculation on flash range from FMC_SPROM_BASE and
      *  length is FMC_SPROM_SIZE. The CRC32 calculation result will be put in u32ChkSum.
      */
     ret = FMC_GetChkSum(FMC_SPROM_BASE, FMC_SPROM_SIZE, &u32ChkSum);
@@ -120,7 +120,7 @@ int main()
     printf("\nAPROM (0x0 ~ 0x100000) CRC32 checksum =>  ");
 
     /* 
-     *  Request FMC hardware to run CRC32 caculation on flash range from FMC_APROM_BASE and
+     *  Request FMC hardware to run CRC32 calculation on flash range from FMC_APROM_BASE and
      *  length is FMC_APROM_END. The CRC32 calculation result will be put in u32ChkSum.
      */
     ret = FMC_GetChkSum(FMC_APROM_BASE, FMC_APROM_END - FMC_APROM_BASE, &u32ChkSum);

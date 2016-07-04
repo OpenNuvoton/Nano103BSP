@@ -31,15 +31,15 @@ extern char GetChar(void);
 /**
   * @brief  Get UART1 clock.
   * @param  None.
-  * @return clk  uart clock.
+  * @return clk  UART clock.
   */
 uint32_t GetUartClk(void)
 {
     uint32_t clk =0 , div;
 
-    div = ( (CLK->CLKDIV0 & CLK_CLKDIV0_UART1DIV_Msk) >> CLK_CLKDIV0_UART1DIV_Pos) + 1; /* Get uart clock divider */
+    div = ( (CLK->CLKDIV0 & CLK_CLKDIV0_UART1DIV_Msk) >> CLK_CLKDIV0_UART1DIV_Pos) + 1; /* Get UART clock divider */
 
-    switch (CLK->CLKSEL2 & CLK_CLKSEL2_UART1SEL_Msk) { /* Get uart selected clock source */
+    switch (CLK->CLKSEL2 & CLK_CLKSEL2_UART1SEL_Msk) { /* Get UART selected clock source */
     case 0:
         clk = __HXT; /* HXT */
         break;
@@ -62,7 +62,7 @@ uint32_t GetUartClk(void)
         break;
     }
 
-    clk /= div; /* calculate uart clock */
+    clk /= div; /* calculate UART clock */
 
     return clk;
 }
@@ -200,7 +200,7 @@ void SYS_Init(void)
  */
 void UART0_Init()
 {
-    UART_Open(UART0, 115200); /* set uart baudrate is 115200 */
+    UART_Open(UART0, 115200); /* set UART baudrate is 115200 */
 }
 
 /**
@@ -210,7 +210,7 @@ void UART0_Init()
  */
 void UART1_Init()
 {
-    UART_Open(UART1, 57600); /* set uart baudrate is 57600 */
+    UART_Open(UART1, 57600); /* set UART baudrate is 57600 */
 }
 
 /**

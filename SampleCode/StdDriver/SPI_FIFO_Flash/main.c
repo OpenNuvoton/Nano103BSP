@@ -62,7 +62,7 @@ uint16_t SpiFlash_ReadMidDid(void)
 
 /**
  * @brief       Erase all data on the SPI flash
- * @param       u8Value the is spi flash status value.
+ * @param       u8Value the is SPI flash status value.
  * @return      None
  * @details     This function erase all SPI flash
  */
@@ -427,7 +427,7 @@ int main(void)
         u32FlashAddress += 0x100;
     }
 
-    /* Show [OK] ot UART */
+    /* Show [OK] on UART */
     printf("[OK]\n");
 
     /* clear destination data buffer */

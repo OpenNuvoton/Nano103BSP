@@ -101,7 +101,7 @@ void CRC_CCITTPolyModeTest(uint32_t u32SrcAddr, uint32_t u32TransByteCount)
     uint32_t u32TargetChecksum = 0x29B1, u32CalChecksum = 0;
 
     /*
-        CRC-CCITT polynamial mode test
+        CRC-CCITT polynomial mode test
         Calculate string "123456789" CCITT checksum by DMA mode
         Seed value is 0xFFFF
         Checksum complement disable
@@ -167,7 +167,7 @@ void CRC_CRC8PolyModeTest(uint32_t u32SrcAddr, uint32_t u32TransByteCount)
     uint8_t *p8SrcAddr;
 
     /*
-        CRC-8 polynamial mode test
+        CRC-8 polynomial mode test
         Calculate string "123456789" CRC8 checksum by CPU mode
         Seed value is 0x5A
         Data length is 8-bit

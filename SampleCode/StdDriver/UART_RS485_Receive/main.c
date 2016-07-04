@@ -274,7 +274,7 @@ void assert_error(uint8_t * file, uint32_t line)
     GCR->PB_L_MFP = (GCR->PB_L_MFP & ~0x77) | (PB1_MFP_UART0_TX | PB0_MFP_UART0_RX);  /* Select multi-function pin for UART0 */
     CLK->APBCLK |= CLK_APBCLK_UART0_EN;    /* Enable UART0 clock */
     CLK->CLKDIV0 &= ~CLK_CLKDIV0_UART_MASK;
-    CLK->CLKSEL1 = (CLK->CLKSEL1 & ~CLK_CLKSEL1_UART_MASK) | CLK_CLKSEL1_UART_HXT;  /* Select 12 Mhz XTAL */
+    CLK->CLKSEL1 = (CLK->CLKSEL1 & ~CLK_CLKSEL1_UART_MASK) | CLK_CLKSEL1_UART_HXT;  /* Select 12 MHz XTAL */
 
 
     /* Set UART to 115200,n,8,1,none */

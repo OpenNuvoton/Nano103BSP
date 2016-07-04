@@ -4,7 +4,7 @@
  * $Revision: 9 $
  * $Date: 16/02/17 4:54p $
  * @brief   Demonstrate how to output system clock to CLKO (PB.2) pin with the system clock / 4 frequency,
- *          test wakeup from powerdown and enable BOD detect.
+ *          test wakeup from power down and enable BOD detect.
  * @note
  * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
  *

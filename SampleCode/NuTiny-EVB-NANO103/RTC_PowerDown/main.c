@@ -257,7 +257,7 @@ void Enter_PowerDown()
     //CLK->PWRCTL &= ~CLK_PWRCTL_LXTEN_Msk; /* disable LXT - 32Khz */
     CLK->PWRCTL &= ~CLK_PWRCTL_LIRCEN_Msk;  /* disable LIRC - 10KHz */
     CLK->PWRCTL |= CLK_PWRCTL_PDWKIEN_Msk; /* Enable wake up interrupt source */
-    NVIC_EnableIRQ(PDWU_IRQn);              /* Enable IRQ request for PDWU interupt */
+    NVIC_EnableIRQ(PDWU_IRQn);              /* Enable IRQ request for PDWU interrupt */
 
     CLK_PowerDown(); // Enter Power Down Mode
 }
@@ -319,7 +319,7 @@ void SYS_Init(void)
  */
 void UART0_Init()
 {
-    UART_Open(UART0, 115200); /* set uart baudrate is 115200 */
+    UART_Open(UART0, 115200); /* set UART baudrate is 115200 */
 }
 
 
@@ -342,12 +342,12 @@ int32_t main(void)
     sCurTime.u32Hour       = 0;    // Set Hour
     sCurTime.u32Minute     = 0;    // Set Minute
     sCurTime.u32Second     = 0;    // Set Second
-    sCurTime.u32DayOfWeek  = RTC_TUESDAY;  // Set Day od week
+    sCurTime.u32DayOfWeek  = RTC_TUESDAY;  // Set Day of week
     sCurTime.u32TimeScale  = RTC_CLOCK_24; // Set Time Scale
 
     RTC_Open(&sCurTime);  //user maybe need Waiting for RTC settings stable
 
-    RTC_GetDateAndTime(&sCurTime); /* Read curent RTC time */
+    RTC_GetDateAndTime(&sCurTime); /* Read current RTC time */
     DEBUG_MSG("Current Time:%d/%02d/%02d %02d:%02d:%02d\n",sCurTime.u32Year,sCurTime.u32Month,sCurTime.u32Day,sCurTime.u32Hour,sCurTime.u32Minute,sCurTime.u32Second);
 
     /* Enable RTC alarm for 1 minute to update RTC time */

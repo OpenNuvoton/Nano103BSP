@@ -40,7 +40,7 @@ void IRDA_FunctionTest()
     UART_Open(UART1, 57600);
 
     /* Set IrDA mode */
-    UART_SelectIrDAMode(UART1, 57600, 1); /* Select IrDA mode and set buad-rate */
+    UART_SelectIrDAMode(UART1, 57600, 1); /* Select IrDA mode and set baudrate */
 
     do {
         bInChar[0] = getchar(); /* Get data from debug port */
@@ -111,7 +111,7 @@ void SYS_Init(void)
  */
 void UART0_Init()
 {
-    UART_Open(UART0, 115200); /* set uart baudrate is 115200 */
+    UART_Open(UART0, 115200); /* set UART baudrate is 115200 */
 }
 
 /**
@@ -121,7 +121,7 @@ void UART0_Init()
  */
 void UART1_Init()
 {
-    UART_Open(UART1, 57600); /* set uart baudrate is 57600 */
+    UART_Open(UART1, 57600); /* set UART baudrate is 57600 */
 }
 
 /**

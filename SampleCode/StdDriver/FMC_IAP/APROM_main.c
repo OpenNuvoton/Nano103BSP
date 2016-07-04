@@ -98,7 +98,7 @@ __asm __set_SP(uint32_t _sp)
 
 /**
   * @brief    Load an image to specified flash address. The flash area must have been enabled by
-  *           caller. For exmaple, if caller want to program an image to LDROM, FMC_ENABLE_LD_UPDATE()
+  *           caller. For example, if caller want to program an image to LDROM, FMC_ENABLE_LD_UPDATE()
   *           must be called prior to calling this function.
   * @return   Image is successfully programmed or not.
   * @retval   0   Success.
@@ -183,7 +183,7 @@ int main()
     else {
         printf("[LDROM]\n");           /* Is booting from LDROM */
         printf("  WARNING: The sample code must execute in APROM!\n");
-        goto lexit;                    /* This sampe program must execute in APROM. Program aborted. */
+        goto lexit;                    /* This sample program must execute in APROM. Program aborted. */
     }
 
     u32Data = FMC_ReadCID();           /* get company ID */

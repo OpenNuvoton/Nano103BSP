@@ -103,7 +103,7 @@ void UART0_Init()
  */
 void UART1_Init()
 {
-    /* set uart baudrate is 57600 */
+    /* set UART baudrate is 57600 */
     UART_Open(UART1, 115200);
 }
 
@@ -157,7 +157,7 @@ void UART1_TEST_HANDLE()
 {
     uint32_t u32IntSts= UART1->INTSTS;
 
-    /* Check Receive line ststus */
+    /* Check Receive line status */
     if(u32IntSts & UART_INTSTS_RLSIF_Msk) {
         printf("\n UART1 Receive Line error!!");
         UART1->FIFOSTS = (UART_FIFOSTS_PEF_Msk | UART_FIFOSTS_FEF_Msk | UART_FIFOSTS_BIF_Msk);
@@ -205,7 +205,7 @@ void UART_PDMATest()
     printf("|  UART PDMA Test                                           |\n");
     printf("+-----------------------------------------------------------+\n");
     printf("|  Description :                                            |\n");
-    printf("|    The sample code will demo uart PDMA function.          |\n");
+    printf("|    The sample code will demo UART PDMA function.          |\n");
     printf("|    Please connect UART1 Tx, Rx pin.                       |\n");
     printf("+-----------------------------------------------------------+\n");
 

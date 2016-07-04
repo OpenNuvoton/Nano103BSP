@@ -17,8 +17,8 @@
 uint32_t g_au32RxPDMADestination[ADC_TEST_COUNT]; /* For PDMA */
 uint32_t au32AdcData[ADC_TEST_COUNT]; /* Data from ADC data register */
 
-volatile uint32_t g_u32PdmaTDoneInt; /* PDMA transfter done flag */
-volatile uint32_t g_u32PdmaTAbortInt; /* PDMA transfter abort flag */
+volatile uint32_t g_u32PdmaTDoneInt; /* PDMA transfer done flag */
+volatile uint32_t g_u32PdmaTAbortInt; /* PDMA transfer abort flag */
 
 void PDMA_IRQHandler(void) /* PDMA interrupt service routine */
 {
@@ -29,37 +29,37 @@ void PDMA_IRQHandler(void) /* PDMA interrupt service routine */
         //Check if transfer done
         if (PDMA_GET_CH_INT_STS(1) & 0x2)
             g_u32PdmaTDoneInt = 1;
-        //Clear transfter done flag
+        //Clear transfer done flag
         PDMA_CLR_CH_INT_FLAG(1, PDMA_CH_INTSTSn_TDIF_Msk);
     } else if (status & 0x4) { /* CH2 */
         //Check if transfer done
         if (PDMA_GET_CH_INT_STS(2) & 0x2)
             g_u32PdmaTDoneInt = 2;
-        //Clear transfter done flag
+        //Clear transfer done flag
         PDMA_CLR_CH_INT_FLAG(2, PDMA_CH_INTSTSn_TDIF_Msk);
     } else if (status & 0x8) { /* CH3 */
         //Check if transfer done
         if (PDMA_GET_CH_INT_STS(3) & 0x2)
             g_u32PdmaTDoneInt = 3;
-        //Clear transfter done flag
+        //Clear transfer done flag
         PDMA_CLR_CH_INT_FLAG(3, PDMA_CH_INTSTSn_TDIF_Msk);
     } else if (status & 0x10) { /* CH4 */
         //Check if transfer done
         if (PDMA_GET_CH_INT_STS(4) & 0x2)
             g_u32PdmaTDoneInt = 4;
-        //Clear transfter done flag
+        //Clear transfer done flag
         PDMA_CLR_CH_INT_FLAG(4, PDMA_CH_INTSTSn_TDIF_Msk);
     } else if (status & 0x20) { /* CH5 */
         //Check if transfer done
         if (PDMA_GET_CH_INT_STS(5) & 0x2)
             g_u32PdmaTDoneInt = 5;
-        //Clear transfter done flag
+        //Clear transfer done flag
         PDMA_CLR_CH_INT_FLAG(5, PDMA_CH_INTSTSn_TDIF_Msk);
     } else if (status & 0x40) { /* CH6 */
         //Check if transfer done
         if (PDMA_GET_CH_INT_STS(6) & 0x2)
             g_u32PdmaTDoneInt = 6;
-        //Clear transfter done flag
+        //Clear transfer done flag
         PDMA_CLR_CH_INT_FLAG(6, PDMA_CH_INTSTSn_TDIF_Msk);
     } else
         printf("unknown interrupt !!\n");
@@ -129,9 +129,9 @@ void PDMA_INIT(void)  /* Initialize PDMA */
 
     /* Configure PDMA channel 1 to trigger ADC */
     PDMA_Open(1 << PDMA_CH);
-    /* Set PDMA transfter count */
+    /* Set PDMA transfer count */
     PDMA_SetTransferCnt(PDMA_CH, PDMA_WIDTH_32, ADC_TEST_COUNT);
-    /* PDMA source addres is ADC register, PDMA */
+    /* PDMA source address is ADC register, PDMA */
     u32SrcAddr = (uint32_t)&ADC->PDMA;
     /* PDMA destination address is a buffer in SRAM */
     u32DstAddr = (uint32_t)g_au32RxPDMADestination;

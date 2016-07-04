@@ -3,7 +3,7 @@
  * @version  V1.00
  * $Revision: 1 $
  * $Date: 16/02/24 10:51a $
- * @brief    Demonstrate the RTC snoop detrction function and display the result to the UART console.
+ * @brief    Demonstrate the RTC snoop detection function and display the result to the UART console.
  *
  * @note
  * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
@@ -92,7 +92,7 @@ void SYS_Init(void)
  */
 void UART0_Init()
 {
-    UART_Open(UART0, 115200); /* set uart baudrate is 115200 */
+    UART_Open(UART0, 115200); /* set UART baudrate is 115200 */
 }
 
 /**

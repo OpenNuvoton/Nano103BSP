@@ -96,7 +96,7 @@ void SYS_Init(void)
  */
 void UART0_Init()
 {
-    UART_Open(UART0, 115200); /* set uart baudrate is 115200 */
+    UART_Open(UART0, 115200); /* set UART baudrate is 115200 */
 }
 
 /**
@@ -106,7 +106,7 @@ void UART0_Init()
  */
 void UART1_Init()
 {
-    UART_Open(UART1, 115200); /* set uart baudrate is 115200 */
+    UART_Open(UART1, 115200); /* set UART baudrate is 115200 */
 }
 
 /**

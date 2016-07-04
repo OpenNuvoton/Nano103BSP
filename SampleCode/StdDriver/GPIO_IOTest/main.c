@@ -27,11 +27,11 @@ void GPABC_IRQHandler(void)
         PD6 = PD6 ^ 1;          /* Toggle PD6 for LED control */
         printf("PC.3 INT occurred. \n");
 
-    } else {    /* Un-expected interrupt. Just clear all PORTA, PORTB, PORTC interrupts */
+    } else {    /* Unexpected interrupt. Just clear all PORTA, PORTB, PORTC interrupts */
         PA->INTSRC = PA->INTSRC;    /* clear all flags of GPA interrupt */
         PB->INTSRC = PB->INTSRC;    /* clear all flags of GPB interrupt */
         PC->INTSRC = PC->INTSRC;    /* clear all flags of GPC interrupt */
-        printf("Un-expected interrupts. \n");
+        printf("Unexpected interrupts. \n");
     }
 }
 
@@ -51,11 +51,11 @@ void GPDEF_IRQHandler(void)
         PE->INTSRC = BIT5;      /* clear PE.5 interrupt flag */
         PD6 = PD6 ^ 1;          /* Toggle PD6 for LED control */
         printf("PE.5 INT occurred. \n");
-    } else {    /* Un-expected interrupt. Just clear all PORTD, PORTE and PORTF interrupts */
+    } else {    /* Unexpected interrupt. Just clear all PORTD, PORTE and PORTF interrupts */
         PD->INTSRC = PD->INTSRC;    /* clear all flags of GPD interrupt */
         PE->INTSRC = PE->INTSRC;    /* clear all flags of GPE interrupt */
         PF->INTSRC = PF->INTSRC;    /* clear all flags of GPF interrupt */
-        printf("Un-expected interrupts. \n");
+        printf("Unexpected interrupts. \n");
     }
 }
 

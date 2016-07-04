@@ -237,7 +237,7 @@ void LIN_FunctionTest()
     printf("\nLIN Sample Demo. \n");
 
     /* Set UART Configuration */
-    UART_Open(UART1, 9600); /* set uart baudrate is 9600 */
+    UART_Open(UART1, 9600); /* set UART baudrate is 9600 */
     UART_SetLine_Config(UART1, 9600, UART_WORD_LEN_8, UART_PARITY_NONE, UART_STOP_BIT_1); /* Set UART Line config */
     UART_SelectLINMode(UART1,  (UART_ALTCTL_LINTXEN_Msk | UART_ALTCTL_LINRXEN_Msk), 5); /* Select LIN operation mode */
 
@@ -323,7 +323,7 @@ void SYS_Init(void)
  */
 void UART0_Init()
 {
-    UART_Open(UART0, 115200); /* set uart baudrate is 115200 */
+    UART_Open(UART0, 115200); /* set UART baudrate is 115200 */
 }
 
 /**
@@ -333,7 +333,7 @@ void UART0_Init()
  */
 void UART1_Init()
 {
-    UART_Open(UART1, 57600); /* set uart baudrate is 57600 */
+    UART_Open(UART1, 57600); /* set UART baudrate is 57600 */
 }
 
 /**

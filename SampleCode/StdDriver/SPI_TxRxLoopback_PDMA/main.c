@@ -20,7 +20,7 @@
 /*  Initialize global variables */
 uint32_t g_au32SrcData[PDMA_TEST_COUNT]; //Source data buffer
 uint32_t g_au32DstData[PDMA_TEST_COUNT]; //Destination data buffer
-uint32_t volatile u32IsTestOver = 0;  //Check whether PDMA channel 2 tranfer is finished
+uint32_t volatile u32IsTestOver = 0;  //Check whether PDMA channel 2 transfer is finished
 
 
 /**
@@ -131,14 +131,14 @@ int main(void)
     /* Enable the automatic hardware slave select function. Select the SPI0_SS0 pin and configure as low-active. */
     SPI_EnableAutoSS(SPI0, SPI_SS0, SPI_SS0_ACTIVE_LOW);
 
-    /* The I/O connection for SPI1 loopbak:            */
+    /* The I/O connection for SPI1 loopback:            */
     /*      SPI_MISO0(PC.2) <---> SPI0_MOSI0(PC.3)     */
     /* Please connect SPI0 MISO0 and MOSI0 pin         */
     printf("Please connect SPI0 MISO and MOSI pin, and press any key to start transmission ...");
     getchar();
     printf("\n");
 
-    /* Initailize g_au32SrcData buffer */
+    /* Initialize g_au32SrcData buffer */
     for(i=0; i<PDMA_TEST_COUNT; i++)
         g_au32SrcData[i] = 0x55550000 + i;
 
