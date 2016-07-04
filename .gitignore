@@ -21,6 +21,8 @@ setting/
 !SampleCode/StdDriver/FMC_IAP/IAR/Release/
 !SampleCode/StdDriver/FMC_IAP/IAR/Release/Exe/
 !SampleCode/StdDriver/FMC_IAP/IAR/Release/Exe/LDROM_code.bin
+!SampleCode/StdDriver/FMC_IAP/KEIL/obj/
+!SampleCode/StdDriver/FMC_IAP/KEIL/obj/LDROM_code.bin
 *.obj
 *.orig
 *.ok
