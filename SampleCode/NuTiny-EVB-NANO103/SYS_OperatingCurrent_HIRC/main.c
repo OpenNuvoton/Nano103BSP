@@ -29,21 +29,19 @@
 #define MODE       (1) // 0: Idle,  1: Operating
 
 /*
- *  After removed LDE on Tiny board, operating and Idle current consumption per MHz should like following table
+ *  After removed LED on Tiny board, operating and Idle current consumption should like following table
  *  
- *   Mode            | operating |     Idle
+ *   Mode            | operating  |    Idle
  *  -------------------------------------------
- *  1.8V & RC12MHz   |           |
+ *  1.8V & RC12MHz   |    2.5 mA  |    1   mA 
  *  -------------------------------------------
- *  1.6V & RC12MHz   |           |
+ *  1.6V & RC12MHz   |    2.2 mA  |    0.9 mA 
  *  -------------------------------------------
- *  1.8V & RC16MHz   |           |
+ *  1.8V & RC16MHz   |    3.1 mA  |    1.2 mA 
  *  -------------------------------------------
- *  1.6V & RC16MHz   |           |
+ *  1.6V & RC16MHz   |    2.8 mA  |    1.1 mA 
  *  -------------------------------------------
- *  1.8V & RC36MHz   |           |
- *  -------------------------------------------
- *  1.6V & RC18MHz   |           |
+ *  1.8V & RC36MHz   |    6.7 mA  |    1.9 mA 
  *  -------------------------------------------
  *
  */
@@ -87,19 +85,16 @@ int32_t main(void)
     SYS->BODCTL = SYS->BODCTL & ~(SYS_BODCTL_LVREN_Msk); // LVR Disable
     SYS->BODCTL = SYS->BODCTL & ~(SYS_BODCTL_BODEN_Msk); // BOD Disable
 
-#if( (HIRC_TYPE == 2) && (LDO_VOL == 1) )  // HIRC1 36MHz       -> 18MHz
-    FMC->ISPCTL |= FMC_ISPCTL_ISPEN_Msk; // Enable FMC ISP function
-    FMC->FTCTL |= 0x10; // FMC Frequency <= 20MHz
-#endif
 
-#if(LDO_VOL == 1)  // LDO = 1.6v
+// LDO 1.6V operate speed should be small than 18MHz, therefore HIRC1(36MHz) can't run on LDO 1.6v.
+#if((LDO_VOL == 1) && (HIRC_TYPE != 2) )  
     outpw(0x50000070, (inpw(0x50000070) & ~(3 << 2)) | (1 << 2)); // LDO Output Voltage = 1.6v
 #endif
 
-    outpw(0x50000070, (inpw(0x50000070)  | (1 << 15)  | (1 << 23)) ); //[15]LVDR Test Mode Enable,[23]LVDR Low-power Test Mode Enable
+    outpw(0x50000070, (inpw(0x50000070)  | (1 << 15)  | (1 << 23)) ); // [15]LVDR Test Mode Enable, [23]LVDR Low-power Test Mode Enable
 
     SYS->RCCFCTL = 0;  // HIRC0, HIRC1 and MIRC Clock Filter disable
-
+			
     /* Set function pin to GPIO mode */
     SYS->GPA_MFPL = 0;
     SYS->GPA_MFPH = 0;
