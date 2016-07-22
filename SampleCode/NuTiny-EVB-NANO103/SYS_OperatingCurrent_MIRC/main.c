@@ -27,12 +27,12 @@
 #define MODE       (1) // 0: Idle,  1: Operating
 
 /*
- *  After removed LDE on Tiny board, operating current should be around XXX uA per MHz
- *  Idle current should be around XXX uA per MHz
+ *  After removed LED on Tiny board, operating current should be around 0.5 mA.
+ *  Idle current should be around 0.3 mA
  *
  */
- 
- 
+
+
 extern void CPU_PC_Test(void);
 
 /**
@@ -51,7 +51,9 @@ void SYS_Init(void)
 
     CLK->PWRCTL =  CLK->PWRCTL | CLK_PWRCTL_MIRCEN_Msk;
     CLK_WaitClockReady(CLK_STATUS_MIRCSTB_Msk);
-    CLK_SetHCLK(CLK_CLKSEL0_HCLKSEL_MIRC, CLK_HCLK_CLK_DIVIDER(2)); /* Switch HCLK Clock Source to MIRC */
+    /* Switch HCLK Clock Source to MIRC. HCLK divided into 2 because LDO 1.2V operating speed should be smaller than 2MHz. */
+    CLK_SetHCLK(CLK_CLKSEL0_HCLKSEL_MIRC, CLK_HCLK_CLK_DIVIDER(2));
+
     SYS->RPDBCLK &= ~(SYS_RPDBCLK_RSTPDBCLK_Msk); // Reset pin setting, MIRC is selected as reset pin debounce clock.
     CLK->PWRCTL =  CLK->PWRCTL & ~(CLK_PWRCTL_HIRC0EN_Msk); // HIRC0 disable
 
