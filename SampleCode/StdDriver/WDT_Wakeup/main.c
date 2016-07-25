@@ -59,7 +59,7 @@ void SYS_Init(void)
     /* Set GPB multi-function pins for UART0 RXD and TXD */
     SYS->GPB_MFPL &= ~( SYS_GPB_MFPL_PB0MFP_Msk | SYS_GPB_MFPL_PB1MFP_Msk);
     SYS->GPB_MFPL |= (SYS_GPB_MFPL_PB0MFP_UART0_RXD | SYS_GPB_MFPL_PB1MFP_UART0_TXD );
-    
+
     /* Lock protected registers */
     SYS_LockReg();
 }
@@ -81,9 +81,9 @@ int32_t main (void)
       This sample code demonstrate using WDT to wake system up from power down mode
       Configure WDT timeout every 2^14 WDT clock, disable system reset, enable wake up system
       Enable WDT timeout interrupt.
-      WDT timeout interrupt will wake up system. 
+      WDT timeout interrupt will wake up system.
      */
-  
+
     // WDT register is locked, so it is necessary to unlock protect register before configure WDT
     SYS_UnlockReg();
 

@@ -216,7 +216,7 @@ void PowerDown_Check()
     else
         printf("\nWake-up Delay Counter Disable");
 
-    if(CLK->PWRCTL & CLK_PWRCTL_WAKEINT_EN) /* Check Wake up interrupt */ 
+    if(CLK->PWRCTL & CLK_PWRCTL_WAKEINT_EN) /* Check Wake up interrupt */
         printf("\nPower-down Mode Wake-up Interrupt Enable");
     else
         printf("\nPower-down Mode Wake-up Interrupt Disable");
@@ -243,7 +243,7 @@ void PowerDown_Check()
 }
 
 /**
- *  @brief  Init system clock and I/O multi function . 
+ *  @brief  Init system clock and I/O multi function .
  *  @param  None
  *  @return None
  */
@@ -279,7 +279,7 @@ void SYS_Init(void)
 }
 
 /**
- *  @brief  Config UART0. 
+ *  @brief  Config UART0.
  *  @param  None
  *  @return None
  */

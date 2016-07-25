@@ -33,33 +33,28 @@ uint32_t SysGet_PLLClockFreq(void)
 
     if (u32PllReg & CLK_PLLCTL_PD)
         return 0;    /* PLL is in power down mode */
-		
-		if((u32PllReg & CLK_PLLCTL_PLLSRC_Msk) == CLK_PLLCTL_PLL_SRC_HXT) {
+
+    if((u32PllReg & CLK_PLLCTL_PLLSRC_Msk) == CLK_PLLCTL_PLL_SRC_HXT) {
         u32PLLSrc = __HXT;
-    } 
-		else if((u32PllReg & CLK_PLLCTL_PLLSRC_Msk) == CLK_PLLCTL_PLL_SRC_HIRC){
-			  /* HIRC Source Selection */
-			  if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)
-				{
-						/* Clock source from HIRC1 (36MHz) */
-						u32PLLSrc =__HIRC36M;
-				}
-				else
-				{
-					  /* Clock source from HIRC0 (12MHz) */
-						if(CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk)
-								u32PLLSrc =__HIRC16M;
-						else
-								u32PLLSrc =__HIRC12M;
-				}
-		}
-    else{
+    } else if((u32PllReg & CLK_PLLCTL_PLLSRC_Msk) == CLK_PLLCTL_PLL_SRC_HIRC) {
+        /* HIRC Source Selection */
+        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk) {
+            /* Clock source from HIRC1 (36MHz) */
+            u32PLLSrc =__HIRC36M;
+        } else {
+            /* Clock source from HIRC0 (12MHz) */
+            if(CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk)
+                u32PLLSrc =__HIRC16M;
+            else
+                u32PLLSrc =__HIRC12M;
+        }
+    } else {
         u32PLLSrc =__MIRC;
-    }		
+    }
 
     u32SRC_N = (u32PllReg & CLK_PLLCTL_INDIV_Msk) >> CLK_PLLCTL_INDIV_Pos;
     u32PLL_M = (u32PllReg & CLK_PLLCTL_PLLMLP_Msk) >> CLK_PLLCTL_PLLMLP_Pos;
-    
+
     u32Freq = u32PLLSrc * u32PLL_M / (u32SRC_N+1);
 
     return u32Freq;
@@ -79,32 +74,28 @@ uint32_t SysGet_HCLKFreq(void)
     u32ClkSel = CLK->CLKSEL0 & CLK_CLKSEL0_HCLKSEL_Msk;
 
     if (u32ClkSel == CLK_CLKSEL0_HCLKSEL_HXT) {  /* external HXT crystal clock */
-        u32Freqout = __HXT;			
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_LXT) {			/* external LXT crystal clock */
-        u32Freqout = __LXT;			
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_PLL) {			/* PLL clock */
-        u32Freqout = SysGet_PLLClockFreq();			  
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_LIRC){			/* internal LIRC oscillator clock */
+        u32Freqout = __HXT;
+    } else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_LXT) {           /* external LXT crystal clock */
+        u32Freqout = __LXT;
+    } else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_PLL) {           /* PLL clock */
+        u32Freqout = SysGet_PLLClockFreq();
+    } else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_LIRC) {          /* internal LIRC oscillator clock */
         u32Freqout = __LIRC;
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_HIRC){			/* internal HIRC oscillator clock */								
-			  /* HIRC Source Selection */
-			  if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)
-				{
-						/* Clock source from HIRC1 (36MHz) */
-						u32Freqout =__HIRC36M;
-				}
-				else
-				{
-					  /* Clock source from HIRC0 (12MHz) */
-						if((CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk) == CLK_PWRCTL_HIRC0FSEL_Msk)
-								u32Freqout =__HIRC16M;
-						else
-								u32Freqout =__HIRC12M;
-				}
-		}
-		else{			/* internal MIRC oscillator clock */
-			u32Freqout = __MIRC;			
-		}		
+    } else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_HIRC) {          /* internal HIRC oscillator clock */
+        /* HIRC Source Selection */
+        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk) {
+            /* Clock source from HIRC1 (36MHz) */
+            u32Freqout =__HIRC36M;
+        } else {
+            /* Clock source from HIRC0 (12MHz) */
+            if((CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk) == CLK_PWRCTL_HIRC0FSEL_Msk)
+                u32Freqout =__HIRC16M;
+            else
+                u32Freqout =__HIRC12M;
+        }
+    } else {        /* internal MIRC oscillator clock */
+        u32Freqout = __MIRC;
+    }
     u32AHBDivider = (CLK->CLKDIV0 & CLK_CLKDIV0_HCLKDIV_Msk) + 1 ;
     return (u32Freqout/u32AHBDivider);
 }

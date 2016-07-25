@@ -216,11 +216,11 @@ void FMC_SetVectorPageAddr(uint32_t u32PageAddr)
 
 
 /**
-  * @brief    Obtain the current vector page address setting. 
+  * @brief    Obtain the current vector page address setting.
   * @return   The vector page address.
   */
 uint32_t FMC_GetVectorPageAddr(void)
-{ 
+{
     return (FMC->ISPSTS & 0x0FFFFF00ul);
 }
 
@@ -293,31 +293,31 @@ int32_t FMC_WriteConfig(uint32_t *u32Config, uint32_t u32Count)
   */
 int32_t  FMC_GetChkSum(uint32_t u32Addr, uint32_t u32Count, uint32_t *u32ChkSum)
 {
-	if ((u32Addr % 512) || (u32Count % 512))
-		return -2;
-		
-	*u32ChkSum = 0;
-	
-	FMC->ISPCMD  = FMC_ISPCMD_RUN_CKS;
+    if ((u32Addr % 512) || (u32Count % 512))
+        return -2;
+
+    *u32ChkSum = 0;
+
+    FMC->ISPCMD  = FMC_ISPCMD_RUN_CKS;
     FMC->ISPADDR = u32Addr;
-	FMC->ISPDAT	 = u32Count;
-	FMC->ISPTRG  = FMC_ISPTRG_ISPGO_Msk;
-	
- 	while (FMC->ISPSTS & FMC_ISPSTS_ISPBUSY_Msk) ;
+    FMC->ISPDAT  = u32Count;
+    FMC->ISPTRG  = FMC_ISPTRG_ISPGO_Msk;
 
-   	if (FMC_GET_FAIL_FLAG())
-   		return -1;
-
-	FMC->ISPCMD = FMC_ISPCMD_READ_CKS;
-   	FMC->ISPADDR	= u32Addr;
-	FMC->ISPTRG = FMC_ISPTRG_ISPGO_Msk;
     while (FMC->ISPSTS & FMC_ISPSTS_ISPBUSY_Msk) ;
 
-   	if (FMC_GET_FAIL_FLAG())
-   		return -1;
-	
-	*u32ChkSum = FMC->ISPDAT;
-	return 0;
+    if (FMC_GET_FAIL_FLAG())
+        return -1;
+
+    FMC->ISPCMD = FMC_ISPCMD_READ_CKS;
+    FMC->ISPADDR    = u32Addr;
+    FMC->ISPTRG = FMC_ISPTRG_ISPGO_Msk;
+    while (FMC->ISPSTS & FMC_ISPSTS_ISPBUSY_Msk) ;
+
+    if (FMC_GET_FAIL_FLAG())
+        return -1;
+
+    *u32ChkSum = FMC->ISPDAT;
+    return 0;
 }
 
 
@@ -331,38 +331,36 @@ int32_t  FMC_GetChkSum(uint32_t u32Addr, uint32_t u32Count, uint32_t *u32ChkSum)
   */
 uint32_t  FMC_CheckAllOne(uint32_t u32Addr, uint32_t u32Count)
 {
-	FMC->ISPSTS = 0x80;   // clear check alll one bit
-	
-	FMC->ISPCMD = FMC_ISPCMD_RUN_ALL1;
-    FMC->ISPADDR	= u32Addr;
-	FMC->ISPDAT	= u32Count;
-	FMC->ISPTRG = FMC_ISPTRG_ISPGO_Msk;
-	
- 	while (FMC->ISPSTS & FMC_ISPSTS_ISPBUSY_Msk) ;
+    FMC->ISPSTS = 0x80;   // clear check alll one bit
 
-   	if (FMC_GET_FAIL_FLAG())
-   	{
-   		//printf("FMC_ISPCMD_RUN_ALL1 ISP failed!\n");
-   		return READ_ALLONE_CMD_FAIL;
-   	}
+    FMC->ISPCMD = FMC_ISPCMD_RUN_ALL1;
+    FMC->ISPADDR    = u32Addr;
+    FMC->ISPDAT = u32Count;
+    FMC->ISPTRG = FMC_ISPTRG_ISPGO_Msk;
 
-	do {
-		FMC->ISPCMD = FMC_ISPCMD_READ_ALL1;
-    	FMC->ISPADDR	= u32Addr;
-		FMC->ISPTRG = FMC_ISPTRG_ISPGO_Msk;
-		while (FMC->ISPSTS & FMC_ISPSTS_ISPBUSY_Msk) ;
-	}  while (FMC->ISPDAT == 0);
+    while (FMC->ISPSTS & FMC_ISPSTS_ISPBUSY_Msk) ;
 
-   	if (FMC_GET_FAIL_FLAG())
-   	{
-   		printf("FMC_ISPCMD_READ_ALL1 ISP failed!\n");
-   		return READ_ALLONE_CMD_FAIL;
-   	}
+    if (FMC_GET_FAIL_FLAG()) {
+        //printf("FMC_ISPCMD_RUN_ALL1 ISP failed!\n");
+        return READ_ALLONE_CMD_FAIL;
+    }
 
-	if ((FMC->ISPDAT == READ_ALLONE_YES) || (FMC->ISPDAT == READ_ALLONE_NOT))
-		return FMC->ISPDAT;
-		
-	return READ_ALLONE_CMD_FAIL;
+    do {
+        FMC->ISPCMD = FMC_ISPCMD_READ_ALL1;
+        FMC->ISPADDR    = u32Addr;
+        FMC->ISPTRG = FMC_ISPTRG_ISPGO_Msk;
+        while (FMC->ISPSTS & FMC_ISPSTS_ISPBUSY_Msk) ;
+    }  while (FMC->ISPDAT == 0);
+
+    if (FMC_GET_FAIL_FLAG()) {
+        printf("FMC_ISPCMD_READ_ALL1 ISP failed!\n");
+        return READ_ALLONE_CMD_FAIL;
+    }
+
+    if ((FMC->ISPDAT == READ_ALLONE_YES) || (FMC->ISPDAT == READ_ALLONE_NOT))
+        return FMC->ISPDAT;
+
+    return READ_ALLONE_CMD_FAIL;
 }
 
 
@@ -374,7 +372,7 @@ uint32_t  FMC_CheckAllOne(uint32_t u32Addr, uint32_t u32Count)
   * @param[in] lock_CONFIG   1: Security key lock CONFIG to write-protect. 0: Don't lock CONFIG.
   * @param[in] lock_SPROM    1: Security key lock SPROM to write-protect. 0: Don't lock SPROM.
   * @retval   0     Success.
-  * @retval   -1    Key has been setup, It's not allowed to setup key again. 
+  * @retval   -1    Key has been setup, It's not allowed to setup key again.
   * @retval   -2    Failed to erase flash.
   * @retval   -3    Failed to program key.
   * @retval   -4    Key lock function failed.
@@ -385,64 +383,59 @@ uint32_t  FMC_CheckAllOne(uint32_t u32Addr, uint32_t u32Count)
   */
 int32_t  FMC_SKey_Setup(uint32_t key[3], uint32_t kpmax, uint32_t kemax, int lock_CONFIG, int lock_SPROM)
 {
-	uint32_t  lock_ctrl = 0;
-	
-	if (FMC->KEYSTS != 0)
-		return -1;
+    uint32_t  lock_ctrl = 0;
 
-	if (FMC_Erase(FMC_KPROM_BASE))
-		return -2;
-		
-	if (FMC_Erase(FMC_KPROM_BASE+FMC_FLASH_PAGE_SIZE))
-		return -2;
-		
-	if (!lock_CONFIG)
-		lock_ctrl |= 0x1;
-		
-	if (!lock_SPROM)
-		lock_ctrl |= 0x2;
-		
-	FMC_Write(FMC_KPROM_BASE, key[0]);
-	FMC_Write(FMC_KPROM_BASE+0x4, key[1]);
-	FMC_Write(FMC_KPROM_BASE+0x8, key[2]);
-	FMC_Write(FMC_KPROM_BASE+0xC, kpmax);
-	FMC_Write(FMC_KPROM_BASE+0x10, kemax);
-	FMC_Write(FMC_KPROM_BASE+0x14, lock_ctrl);
-	
-	while (FMC->KEYSTS & FMC_KEYSTS_KEYBUSY_Msk);
-	
-	if (!(FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk))
-	{
-		printf("Security key lock failed!\n");
-		return -4;
-	}
-	
-	if ((lock_CONFIG && !(FMC->KEYSTS & FMC_KEYSTS_CFGFLAG_Msk)) ||
-		(!lock_CONFIG && (FMC->KEYSTS & FMC_KEYSTS_CFGFLAG_Msk)))
-	{
-		printf("CONFIG lock failed!\n");
-		return -5;
-	}
-	
-	if ((lock_SPROM && !(FMC->KEYSTS & FMC_KEYSTS_SPFLAG_Msk)) ||
-		(!lock_SPROM && (FMC->KEYSTS & FMC_KEYSTS_SPFLAG_Msk)))
-	{
-		printf("SPROM lock failed!\n");
-		return -6;
-	}
+    if (FMC->KEYSTS != 0)
+        return -1;
 
-	if (((FMC->KPCNT & FMC_KPCNT_KPMAX_Msk) >> FMC_KPCNT_KPMAX_Pos) != kpmax)
-	{
-		printf("KPMAX failed!\n");
-		return -7;
-	}
-	
-	if (((FMC->KECNT & FMC_KECNT_KEMAX_Msk) >> FMC_KECNT_KEMAX_Pos) != kemax)
-	{
-		printf("KEMAX failed!\n");
-		return -8;
-	}
-	return 0;
+    if (FMC_Erase(FMC_KPROM_BASE))
+        return -2;
+
+    if (FMC_Erase(FMC_KPROM_BASE+FMC_FLASH_PAGE_SIZE))
+        return -2;
+
+    if (!lock_CONFIG)
+        lock_ctrl |= 0x1;
+
+    if (!lock_SPROM)
+        lock_ctrl |= 0x2;
+
+    FMC_Write(FMC_KPROM_BASE, key[0]);
+    FMC_Write(FMC_KPROM_BASE+0x4, key[1]);
+    FMC_Write(FMC_KPROM_BASE+0x8, key[2]);
+    FMC_Write(FMC_KPROM_BASE+0xC, kpmax);
+    FMC_Write(FMC_KPROM_BASE+0x10, kemax);
+    FMC_Write(FMC_KPROM_BASE+0x14, lock_ctrl);
+
+    while (FMC->KEYSTS & FMC_KEYSTS_KEYBUSY_Msk);
+
+    if (!(FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk)) {
+        printf("Security key lock failed!\n");
+        return -4;
+    }
+
+    if ((lock_CONFIG && !(FMC->KEYSTS & FMC_KEYSTS_CFGFLAG_Msk)) ||
+            (!lock_CONFIG && (FMC->KEYSTS & FMC_KEYSTS_CFGFLAG_Msk))) {
+        printf("CONFIG lock failed!\n");
+        return -5;
+    }
+
+    if ((lock_SPROM && !(FMC->KEYSTS & FMC_KEYSTS_SPFLAG_Msk)) ||
+            (!lock_SPROM && (FMC->KEYSTS & FMC_KEYSTS_SPFLAG_Msk))) {
+        printf("SPROM lock failed!\n");
+        return -6;
+    }
+
+    if (((FMC->KPCNT & FMC_KPCNT_KPMAX_Msk) >> FMC_KPCNT_KPMAX_Pos) != kpmax) {
+        printf("KPMAX failed!\n");
+        return -7;
+    }
+
+    if (((FMC->KECNT & FMC_KECNT_KEMAX_Msk) >> FMC_KECNT_KEMAX_Pos) != kemax) {
+        printf("KEMAX failed!\n");
+        return -8;
+    }
+    return 0;
 }
 
 
@@ -450,45 +443,41 @@ int32_t  FMC_SKey_Setup(uint32_t key[3], uint32_t kpmax, uint32_t kemax, int loc
   * @brief    Execute security key comparison.
   * @param[in] key  Key0~2 to be compared.
   * @retval   0     Key matched.
-  * @retval   -1    Forbidden. Times of key comparison mismatch has reached the maximum count. 
+  * @retval   -1    Forbidden. Times of key comparison mismatch has reached the maximum count.
   * @retval   -2    Key mismatched.
   * @retval   -3    No security key lock. Key comparison is not required.
   */
 int32_t  FMC_SKey_Compare(uint32_t key[3])
 {
-	if (FMC->KEYSTS & FMC_KEYSTS_FORBID_Msk)
-	{
-		printf("FMC_SKey_Compare - FORBID!\n");
-		return -1;
-	}
-	
-	if (!(FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk))
-	{
-		printf("FMC_SKey_Compare - key is not locked!\n");
-		return -3;
-	}
+    if (FMC->KEYSTS & FMC_KEYSTS_FORBID_Msk) {
+        printf("FMC_SKey_Compare - FORBID!\n");
+        return -1;
+    }
 
-	FMC->KEY0 = key[0];
-	FMC->KEY1 = key[1];
-	FMC->KEY2 = key[2];
-	FMC->KEYTRG = FMC_KEYTRG_KEYGO_Msk | FMC_KEYTRG_TCEN_Msk;
-	
-	while (FMC->KEYSTS & FMC_KEYSTS_KEYBUSY_Msk);
-	
-	if (!(FMC->KEYSTS & FMC_KEYSTS_KEYMATCH_Msk))
-	{
-		printf("Key mismatched!\n");
-		return -2;
-	}
-	
-	if (FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk)
-	{
-		printf("Key matched, but still be locked!\n");
-		return -2;
-	}
-	
-	printf("FMC_SKey_Compare - OK.\n");
-	return 0;
+    if (!(FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk)) {
+        printf("FMC_SKey_Compare - key is not locked!\n");
+        return -3;
+    }
+
+    FMC->KEY0 = key[0];
+    FMC->KEY1 = key[1];
+    FMC->KEY2 = key[2];
+    FMC->KEYTRG = FMC_KEYTRG_KEYGO_Msk | FMC_KEYTRG_TCEN_Msk;
+
+    while (FMC->KEYSTS & FMC_KEYSTS_KEYBUSY_Msk);
+
+    if (!(FMC->KEYSTS & FMC_KEYSTS_KEYMATCH_Msk)) {
+        printf("Key mismatched!\n");
+        return -2;
+    }
+
+    if (FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk) {
+        printf("Key matched, but still be locked!\n");
+        return -2;
+    }
+
+    printf("FMC_SKey_Compare - OK.\n");
+    return 0;
 }
 
 

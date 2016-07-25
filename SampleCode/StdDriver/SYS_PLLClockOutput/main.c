@@ -22,7 +22,7 @@ __IO uint32_t u32PWDU_WakeFlag = 0;
 /*  Brown Out Detector IRQ Handler                                                                         */
 /*---------------------------------------------------------------------------------------------------------*/
 void BOD_IRQHandler(void)
-{    
+{
     SYS_CLEAR_BOD_INT_FLAG(); /* Clear BOD Interrupt Flag */
     printf("Brown Out is Detected\n");
 }
@@ -34,7 +34,8 @@ void BOD_IRQHandler(void)
 int32_t f[PI_NUM + 1];
 
 uint32_t piTbl[19] = {3141, 5926, 5358, 9793, 2384, 6264, 3383, 2795, 288, 4197,
-                      1693, 9937, 5105, 8209, 7494, 4592, 3078, 1640, 6284};
+                      1693, 9937, 5105, 8209, 7494, 4592, 3078, 1640, 6284
+                     };
 
 int32_t piResult[19];
 
@@ -65,7 +66,7 @@ int32_t pi(void)
 void Delay(uint32_t x)
 {
     int32_t i;
-	
+
     /* Generate a delay loop */
     for(i = 0; i < x; i++) {
         __NOP();
@@ -94,7 +95,7 @@ void SYS_PLL_Test(void)
     /*---------------------------------------------------------------------------------------------------------*/
 
     printf("\n-----------------------[ Test PLL ]---------------------------\n");
-	
+
     for(i = 0; i < sizeof(g_au32PllSetting) / sizeof(g_au32PllSetting[0]) ; i++) {
         /* Select HCLK clock source from PLL.
            PLL will be configured to twice specified frequency.
@@ -102,11 +103,11 @@ void SYS_PLL_Test(void)
         */
         CLK_SetCoreClock(g_au32PllSetting[i]);
         printf("Change system clock to %d Hz ...................... ", SystemCoreClock); /* Display system core clock */
-        
+
         CLK_EnableCKO(CLK_CLKSEL2_CLKOSEL_HCLK, 1, 0); /* Output selected clock to CLKO, CLKO = HCLK / 2^(1 + 1) */
-        
+
         Delay(0x400000); /* The delay loop is used to check if the CPU speed is increasing */
-			  
+
         if(pi()) { /* Calculating lots of digits of pi */
             printf("[FAIL]\n");
         } else {
@@ -121,8 +122,8 @@ void SYS_PLL_Test(void)
 /* Init System Clock                                                                                       */
 /*---------------------------------------------------------------------------------------------------------*/
 void SYS_Init(void)
-{    
-    SYS_UnlockReg(); /* Unlock protected registers */    
+{
+    SYS_UnlockReg(); /* Unlock protected registers */
 
     /* Enable external 12MHz HXT, 32KHz LXT, HIRC and MIRC */
     CLK_EnableXtalRC(CLK_PWRCTL_HXTEN_Msk | CLK_PWRCTL_LXTEN_Msk | CLK_PWRCTL_HIRC0EN_Msk | CLK_PWRCTL_HIRC1EN_Msk | CLK_PWRCTL_MIRCEN_Msk);
@@ -131,7 +132,7 @@ void SYS_Init(void)
     CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk | CLK_STATUS_LXTSTB_Msk | CLK_STATUS_HIRC0STB_Msk | CLK_STATUS_HIRC1STB_Msk  | CLK_STATUS_MIRCSTB_Msk);
 
     CLK_SetCoreClock(32000000); /* Set HCLK frequency 32MHz */
-    
+
     CLK_EnableModuleClock(UART0_MODULE); /* Enable IP clock */
     CLK_SetModuleClock(UART0_MODULE,CLK_CLKSEL1_UART0SEL_HIRC,CLK_UART0_CLK_DIVIDER(1)); /* Select IP clock source */
 
@@ -143,7 +144,7 @@ void SYS_Init(void)
     SYS->GPB_MFPL |= (SYS_GPB_MFPL_PB0MFP_UART0_RXD | SYS_GPB_MFPL_PB1MFP_UART0_TXD);
 
     SYS->GPB_MFPL = ( SYS->GPB_MFPL & ~SYS_GPB_MFPL_PB2MFP_Msk ) |  SYS_GPB_MFPL_PB2MFP_CLKO; /* Set PB multi-function pins for Clock Output */
-    
+
     SYS_LockReg(); /* Lock protected registers */
 }
 
@@ -166,7 +167,7 @@ int32_t main (void)
 
     /* Init System, IP clock and multi-function I/O */
     SYS_Init(); //In the end of SYS_Init() will issue SYS_LockReg() to lock protected register. If user want to write protected register, please issue SYS_UnlockReg() to unlock protected register.
-   
+
     UART0_Init(); /* Init UART0 for printf */
     printf("\n\nCPU @ %dHz\n", SystemCoreClock); /* Display system core clock */
 
@@ -185,13 +186,13 @@ int32_t main (void)
         M32(FLAG_ADDR) = 0;
         printf("  Press any key to continue ...\n");
         getchar();
-    }		
-		
+    }
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Misc system function test                                                                               */
     /*---------------------------------------------------------------------------------------------------------*/
     printf("Product ID 0x%x\n", SYS->PDID); /* Read Part Device ID */
-    
+
     u32data = SYS_GetResetSrc(); /* Get reset source from last operation */
     printf("Reset Source 0x%x\n", u32data); /* Get reset source data */
     SYS_ClearResetSrc(u32data); /* Clear reset source */
@@ -207,9 +208,9 @@ int32_t main (void)
        Enable Brown-Out Interrupt function */
     SYS_EnableBOD(SYS_BODCTL_BODIE_Msk,SYS_BODCTL_BODVL_2_5V);
     NVIC_EnableIRQ(BOD_IRQn); /* Enable BOD IRQ */
-    
+
     SYS_PLL_Test(); /* Run PLL Test */
-    
+
     UART_WAIT_TX_EMPTY(UART0); /* Waiting for message send out */
 
     /* Enable CLKO and output frequency = system clock / 2^(1 + 1) */
@@ -217,12 +218,12 @@ int32_t main (void)
 
     CLK->CLKDIV0 = (CLK->CLKDIV0 & ~CLK_CLKDIV0_HCLKDIV_Msk) | CLK_CLKSEL0_HCLKSEL_HIRC; /* Switch HCLK clock source to Internal 12MHz */
     CLK->CLKSEL0 = (CLK->CLKSEL0 & ~CLK_CLKSEL0_HCLKSEL_Msk) | CLK_HCLK_CLK_DIVIDER(1);
-    
+
     CLK_DisablePLL(); /* Set PLL to Power down mode and HW will also clear PLLSTB bit in CLKSTATUS register */
-    
+
     M32(FLAG_ADDR) = SIGNATURE; /* Write a signature work to SRAM to check if it is reset by software */
     printf("\n\n  >>> Reset CPU <<<\n");
-		
+
     SYS_ResetCPU(); /* Reset CPU */
 }
 

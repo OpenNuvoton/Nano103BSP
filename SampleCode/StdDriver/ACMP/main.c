@@ -3,7 +3,7 @@
  * @version  V3.00
  * $Revision: 6 $
  * $Date: 16/02/22 11:03a $
- * @brief    Demonstrate analog comparator (ACMP) comparison by comparing 
+ * @brief    Demonstrate analog comparator (ACMP) comparison by comparing
  *           ACMP0_P input and ACMP0_N voltage and shows the result on UART console
  *
  * @note

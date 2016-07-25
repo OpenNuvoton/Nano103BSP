@@ -99,7 +99,7 @@ int main(void)
     // Open smartcard interface 0 in UART mode. The line config will be 115200-8n1
     // Can call SCUART_SetLineConfig() later if necessary
     SCUART_Open(SC0, 115200);
-    
+
     // Enable receive interrupt, no need to use other interrupts in this demo
     SCUART_ENABLE_INT(SC0, SC_INTEN_RDAIEN_Msk);
     NVIC_EnableIRQ(SC0_IRQn);

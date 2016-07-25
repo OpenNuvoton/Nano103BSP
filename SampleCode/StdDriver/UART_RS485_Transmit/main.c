@@ -97,7 +97,7 @@ void UART1_IRQHandler(void)
 }
 
 /**
- *  @brief  Send RS485 Data. 
+ *  @brief  Send RS485 Data.
  *  @param  None
  *  @return None
  */
@@ -121,7 +121,7 @@ void RS485Send(uint8_t *BufferPtr, uint32_t Length)
 }
 
 /**
- *  @brief  RS485 Transmit Test function. 
+ *  @brief  RS485 Transmit Test function.
  *  @param  None
  *  @return None
  */
@@ -168,7 +168,7 @@ void RS485_TransmitTest()
 }
 
 /**
- *  @brief  Init system clock and I/O multi function . 
+ *  @brief  Init system clock and I/O multi function .
  *  @param  None
  *  @return None
  */
@@ -197,7 +197,7 @@ void SYS_Init(void)
     /* Select IP clock source */
     CLK->CLKSEL1 &= ~CLK_CLKSEL1_UART0SEL_Msk;
     CLK->CLKSEL1 |= (0x0 << CLK_CLKSEL1_UART0SEL_Pos);// Clock source from external 12 MHz crystal clock
-	CLK->CLKSEL2 &= ~CLK_CLKSEL2_UART1SEL_Msk;
+    CLK->CLKSEL2 &= ~CLK_CLKSEL2_UART1SEL_Msk;
     CLK->CLKSEL2 |= (0x0 << CLK_CLKSEL2_UART1SEL_Pos);// Clock source from external 12 MHz crystal clock
 
     /* Update System Core Clock */
@@ -223,7 +223,7 @@ void SYS_Init(void)
 }
 
 /**
- *  @brief  Config UART0. 
+ *  @brief  Config UART0.
  *  @param  None
  *  @return None
  */
@@ -234,7 +234,7 @@ void UART0_Init()
 }
 
 /**
- *  @brief  Config UART1. 
+ *  @brief  Config UART1.
  *  @param  None
  *  @return None
  */

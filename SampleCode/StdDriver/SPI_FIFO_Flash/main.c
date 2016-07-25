@@ -99,7 +99,7 @@ void SpiFlash_ChipErase(void)
 }
 
 /**
- * @brief       Read SPI flash status register 
+ * @brief       Read SPI flash status register
  * @param       u8Value the is spi flash status value.
  * @return      None
  * @details     This function read SPI flash status register
@@ -129,7 +129,7 @@ uint8_t SpiFlash_ReadStatusReg(void)
 }
 
 /**
- * @brief       Write SPI flash status register 
+ * @brief       Write SPI flash status register
  * @param       u8Value the is spi flash status value.
  * @return      None
  * @details     This function write SPI flash status register
@@ -189,7 +189,7 @@ void SpiFlash_WaitReady(void)
  * @param[in]   StartAddress    The base address of SPI flash.
  * @param[out]  u8DataBuffer    Write u8DataBuffer[256] into SPI flash
  * @return      None
- * @details     This function write data into SPI flash 
+ * @details     This function write data into SPI flash
  */
 void SpiFlash_NormalPageProgram(uint32_t StartAddress, uint8_t *u8DataBuffer)
 {
@@ -222,7 +222,7 @@ void SpiFlash_NormalPageProgram(uint32_t StartAddress, uint8_t *u8DataBuffer)
     // Bits 7 to 0
     SPI_WRITE_TX(SPI_FLASH_PORT, StartAddress       & 0xFF);
 
-    
+
     while(1) {
         //Check SPI Tx FIFO full
         if(!SPI_GET_TX_FIFO_FULL_FLAG(SPI_FLASH_PORT)) {
@@ -262,10 +262,10 @@ void SpiFlash_NormalRead(uint32_t StartAddress, uint8_t *u8DataBuffer)
     // send 24-bit start address
     // Bits 23 to 16
     SPI_WRITE_TX(SPI_FLASH_PORT, (StartAddress>>16) & 0xFF);
-  
+
     // Bits 15 to 8
     SPI_WRITE_TX(SPI_FLASH_PORT, (StartAddress>>8)  & 0xFF);
-  
+
     // Bits 7 to 0
     SPI_WRITE_TX(SPI_FLASH_PORT, StartAddress       & 0xFF);
 
@@ -276,13 +276,13 @@ void SpiFlash_NormalRead(uint32_t StartAddress, uint8_t *u8DataBuffer)
 
     // read data
     for(i=0; i<256; i++) {
-      
+
         //send 8-bit '0x00' , dummy
         SPI_WRITE_TX(SPI_FLASH_PORT, 0x00);
-      
+
         //wait tx finish
         while(SPI_IS_BUSY(SPI_FLASH_PORT));
-      
+
         //recieve 8-bit data
         u8DataBuffer[i] = SPI_READ_RX(SPI_FLASH_PORT);
     }
@@ -298,7 +298,7 @@ void SpiFlash_NormalRead(uint32_t StartAddress, uint8_t *u8DataBuffer)
  * @brief       Initialize system
  * @param[in]   None
  * @return      None
- * @details     This function set clock and I/O Multi-function 
+ * @details     This function set clock and I/O Multi-function
  */
 void SYS_Init(void)
 {
@@ -325,7 +325,7 @@ void SYS_Init(void)
 
     /* Enable UART0 clock */
     CLK_EnableModuleClock(UART0_MODULE);
-    
+
     /* Enable SPI0 clock */
     CLK_EnableModuleClock(SPI0_MODULE);
 
@@ -345,7 +345,7 @@ void SYS_Init(void)
     /* Set PC0, PC1, PC2 and PC3 multi function pin to SPI0 MISO0, MOSI0, CLK and SS0 */
     SYS->GPC_MFPL &= ~(SYS_GPC_MFPL_PC0MFP_Msk | SYS_GPC_MFPL_PC1MFP_Msk | SYS_GPC_MFPL_PC2MFP_Msk | SYS_GPC_MFPL_PC3MFP_Msk);
     SYS->GPC_MFPL |= (SYS_GPC_MFPL_PC0MFP_SPI0_SS0 | SYS_GPC_MFPL_PC1MFP_SPI0_CLK | SYS_GPC_MFPL_PC2MFP_SPI0_MISO0 | SYS_GPC_MFPL_PC3MFP_SPI0_MOSI0);
-    
+
     /* First, Clear PD14 and PD15 multi function pin to '0', and then  */
     /* Set PD14 and PD15 multi function pin to SPI0 MISO1, MOSI1       */
     SYS->GPD_MFPH &= ~(SYS_GPD_MFPH_PD14MFP_Msk | SYS_GPD_MFPH_PD15MFP_Msk);
@@ -378,7 +378,7 @@ int main(void)
 
     /* Enable the automatic hardware slave select function. Select the SS0 pin and configure as low-active. */
     SPI_EnableAutoSS(SPI_FLASH_PORT, SPI_SS0, SPI_SS0_ACTIVE_LOW);
-  
+
     /* Enable FIFO mode and set FIFO TX/RX threshold */
     SPI_EnableFIFO(SPI_FLASH_PORT, 4, 4);
 
@@ -414,16 +414,16 @@ int main(void)
 
     /* Start to write data to SPI flash */
     printf("Start to write data to Flash ...");
-    
+
     /* Program SPI flash */
     u32FlashAddress = 0;
     for(u32PageNumber=0; u32PageNumber<TEST_NUMBER; u32PageNumber++) {
         /* page program */
         SpiFlash_NormalPageProgram(u32FlashAddress, SrcArray);
-      
+
         /* waiting for spi write flah to finish */
         SpiFlash_WaitReady();
-      
+
         u32FlashAddress += 0x100;
     }
 
@@ -459,7 +459,7 @@ int main(void)
         printf("[OK]\n");
     else
         printf("[FAIL]\n");
-    
+
     /* Infinite loop */
     while(1);
 }

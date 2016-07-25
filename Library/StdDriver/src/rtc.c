@@ -41,10 +41,10 @@ static volatile uint32_t g_u32hiHour,g_u32loHour,g_u32hiMin,g_u32loMin,g_u32hiSe
 
 void RTC_RWEN(void)
 {
-	RTC->RWEN = RTC_WRITE_KEY;
+    RTC->RWEN = RTC_WRITE_KEY;
     while(!(RTC->RWEN & RTC_RWEN_RWENF_Msk)) RTC->RWEN = RTC_WRITE_KEY;
-	
-	while(RTC->RWEN & RTC_RWEN_RTCBUSY_Msk);
+
+    while(RTC->RWEN & RTC_RWEN_RTCBUSY_Msk);
 }
 
 /// @endcond HIDDEN_SYMBOLS
@@ -74,7 +74,7 @@ void RTC_32KCalibration(int32_t i32FrequencyX10000)
         u64Compensate = 0x3FFFFF;
     }
 
-    RTC_RWEN();	
+    RTC_RWEN();
     RTC->FREQADJ = (uint32_t)u64Compensate;
 
 }
@@ -121,7 +121,7 @@ void RTC_Open (S_RTC_TIME_DATA_T *sPt)
     /* Second, set RTC 24/12 hour setting                                                                  */
     /*-----------------------------------------------------------------------------------------------------*/
     if (sPt->u32TimeScale == RTC_CLOCK_12) {
-        RTC_RWEN();		
+        RTC_RWEN();
         RTC->CLKFMT &= ~RTC_CLKFMT_24HEN_Msk;
 
         /*-------------------------------------------------------------------------------------------------*/
@@ -130,7 +130,7 @@ void RTC_Open (S_RTC_TIME_DATA_T *sPt)
         if (sPt->u32AmPm == RTC_PM)
             sPt->u32Hour += 20;
     } else {
-        RTC_RWEN();		
+        RTC_RWEN();
         RTC->CLKFMT |= RTC_CLKFMT_24HEN_Msk;
     }
 
@@ -162,7 +162,7 @@ void RTC_Open (S_RTC_TIME_DATA_T *sPt)
     RTC_RWEN();
     RTC->TIME = (uint32_t)g_u32Reg;
 
-	RTC_RWEN();
+    RTC_RWEN();
     RTC->WEEKDAY = sPt->u32DayOfWeek;
 
 }
@@ -376,11 +376,11 @@ void RTC_SetDateAndTime(S_RTC_TIME_DATA_T *sPt)
         if (sPt->u32AmPm == RTC_PM)
             sPt->u32Hour += 20;
     } else {
-		RTC_RWEN();
+        RTC_RWEN();
         RTC->CLKFMT |= RTC_CLKFMT_24HEN_Msk;
     }
 
-	RTC_RWEN();
+    RTC_RWEN();
     RTC->WEEKDAY = sPt->u32DayOfWeek & RTC_WEEKDAY_WEEKDAY_Msk;
 
     u32Reg     = ((sPt->u32Year - RTC_YEAR2000) / 10) << 20;
@@ -431,7 +431,7 @@ void RTC_SetAlarmDateAndTime(S_RTC_TIME_DATA_T *sPt)
 {
     uint32_t u32Reg;
 
-	RTC_RWEN();
+    RTC_RWEN();
 
     if (sPt->u32TimeScale == RTC_CLOCK_12) {
         RTC->CLKFMT &= ~RTC_CLKFMT_24HEN_Msk;
@@ -445,7 +445,7 @@ void RTC_SetAlarmDateAndTime(S_RTC_TIME_DATA_T *sPt)
         RTC->CLKFMT |= RTC_CLKFMT_24HEN_Msk;
     }
 
-	RTC_RWEN();
+    RTC_RWEN();
     RTC->WEEKDAY = sPt->u32DayOfWeek & RTC_WEEKDAY_WEEKDAY_Msk;
 
 
@@ -637,7 +637,7 @@ void RTC_EnableTamperDetection(uint32_t u32PinCondition)
     else
         RTC->SPRCTL &= ~RTC_SPRCTL_SNPTYPE0_Msk;
 
-	RTC_RWEN();
+    RTC_RWEN();
     /* enable snooper pin event detection */
     RTC->SPRCTL |= RTC_SPRCTL_SNPDEN_Msk;
 }
@@ -652,7 +652,7 @@ void RTC_EnableTamperDetection(uint32_t u32PinCondition)
  */
 void RTC_DisableTamperDetection(void)
 {
-	RTC_RWEN();
+    RTC_RWEN();
 
     RTC->SPRCTL &= ~RTC_SPRCTL_SNPDEN_Msk;
 }
@@ -702,7 +702,7 @@ void RTC_SetTickPeriod(uint32_t u32TickSelection)
  *  @param[in]    u32IntFlagMask      The structure of interrupt source. It consists of: \n
  *                                \ref RTC_INTEN_ALMIEN_Msk : Alarm interrupt                  \n
  *                                \ref RTC_INTEN_TICKIEN_Msk : Tick interrupt                    \n
- *                                \ref RTC_INTEN_SNPDIEN_Msk : Snooper Pin Event Detection Interrupt 
+ *                                \ref RTC_INTEN_SNPDIEN_Msk : Snooper Pin Event Detection Interrupt
  *
  *  @return   None
  *
@@ -733,13 +733,13 @@ void RTC_DisableInt(uint32_t u32IntFlagMask)
         RTC->INTSTS = RTC_INTSTS_TICKIF_Msk;
     }
 
-	RTC_RWEN();
+    RTC_RWEN();
     if(u32IntFlagMask & RTC_INTEN_ALMIEN_Msk) {
         RTC->INTEN &= ~RTC_INTEN_ALMIEN_Msk;
         RTC->INTSTS = RTC_INTSTS_ALMIF_Msk;
     }
 
-	RTC_RWEN();
+    RTC_RWEN();
     if(u32IntFlagMask & RTC_INTEN_SNPDIEN_Msk) {
         RTC->INTEN &= ~RTC_INTEN_SNPDIEN_Msk;
         RTC->INTSTS = RTC_INTSTS_SNPDIF_Msk;

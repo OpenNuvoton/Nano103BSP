@@ -20,17 +20,17 @@ void TMR0_IRQHandler(void)
     static uint32_t t0, t1;
 
     if(cnt == 0) {
-			  /* Gets the Timer capture data */
+        /* Gets the Timer capture data */
         t0 = TIMER_GetCaptureData(TIMER0);
         cnt++;
     } else if(cnt == 1) {
-			  /* Gets the Timer capture data */
+        /* Gets the Timer capture data */
         t1 = TIMER_GetCaptureData(TIMER0);
         cnt++;
         if(t0 > t1) {
             /* over run, drop this data and do nothing */
         } else {
-					  /* Display the measured input frequency */
+            /* Display the measured input frequency */
             printf("Input frequency is %dHz\n", 12000000 / (t1 - t0));
         }
     } else {

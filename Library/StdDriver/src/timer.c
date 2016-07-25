@@ -204,28 +204,25 @@ uint32_t TIMER_GetModuleClock(TIMER_T *timer)
     u32Div++;
     if(u32Src < 4)
         return au32Clk[u32Src] / u32Div;
-    else if(u32Src == 4) {								
-				/* HIRC Source Selection */
-			  if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)
-				{
-						/* Clock source from HIRC1 (36MHz) */						
-            return __HIRC36M / u32Div;					
-				}
-				else
-				{
-					  /* Clock source from HIRC0 (12MHz) */					
-						if(CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk)
-								return __HIRC16M / u32Div;
-						else
-								return __HIRC12M / u32Div;
-				}
-				
+    else if(u32Src == 4) {
+        /* HIRC Source Selection */
+        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk) {
+            /* Clock source from HIRC1 (36MHz) */
+            return __HIRC36M / u32Div;
+        } else {
+            /* Clock source from HIRC0 (12MHz) */
+            if(CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk)
+                return __HIRC16M / u32Div;
+            else
+                return __HIRC12M / u32Div;
+        }
+
     } else if(u32Src == 5) { // MIRC
-					return __MIRC / u32Div;
-          
-		} else  // HCLK					
-          return CLK_GetHCLKFreq() / u32Div;
-		
+        return __MIRC / u32Div;
+
+    } else  // HCLK
+        return CLK_GetHCLKFreq() / u32Div;
+
 }
 
 /**

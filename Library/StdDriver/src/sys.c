@@ -33,7 +33,7 @@
   *             - \ref SYS_RSTSTS_WDTRF_Msk
   *             - \ref SYS_RSTSTS_PINRF_Msk
   *             - \ref SYS_RSTSTS_PORF_Msk
-	*             - \ref SYS_RSTSTS_LOCKRF_Msk
+    *             - \ref SYS_RSTSTS_LOCKRF_Msk
   * @return     None
   * @details    This function clear the selected system reset source.
   */
@@ -108,12 +108,12 @@ void SYS_ResetCPU(void)
 /**
   * @brief  This function reset selected modules.
   * @param[in]  u32ModuleIndex is module index. Including :
-  *          - \ref CHIP_RST 
-  *          - \ref CPU_RST  
-  *          - \ref DMA_RST  
-  *          - \ref SC1_RST  
-  *          - \ref SC0_RST  
-  *          - \ref ADC_RST  
+  *          - \ref CHIP_RST
+  *          - \ref CPU_RST
+  *          - \ref DMA_RST
+  *          - \ref SC1_RST
+  *          - \ref SC0_RST
+  *          - \ref ADC_RST
   *          - \ref ACMP0_RST
   *          - \ref PWM0_RST
   *          - \ref UART1_RST
@@ -181,7 +181,7 @@ void SYS_DisableBOD(void)
   * @brief  This function configure Low Power BOD function only valid in Power Down mode.
   *         Configure Low Power BOD reset or interrupt mode and set Low Power Brown-out voltage level.
   *         Enable Low Power Brown-out function
-  * @param[in]  i32Mode is reset or interrupt mode.  
+  * @param[in]  i32Mode is reset or interrupt mode.
   *         - \ref SYS_BODCTL_LPBOD_RST_EN
   *         - \ref SYS_BODCTL_LPBOD_INTERRUPT_EN
   * @param[in]  u32BODLevel is Low Power Brown-out voltage level. Including :
@@ -219,8 +219,8 @@ void SYS_DisableLPBOD(void)
   */
 void SYS_EnableHIRC0Trim(uint32_t u32TrimSel,uint32_t u32TrimEnInt)
 {
-   SYS->IRC0TIEN = (SYS->IRC0TIEN & ~(SYS_IRC0TIEN_TFAILIEN_Msk | SYS_IRC0TIEN_CLKEIEN_Msk)) | u32TrimEnInt;
-   SYS->IRC0TCTL = (SYS->IRC0TCTL & ~SYS_IRC0TCTL_FREQSEL_Msk)|u32TrimSel;
+    SYS->IRC0TIEN = (SYS->IRC0TIEN & ~(SYS_IRC0TIEN_TFAILIEN_Msk | SYS_IRC0TIEN_CLKEIEN_Msk)) | u32TrimEnInt;
+    SYS->IRC0TCTL = (SYS->IRC0TCTL & ~SYS_IRC0TCTL_FREQSEL_Msk)|u32TrimSel;
 }
 
 /**
@@ -245,8 +245,8 @@ void SYS_DisableHIRC0Trim(void)
   */
 void SYS_EnableHIRC1Trim(uint32_t u32TrimSel,uint32_t u32TrimEnInt)
 {
-   SYS->IRC1TIEN = (SYS->IRC1TIEN & ~(SYS_IRC1TIEN_TFAILIEN_Msk | SYS_IRC1TIEN_CLKEIEN_Msk)) | u32TrimEnInt;
-   SYS->IRC1TCTL = (SYS->IRC1TCTL & ~SYS_IRC1TCTL_FREQSEL_Msk)|u32TrimSel;
+    SYS->IRC1TIEN = (SYS->IRC1TIEN & ~(SYS_IRC1TIEN_TFAILIEN_Msk | SYS_IRC1TIEN_CLKEIEN_Msk)) | u32TrimEnInt;
+    SYS->IRC1TCTL = (SYS->IRC1TCTL & ~SYS_IRC1TCTL_FREQSEL_Msk)|u32TrimSel;
 }
 
 /**
@@ -271,8 +271,8 @@ void SYS_DisableHIRC1Trim(void)
   */
 void SYS_EnableMIRCTrim(uint32_t u32TrimSel,uint32_t u32TrimEnInt)
 {
-   SYS->MIRCTIEN = (SYS->MIRCTIEN & ~(SYS_MIRCTIEN_TFAILIEN_Msk | SYS_MIRCTIEN_CLKEIEN_Msk)) | u32TrimEnInt;
-   SYS->MIRCTCTL = (SYS->MIRCTCTL & ~SYS_MIRCTCTL_FREQSEL_Msk)|u32TrimSel;
+    SYS->MIRCTIEN = (SYS->MIRCTIEN & ~(SYS_MIRCTIEN_TFAILIEN_Msk | SYS_MIRCTIEN_CLKEIEN_Msk)) | u32TrimEnInt;
+    SYS->MIRCTCTL = (SYS->MIRCTCTL & ~SYS_MIRCTCTL_FREQSEL_Msk)|u32TrimSel;
 }
 
 /**

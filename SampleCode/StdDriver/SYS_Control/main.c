@@ -32,9 +32,9 @@ void BOD_IRQHandler(void)
 void WDT_IRQHandler(void)
 {
     __IO uint32_t u32IntSts;
-	
+
     /* Get Watchdog Timer Status*/
-    u32IntSts = WDT->STATUS;                
+    u32IntSts = WDT->STATUS;
 
     if (u32IntSts & WDT_STATUS_WKF_Msk)           /* Get Watchdog Timer Wake-up Status Flag */
         printf("WDT Wake Up Interrupt Occurs.\n");
@@ -53,7 +53,7 @@ void WDT_IRQHandler(void)
 void PDWU_IRQHandler(void)
 {
     printf("PDWU_IRQHandler running...\n");
-    u32PWDU_WakeFlag = 1;  
+    u32PWDU_WakeFlag = 1;
     CLK->WKINTSTS = CLK_WK_INTSTS_IS; /* Clear Wake-up Interrupts */
 }
 
@@ -61,21 +61,21 @@ void PDWU_IRQHandler(void)
 /* Init System Clock                                                                                       */
 /*---------------------------------------------------------------------------------------------------------*/
 void SYS_Init(void)
-{    
+{
     SYS_UnlockReg(); /* Unlock protected registers */
 
     /* Enable external 12MHz HXT, 32KHz LXT, HIRC and MIRC*/
     CLK_EnableXtalRC(CLK_PWRCTL_HXTEN_Msk | CLK_PWRCTL_LXTEN_Msk | CLK_PWRCTL_HIRC0EN_Msk | CLK_PWRCTL_HIRC1EN_Msk | CLK_PWRCTL_MIRCEN_Msk);
 
     /* Waiting for clock ready */
-    CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk | CLK_STATUS_LXTSTB_Msk | CLK_STATUS_HIRC0STB_Msk | CLK_STATUS_HIRC1STB_Msk | CLK_STATUS_MIRCSTB_Msk); 
-    
+    CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk | CLK_STATUS_LXTSTB_Msk | CLK_STATUS_HIRC0STB_Msk | CLK_STATUS_HIRC1STB_Msk | CLK_STATUS_MIRCSTB_Msk);
+
     CLK_SetCoreClock(32000000); /*  Set HCLK frequency 32MHz */
 
     CLK_EnableModuleClock(UART0_MODULE); /* Enable IP clock */
 
     CLK_SetModuleClock(UART0_MODULE,CLK_CLKSEL1_UART0SEL_HIRC,CLK_UART0_CLK_DIVIDER(1)); /* Select IP clock source */
-																															
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
@@ -84,7 +84,7 @@ void SYS_Init(void)
     SYS->GPB_MFPL |= (SYS_GPB_MFPL_PB0MFP_UART0_RXD | SYS_GPB_MFPL_PB1MFP_UART0_TXD );
 
     /* Set PB multi-function pins for Clock Output */
-    SYS->GPB_MFPL = ( SYS->GPB_MFPL & ~SYS_GPB_MFPL_PB2MFP_Msk ) |  SYS_GPB_MFPL_PB2MFP_CLKO;  
+    SYS->GPB_MFPL = ( SYS->GPB_MFPL & ~SYS_GPB_MFPL_PB2MFP_Msk ) |  SYS_GPB_MFPL_PB2MFP_CLKO;
 
     SYS_LockReg(); /* Lock protected registers */
 }
@@ -93,8 +93,8 @@ void UART0_Init(void)
 {
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init UART                                                                                               */
-    /*---------------------------------------------------------------------------------------------------------*/    
-    SYS_ResetModule(UART0_RST); /* Reset IP */    
+    /*---------------------------------------------------------------------------------------------------------*/
+    SYS_ResetModule(UART0_RST); /* Reset IP */
     UART_Open(UART0, 115200);   /* Configure UART0 and set UART0 Baudrate */
 }
 
@@ -109,7 +109,7 @@ int32_t main (void)
     /* Init System, IP clock and multi-function I/O */
     SYS_Init(); //In the end of SYS_Init() will issue SYS_LockReg() to lock protected register. If user want to write protected register, please issue SYS_UnlockReg() to unlock protected register.
 
-    
+
     UART0_Init(); /* Init UART0 for printf */
     printf("\n\nCPU @ %dHz\n", SystemCoreClock);
 
@@ -119,7 +119,7 @@ int32_t main (void)
         2. Get and clear reset source
         3. Setting about BOD
         4. Output system clock from CKO pin, and the output frequency = system clock / 4
-    */    
+    */
     printf(" Nano103 System Driver Sample Code \n");
     if (M32(FLAG_ADDR) == SIGNATURE) {
         printf("  CPU Reset success!\n");
@@ -152,7 +152,7 @@ int32_t main (void)
     /* Enable Brown-Out Detector and Low Voltage Reset function, and set Brown-Out Detector voltage 2.5V ,
        Enable Brown-Out Interrupt function */
     SYS_EnableBOD(SYS_BODCTL_BODIE_Msk, SYS_BODCTL_BODVL_2_5V);
-    
+
     NVIC_EnableIRQ(BOD_IRQn);  /* Enable BOD IRQ */
 
     /* Waiting for message send out */
@@ -165,20 +165,20 @@ int32_t main (void)
     CLK_EnableCKO(CLK_CLKSEL2_CLKOSEL_HCLK, 1, 0); /* CKO = HCLK / 4 */
 
     CLK_EnableModuleClock(WDT_MODULE);  /* Enable WDT clock */
-		
+
     WDT->CTL = 0x00000050 | 0x00000004 | 0x00000008; /* Enable WDT  */
     WDT->INTEN |=  0x00000001;                       /* Enable Enable WDT interrupt */
     NVIC_EnableIRQ(WDT_IRQn);                        /* Enable WDT NVIC */
 
     /* Enable wake up interrupt source */
-    CLK->PWRCTL |= CLK_PWRCTL_WAKEINT_EN;  
+    CLK->PWRCTL |= CLK_PWRCTL_WAKEINT_EN;
     /* Enable IRQ request for PDWU interrupt */
     NVIC_EnableIRQ(PDWU_IRQn);
 
     printf("u32PWDU_WakeFlag = %x\n",u32PWDU_WakeFlag);
     printf("Enter Power Down Mode >>>>>>>>>>>\n");
     /* clear software semaphore */
-    u32PWDU_WakeFlag = 0;                   
+    u32PWDU_WakeFlag = 0;
     /* waits for message send out */
     while(!(UART0->FIFOSTS & UART_FIFOSTS_TXENDF_Msk));
     /* Let system enter to Power-down mode */

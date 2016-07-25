@@ -27,12 +27,12 @@ void SYS_Init(void)
     CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk | CLK_STATUS_LXTSTB_Msk | CLK_STATUS_HIRC0STB_Msk | CLK_STATUS_HIRC1STB_Msk | CLK_STATUS_MIRCSTB_Msk);
 
     CLK_SetCoreClock(32000000);                  /*  Set HCLK frequency 32MHz */
-    
+
     CLK_EnableModuleClock(UART0_MODULE);         /* Enable UART0 input clock */
 
     /* Select IP clock source */
     CLK_SetModuleClock(UART0_MODULE,CLK_CLKSEL1_UART0SEL_HIRC,CLK_UART0_CLK_DIVIDER(1));
-																															
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
@@ -55,9 +55,9 @@ void UART0_Init(void)
 
 int main()
 {
-	int         ret;                   /* return value */
+    int         ret;                   /* return value */
     uint32_t    u32Data;
-    
+
     SYS_Init();                        /* Init System, IP clock and multi-function I/O */
     UART0_Init();                      /* Initialize UART0 */
 
@@ -70,12 +70,12 @@ int main()
     printf("+--------------------------------------------+\n");
 
     SYS_UnlockReg();                   /* Unlock protected registers */
-   
+
     FMC_Open();                        /* Enable FMC ISP function */
 
     u32Data = FMC_ReadCID();           /* Read company ID. Should be 0xDA. */
     printf("  Company ID ............................ [0x%08x]\n", u32Data);
-	
+
     u32Data = FMC_ReadPID();           /* Read product ID. */
     printf("  Product ID ............................ [0x%08x]\n", u32Data);
 
@@ -88,27 +88,27 @@ int main()
     printf("  Data Flash Base Address ............... [0x%08x]\n", FMC_ReadDataFlashBaseAddr());
 
     FMC_ENABLE_LD_UPDATE();            /* Enable LDROM update. */
-    
+
     FMC_Erase(FMC_LDROM_BASE);         /* Erase LDROM page 0. */
-    
+
     /* Run and check flash contents are all 0xFFFFFFFF. */
     ret = FMC_CheckAllOne(FMC_LDROM_BASE, FMC_FLASH_PAGE_SIZE);
     if (ret == READ_ALLONE_YES)                  /* return value READ_ALLONE_YES means all flash contents are 0xFFFFFFFF */
-    	printf("READ_ALLONE_YES success.\n");    /* FMC_CheckAllOne() READ_ALLONE_YES passed on LDROM page 0. */
+        printf("READ_ALLONE_YES success.\n");    /* FMC_CheckAllOne() READ_ALLONE_YES passed on LDROM page 0. */
     else
-    	printf("READ_ALLONE_YES failed!\n");     /* FMC_CheckAllOne() READ_ALLONE_YES failed on LDROM page 0. */
+        printf("READ_ALLONE_YES failed!\n");     /* FMC_CheckAllOne() READ_ALLONE_YES failed on LDROM page 0. */
 
     FMC_Write(FMC_LDROM_BASE, 0);      /* program a 0 to LDROM to make it not all 0xFFFFFFFF. */
 
     /* Run and check flash contents are not all 0xFFFFFFFF. */
     ret = FMC_CheckAllOne(FMC_LDROM_BASE, FMC_FLASH_PAGE_SIZE);
-    if (ret == READ_ALLONE_NOT) 
-    	printf("READ_ALLONE_NOT success.\n");   /* FMC_CheckAllOne() READ_ALLONE_NOT passed on LDROM page 0. */
+    if (ret == READ_ALLONE_NOT)
+        printf("READ_ALLONE_NOT success.\n");   /* FMC_CheckAllOne() READ_ALLONE_NOT passed on LDROM page 0. */
     else
-    	printf("READ_ALLONE_NOT failed!\n");    /* FMC_CheckAllOne() READ_ALLONE_NOT failed on LDROM page 0. */
-    
+        printf("READ_ALLONE_NOT failed!\n");    /* FMC_CheckAllOne() READ_ALLONE_NOT failed on LDROM page 0. */
+
     printf("\nFMC Read-All-One test done.\n");
-    
+
     FMC_Close();                       /* Disable FMC ISP function */
 
     SYS_LockReg();                     /* Lock protected registers */

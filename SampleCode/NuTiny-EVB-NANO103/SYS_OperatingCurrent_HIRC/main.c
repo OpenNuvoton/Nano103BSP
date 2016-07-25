@@ -30,18 +30,18 @@
 
 /*
  *  After removed LED on Tiny board, operating and Idle current consumption should like following table
- *  
+ *
  *   Mode            | operating  |    Idle
  *  -------------------------------------------
- *  1.8V & RC12MHz   |    2.5 mA  |    1   mA 
+ *  1.8V & RC12MHz   |    2.5 mA  |    1   mA
  *  -------------------------------------------
- *  1.6V & RC12MHz   |    2.2 mA  |    0.9 mA 
+ *  1.6V & RC12MHz   |    2.2 mA  |    0.9 mA
  *  -------------------------------------------
- *  1.8V & RC16MHz   |    3.1 mA  |    1.2 mA 
+ *  1.8V & RC16MHz   |    3.1 mA  |    1.2 mA
  *  -------------------------------------------
- *  1.6V & RC16MHz   |    2.8 mA  |    1.1 mA 
+ *  1.6V & RC16MHz   |    2.8 mA  |    1.1 mA
  *  -------------------------------------------
- *  1.8V & RC36MHz   |    6.7 mA  |    1.9 mA 
+ *  1.8V & RC36MHz   |    6.7 mA  |    1.9 mA
  *  -------------------------------------------
  *
  */
@@ -87,14 +87,14 @@ int32_t main(void)
 
 
 // LDO 1.6V operate speed should be small than 18MHz, therefore HIRC1(36MHz) can't run on LDO 1.6v.
-#if((LDO_VOL == 1) && (HIRC_TYPE != 2) )  
+#if((LDO_VOL == 1) && (HIRC_TYPE != 2) )
     outpw(0x50000070, (inpw(0x50000070) & ~(3 << 2)) | (1 << 2)); // LDO Output Voltage = 1.6v
 #endif
 
     outpw(0x50000070, (inpw(0x50000070)  | (1 << 15)  | (1 << 23)) ); // [15]LVDR Test Mode Enable, [23]LVDR Low-power Test Mode Enable
 
     SYS->RCCFCTL = 0;  // HIRC0, HIRC1 and MIRC Clock Filter disable
-			
+
     /* Set function pin to GPIO mode */
     SYS->GPA_MFPL = 0;
     SYS->GPA_MFPH = 0;

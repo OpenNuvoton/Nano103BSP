@@ -12,7 +12,7 @@
 #include "Nano103.h"
 
 /**
- *  @brief  Init system clock and I/O multi function . 
+ *  @brief  Init system clock and I/O multi function .
  *  @param  None
  *  @return None
  */
@@ -29,7 +29,7 @@ void SYS_Init(void)
 
     while((CLK->STATUS & CLK_STATUS_HXTSTB_Msk) != CLK_STATUS_HXTSTB_Msk) /* Waiting for 12MHz clock ready */
 
-    CLK->CLKSEL0 = (CLK->CLKSEL0 &~ CLK_CLKSEL0_HCLKSEL_Msk) | (CLK_CLKSEL0_HCLKSEL_HXT); /* Switch HCLK clock source to XTAL */
+        CLK->CLKSEL0 = (CLK->CLKSEL0 &~ CLK_CLKSEL0_HCLKSEL_Msk) | (CLK_CLKSEL0_HCLKSEL_HXT); /* Switch HCLK clock source to XTAL */
 
     /* Enable IP clock */
 

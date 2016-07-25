@@ -46,7 +46,7 @@
  * @param[in] u32EnableInt Enable WWDT interrupt or not. Valid values are TRUE and FALSE
  * @return None
  * @note Application can call this function can only once after boot up
- *       The parameter u32CmpValue Window compared value has limitation, valid values are between 2 to 0x3E. 
+ *       The parameter u32CmpValue Window compared value has limitation, valid values are between 2 to 0x3E.
  *       If the input value is more than 0x3E, the value will be changed to 0x3E.
  *       If the input value is less than 2, the value will be changed to 2.
  */
@@ -57,7 +57,7 @@ void WWDT_Open(uint32_t u32PreScale, uint32_t u32CmpValue, uint32_t u32EnableInt
         u32CmpValue = 0x3E;
     if (u32CmpValue < 2)
         u32CmpValue = 2;
-    
+
     WWDT->INTEN = u32EnableInt;
     WWDT->CTL = u32PreScale | (u32CmpValue << WWDT_CTL_WINCMP_Pos) | WWDT_CTL_WWDTEN_Msk;
     return;

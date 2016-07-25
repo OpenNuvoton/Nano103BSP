@@ -59,9 +59,9 @@ uint32_t pc_test_return2(void)
 #endif
 
 void CPU_PC_Test(void)
-{    
+{
     pc_test_return1();
-    
+
 }
 
 /*** (C) COPYRIGHT 2013 Nuvoton Technology Corp. ***/

@@ -47,13 +47,13 @@ static uint32_t SCUART_GetClock(SC_T *sc)
     uint32_t u32Reg;
     uint32_t u32Clk;
 
-    
+
     if(sc == (SC_T *)SC0) {
         u32Reg = (CLK->CLKSEL2 & CLK_CLKSEL2_SC0SEL_Msk) >> CLK_CLKSEL2_SC0SEL_Pos;
     } else {
         u32Reg = (CLK->CLKSEL2 & CLK_CLKSEL2_SC1SEL_Msk) >> CLK_CLKSEL2_SC1SEL_Pos;
     }
-    
+
     if(u32Reg == (CLK_CLKSEL2_SC0SEL_HXT >> CLK_CLKSEL2_SC0SEL_Pos)) {
         u32Clk = __HXT;
     } else if(u32Reg == (CLK_CLKSEL2_SC0SEL_PLL >> CLK_CLKSEL2_SC0SEL_Pos)) {
@@ -68,7 +68,7 @@ static uint32_t SCUART_GetClock(SC_T *sc)
         u32Clk = __MIRC;
     } else
         u32Clk = SystemCoreClock;
-    
+
     if(sc == (SC_T *)SC0) {
         u32Clk /= (((CLK->CLKDIV0 & CLK_CLKDIV0_SC0DIV_Msk) >> (CLK_CLKDIV0_SC0DIV_Pos)) + 1);
     } else {

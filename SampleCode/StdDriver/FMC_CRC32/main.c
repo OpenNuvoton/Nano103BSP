@@ -27,12 +27,12 @@ void SYS_Init(void)
     CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk | CLK_STATUS_LXTSTB_Msk | CLK_STATUS_HIRC0STB_Msk | CLK_STATUS_HIRC1STB_Msk | CLK_STATUS_MIRCSTB_Msk);
 
     CLK_SetCoreClock(32000000);                  /*  Set HCLK frequency 32MHz */
-    
+
     CLK_EnableModuleClock(UART0_MODULE);         /* Enable UART0 input clock */
 
     /* Select IP clock source */
     CLK_SetModuleClock(UART0_MODULE,CLK_CLKSEL1_UART0SEL_HIRC,CLK_UART0_CLK_DIVIDER(1));
-																															
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
@@ -58,7 +58,7 @@ void UART0_Init(void)
 
 int main()
 {
-	int         ret;                   /* return value */
+    int         ret;                   /* return value */
     uint32_t    u32Data, u32ChkSum;    /* temporary data */
 
     SYS_Init();                        /* Init System, IP clock and multi-function I/O */
@@ -93,42 +93,42 @@ int main()
 
     printf("\nLDROM (0x100000 ~ 0x101200) CRC32 checksum =>  ");
 
-    /* 
+    /*
      *  Request FMC hardware to run CRC32 calculation on flash range from FMC_LDROM_BASE and
      *  length is FMC_LDROM_SIZE. The CRC32 calculation result will be put in u32ChkSum.
      */
     ret = FMC_GetChkSum(FMC_LDROM_BASE, FMC_LDROM_SIZE, &u32ChkSum);
     if (ret < 0)  {
-    	printf("Failed on calculating LDROM CRC32 checksum!\n");
-		goto lexit;    	               /* failed */
-	}
-	printf("0x%x\n", u32ChkSum);       /* print out LDROM CRC32 check sum value */
+        printf("Failed on calculating LDROM CRC32 checksum!\n");
+        goto lexit;                    /* failed */
+    }
+    printf("0x%x\n", u32ChkSum);       /* print out LDROM CRC32 check sum value */
 
     printf("\nSPROM (0x200000 ~ 0x200200) CRC32 checksum =>  ");
-    
-    /* 
+
+    /*
      *  Request FMC hardware to run CRC32 calculation on flash range from FMC_SPROM_BASE and
      *  length is FMC_SPROM_SIZE. The CRC32 calculation result will be put in u32ChkSum.
      */
     ret = FMC_GetChkSum(FMC_SPROM_BASE, FMC_SPROM_SIZE, &u32ChkSum);
     if (ret < 0)  {
-    	printf("Failed on calculating SPROM CRC32 checksum!\n");
-		goto lexit;    	
-	}
-	printf("0x%x\n", u32ChkSum);       /* print out SPROM CRC32 check sum value */
+        printf("Failed on calculating SPROM CRC32 checksum!\n");
+        goto lexit;
+    }
+    printf("0x%x\n", u32ChkSum);       /* print out SPROM CRC32 check sum value */
 
     printf("\nAPROM (0x0 ~ 0x100000) CRC32 checksum =>  ");
 
-    /* 
+    /*
      *  Request FMC hardware to run CRC32 calculation on flash range from FMC_APROM_BASE and
      *  length is FMC_APROM_END. The CRC32 calculation result will be put in u32ChkSum.
      */
     ret = FMC_GetChkSum(FMC_APROM_BASE, FMC_APROM_END - FMC_APROM_BASE, &u32ChkSum);
     if (ret < 0)  {
-    	printf("Failed on calculating APROM CRC32 checksum!\n");
-		goto lexit;    	
-	}
-	printf("0x%x\n", u32ChkSum);       /* print out APROM CRC32 check sum value */
+        printf("Failed on calculating APROM CRC32 checksum!\n");
+        goto lexit;
+    }
+    printf("0x%x\n", u32ChkSum);       /* print out APROM CRC32 check sum value */
 
     printf("\nFMC CRC32 checksum test done.\n");
 

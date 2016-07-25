@@ -34,10 +34,10 @@ void I2C0_IRQHandler(void)
 
     /* clear interrupt flag */
     I2C0->INTSTS |= I2C_INTSTS_INTSTS_Msk;
-    
+
     /* get status */
     u32Status = I2C_GET_STATUS(I2C0);
-    
+
     /* check if time-out occur */
     if (I2C_GET_TIMEOUT_FLAG(I2C0)) {
         /* Clear I2C0 Timeout Flag */
@@ -101,7 +101,7 @@ void I2C_MasterTx(uint32_t u32Status)
         I2C_SET_CONTROL_REG(I2C0, I2C_STO | I2C_SI);  /* I2C STOP */
     } else if (u32Status == 0x28) {                 /* DATA has been transmitted and ACK has been received */
         if (g_u8DataLen != 3) {
-             /* if length<3, just trigger I2C and go on */
+            /* if length<3, just trigger I2C and go on */
             I2C_SET_DATA(I2C0, g_au8TxData[g_u8DataLen++]);
             I2C_SET_CONTROL_REG(I2C0, I2C_SI);              /* Trigger I2C */
         } else {
@@ -136,19 +136,19 @@ void SYS_Init(void)
 
     /* Enable IP clock */
     CLK_EnableModuleClock(UART0_MODULE);
-	CLK_EnableModuleClock(I2C0_MODULE);
+    CLK_EnableModuleClock(I2C0_MODULE);
 
     /* Select IP clock source */
     CLK_SetModuleClock(UART0_MODULE,CLK_CLKSEL1_UART0SEL_HIRC,CLK_UART0_CLK_DIVIDER(1));
-																															
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
     /* Set PA multi-function pins for UART0 RXD and TXD */
     SYS->GPB_MFPL &= ~( SYS_GPB_MFPL_PB0MFP_Msk | SYS_GPB_MFPL_PB1MFP_Msk);
     SYS->GPB_MFPL |= (SYS_GPB_MFPL_PB0MFP_UART0_RXD | SYS_GPB_MFPL_PB1MFP_UART0_TXD );
-	
-	/* Set PA multi-function pins for I2C0 */
+
+    /* Set PA multi-function pins for I2C0 */
     /* I2C0: GPA8 - SDA, GPA9 - SCL */
     SYS->GPA_MFPH = (SYS_GPA_MFPH_PA8MFP_I2C0_SDA | SYS_GPA_MFPH_PA9MFP_I2C0_SCL);
 
@@ -200,7 +200,7 @@ int32_t main (void)
 
     /* Init I2C0 to access EEPROM */
     I2C0_Init();
-    
+
     /* Set EEPROM address to 0x50 */
     g_u8DeviceAddr = 0x50;
 
@@ -209,7 +209,7 @@ int32_t main (void)
         g_au8TxData[0] = (uint8_t)((i & 0xFF00) >> 8);
         g_au8TxData[1] = (uint8_t)(i & 0x00FF);
         g_au8TxData[2] = (uint8_t)(g_au8TxData[1] + 3);
-        
+
         /* Reset some variables */
         g_u8DataLen = 0;
         g_u8EndFlag = 0;
@@ -222,41 +222,41 @@ int32_t main (void)
 
         /* Wait I2C Tx Finish */
         while (g_u8EndFlag == 0);
-        
+
         /* Make sure I2C0 STOP already */
         while(I2C0->CTL & I2C_CTL_STO_Msk);
-        
+
         /* Reset variable */
         g_u8EndFlag = 0;
-		
-		/* Wait write operation complete */
-		CLK_SysTickDelay(10000);
+
+        /* Wait write operation complete */
+        CLK_SysTickDelay(10000);
 
         /* I2C function to read data from slave */
         s_I2C0HandlerFn = (I2C_FUNC)I2C_MasterRx;
-        
+
         /* Reset some variables */
         g_u8DataLen = 0;
         g_u8DeviceAddr = 0x50;
-        
+
         /* I2C as master sends START signal */
         I2C_SET_CONTROL_REG(I2C0, I2C_STA);
 
         /* Wait I2C Rx Finish */
         while (g_u8EndFlag == 0);
-        
+
         /* Make sure I2C0 STOP already */
         while(I2C0->CTL & I2C_CTL_STO_Msk);
-                
+
         /* Compare data */
         if (g_u8RxData != g_au8TxData[2]) {
             printf("I2C Byte Write/Read Failed, Data 0x%x\n", g_u8RxData);
             return -1;
         }
     }
-    
+
     printf("I2C Access EEPROM Test OK\n");
-	while(1);
+    while(1);
 }
 
 /*** (C) COPYRIGHT 2015 Nuvoton Technology Corp. ***/

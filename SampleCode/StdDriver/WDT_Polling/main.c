@@ -65,14 +65,14 @@ int32_t main (void)
     UART_Open(UART0, 115200); /* Init UART to 115200-8n1 for print message */
 
     printf("\nThis sample code demonstrate using WDT in polling mode\n");
-  
+
     /*
       This sample code demonstrate using WDT in polling mode.
       Configure WDT timeout every 2^14 WDT clock, disable system reset, disable wake up system
       We don't enable WDT interrupt and polling WDT timeout flag instead.
       Whenever WDT timeout flag is set, shows message "Reset WDT counter".
      */
-  
+
     // WDT register is locked, so it is necessary to unlock protect register before configure WDT
     SYS_UnlockReg();
 

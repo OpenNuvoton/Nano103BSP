@@ -50,15 +50,14 @@ uint32_t GetUartClk(void)
         clk = SysGet_PLLClockFreq(); /* PLL */
         break;
     case 3:
-		if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)
-			clk = __HIRC36M; /* HIRC 36M Hz*/
-		else
-		{
-			if(CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk)
-				clk = __HIRC16M; /* HIRC 16M Hz*/
-			else
-				clk = __HIRC12M; /* HIRC 12M Hz*/
-		}
+        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)
+            clk = __HIRC36M; /* HIRC 36M Hz*/
+        else {
+            if(CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk)
+                clk = __HIRC16M; /* HIRC 16M Hz*/
+            else
+                clk = __HIRC12M; /* HIRC 12M Hz*/
+        }
         break;
     }
 
@@ -121,7 +120,7 @@ void UART_AutoBaudRateTest()
     UART_Open(UART1, 115200);
 
     UART1->CTRL |= UART_CTRL_ABRDEN_Msk; /* Enable UART1 Auto Baud Rate */
-	UART1->CTRL &= ~UART_CTRL_ABRDBITS_Msk; /* Set Auto-baud Rate Detect Bit Length */
+    UART1->CTRL &= ~UART_CTRL_ABRDBITS_Msk; /* Set Auto-baud Rate Detect Bit Length */
 
     /* Enable Interrupt and install the call back function */
     UART_EnableInt(UART1, UART_INTEN_ABRIEN_Msk);
@@ -139,7 +138,7 @@ void UART_AutoBaudRateTest()
 }
 
 /**
- *  @brief  Init system clock and I/O multi function . 
+ *  @brief  Init system clock and I/O multi function .
  *  @param  None
  *  @return None
  */
@@ -168,7 +167,7 @@ void SYS_Init(void)
     /* Select IP clock source */
     CLK->CLKSEL1 &= ~CLK_CLKSEL1_UART0SEL_Msk;
     CLK->CLKSEL1 |= (0x0 << CLK_CLKSEL1_UART0SEL_Pos);// Clock source from external 12 MHz crystal clock
-	CLK->CLKSEL2 &= ~CLK_CLKSEL2_UART1SEL_Msk;
+    CLK->CLKSEL2 &= ~CLK_CLKSEL2_UART1SEL_Msk;
     CLK->CLKSEL2 |= (0x0 << CLK_CLKSEL2_UART1SEL_Pos);// Clock source from external 12 MHz crystal clock
 
     /* Update System Core Clock */
@@ -194,7 +193,7 @@ void SYS_Init(void)
 }
 
 /**
- *  @brief  Config UART0. 
+ *  @brief  Config UART0.
  *  @param  None
  *  @return None
  */
@@ -204,7 +203,7 @@ void UART0_Init()
 }
 
 /**
- *  @brief  Config UART1. 
+ *  @brief  Config UART1.
  *  @param  None
  *  @return None
  */

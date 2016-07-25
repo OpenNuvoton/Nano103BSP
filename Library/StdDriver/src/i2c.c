@@ -35,10 +35,10 @@ uint32_t I2C_Open(I2C_T *i2c, uint32_t u32BusClock)
     uint32_t u32Clk;
 
     u32Clk = I2C_SetBusClockFreq(i2c, u32BusClock);
-    
+
     /* Ensable I2C */
     i2c->CTL |= I2C_CTL_I2CEN_Msk;
-    
+
     return ( u32Clk );
 }
 
@@ -57,7 +57,7 @@ void I2C_Close(I2C_T *i2c)
         SYS->IPRST2 |= SYS_IPRST2_I2C1RST_Msk;
         SYS->IPRST2 &= ~SYS_IPRST2_I2C1RST_Msk;
     }
-    
+
     /* Disable I2C */
     i2c->CTL &= ~I2C_CTL_I2CEN_Msk;
 }
@@ -126,11 +126,11 @@ void I2C_EnableInt(I2C_T *i2c)
 uint32_t I2C_GetBusClockFreq(I2C_T *i2c)
 {
     uint32_t u32Divider = i2c->CLKDIV;
-	
-	if(i2c == I2C0)
-		return ( CLK_GetPCLK0Freq() / ((u32Divider+1)<<2) );
-	else
-		return ( CLK_GetPCLK1Freq() / ((u32Divider+1)<<2) );
+
+    if(i2c == I2C0)
+        return ( CLK_GetPCLK0Freq() / ((u32Divider+1)<<2) );
+    else
+        return ( CLK_GetPCLK1Freq() / ((u32Divider+1)<<2) );
 }
 
 /**
@@ -144,11 +144,11 @@ uint32_t I2C_SetBusClockFreq(I2C_T *i2c, uint32_t u32BusClock)
     uint32_t u32Div;
     uint32_t volatile u32Pclk;
 
-	if((uint32_t)i2c == I2C0_BASE) {
-		u32Pclk = CLK_GetPCLK0Freq();
-	} else {
-		u32Pclk = CLK_GetPCLK1Freq();
-	}
+    if((uint32_t)i2c == I2C0_BASE) {
+        u32Pclk = CLK_GetPCLK0Freq();
+    } else {
+        u32Pclk = CLK_GetPCLK1Freq();
+    }
 
     u32Div = (uint32_t) (((u32Pclk * 10)/(u32BusClock * 4) + 5) / 10 - 1); /* Compute proper divider for I2C clock */
     i2c->CLKDIV = u32Div;

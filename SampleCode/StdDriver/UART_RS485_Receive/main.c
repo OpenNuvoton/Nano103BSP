@@ -97,7 +97,7 @@ void UART1_IRQHandler(void)
 }
 
 /**
- *  @brief  RS485 Receive Test Function. 
+ *  @brief  RS485 Receive Test Function.
  *  @param  None
  *  @return None
  *  @detail Wait Data and store in u8RecData buffer
@@ -124,7 +124,7 @@ void RS485_ReceiveTest()
     /* Set Data Format*/ /* Only need parity enable whenever parity ODD/EVEN */
     UART_SetLine_Config(UART1, 0, UART_WORD_LEN_8, UART_PARITY_EVEN, UART_STOP_BIT_1);
 
-	/* Set RTS pin output is high level active */
+    /* Set RTS pin output is high level active */
     UART1->MODEM &= ~UART_MODEM_RTSACTLV_Msk;
     /* Set RS485 Configuration */
     UART_SelectRS485Mode(UART1, UART_ALTCTL_RS485AAD_Msk|UART_ALTCTL_RS485AUD_Msk|UART_ALTCTL_ADDRDEN_Msk, 0xC0); // Set AAD, AUD mode and Address
@@ -157,7 +157,7 @@ void RS485_ReceiveTest()
 }
 
 /**
- *  @brief  Init system clock and I/O multi function . 
+ *  @brief  Init system clock and I/O multi function .
  *  @param  None
  *  @return None
  */
@@ -186,7 +186,7 @@ void SYS_Init(void)
     /* Select IP clock source */
     CLK->CLKSEL1 &= ~CLK_CLKSEL1_UART0SEL_Msk;
     CLK->CLKSEL1 |= (0x0 << CLK_CLKSEL1_UART0SEL_Pos);// Clock source from external 12 MHz crystal clock
-	CLK->CLKSEL2 &= ~CLK_CLKSEL2_UART1SEL_Msk;
+    CLK->CLKSEL2 &= ~CLK_CLKSEL2_UART1SEL_Msk;
     CLK->CLKSEL2 |= (0x0 << CLK_CLKSEL2_UART1SEL_Pos);// Clock source from external 12 MHz crystal clock
 
     /* Update System Core Clock */
@@ -212,7 +212,7 @@ void SYS_Init(void)
 }
 
 /**
- *  @brief  Config UART0. 
+ *  @brief  Config UART0.
  *  @param  None
  *  @return None
  */
@@ -223,7 +223,7 @@ void UART0_Init()
 }
 
 /**
- *  @brief  Config UART1. 
+ *  @brief  Config UART1.
  *  @param  None
  *  @return None
  */

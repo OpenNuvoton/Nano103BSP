@@ -61,9 +61,9 @@ void UART0_IRQHandler(void)
     if (u32IntStatus & UART_INTSTS_WKUPIF_Msk) {
         printf("UART_Wakeup. \n");
         UART0->INTSTS = UART_INTSTS_WKUPIF_Msk; //clear status
-		
-		if(UART0->WKUPSTS & UART_WKUPSTS_DATWKSTS_Msk)
-			UART0->WKUPSTS = UART_WKUPSTS_DATWKSTS_Msk; //clear status
+
+        if(UART0->WKUPSTS & UART_WKUPSTS_DATWKSTS_Msk)
+            UART0->WKUPSTS = UART_WKUPSTS_DATWKSTS_Msk; //clear status
     }
 
     while(!(UART0->FIFOSTS & UART_FIFOSTS_TXENDF_Msk)) ;  /* waits for message send out */
@@ -100,7 +100,7 @@ void Enter_PowerDown()
 }
 
 /**
- *  @brief  Init system clock and I/O multi function . 
+ *  @brief  Init system clock and I/O multi function .
  *  @param  None
  *  @return None
  */

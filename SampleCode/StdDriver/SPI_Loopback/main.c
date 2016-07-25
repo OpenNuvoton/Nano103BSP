@@ -25,7 +25,7 @@ volatile uint32_t SPI1_INT_Flag; //SPI1 interrupt flag
  * @brief       Initialize system
  * @param[in]   None
  * @return      None
- * @details     This function set clock and I/O Multi-function 
+ * @details     This function set clock and I/O Multi-function
  */
 void SYS_Init(void)
 {
@@ -46,19 +46,19 @@ void SYS_Init(void)
 
     /* Select UART0 clock source */
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART0SEL_HIRC, CLK_UART0_CLK_DIVIDER(1));
-  
+
     /* Select SPI0 clock source */
     CLK_SetModuleClock(SPI0_MODULE, CLK_CLKSEL1_SPI0SEL_HCLK, 0);
-    
+
     /* Select SPI1 clock source */
     CLK_SetModuleClock(SPI1_MODULE, CLK_CLKSEL2_SPI1SEL_HCLK, 0);
 
     /* Enable UART0 clock */
     CLK_EnableModuleClock(UART0_MODULE);
-    
+
     /* Enable SPI0 clock */
     CLK_EnableModuleClock(SPI0_MODULE);
-    
+
     /* Enable SPI1 clock */
     CLK_EnableModuleClock(SPI1_MODULE);
 
@@ -78,7 +78,7 @@ void SYS_Init(void)
     /* Set PC0, PC1, PC2 and PC3 multi function pin to SPI0 MISO0, MOSI0, CLK and SS0 */
     SYS->GPC_MFPL &= ~(SYS_GPC_MFPL_PC0MFP_Msk | SYS_GPC_MFPL_PC1MFP_Msk | SYS_GPC_MFPL_PC2MFP_Msk | SYS_GPC_MFPL_PC3MFP_Msk);
     SYS->GPC_MFPL |= (SYS_GPC_MFPL_PC0MFP_SPI0_SS0 | SYS_GPC_MFPL_PC1MFP_SPI0_CLK | SYS_GPC_MFPL_PC2MFP_SPI0_MISO0 | SYS_GPC_MFPL_PC3MFP_SPI0_MOSI0);
-    
+
     /* First, Clear PD14 and PD15 multi function pin to '0', and then  */
     /* Set PD14 and PD15 multi function pin to SPI0 MISO1, MOSI1       */
     SYS->GPD_MFPH &= ~(SYS_GPD_MFPH_PD14MFP_Msk | SYS_GPD_MFPH_PD15MFP_Msk);
@@ -88,7 +88,7 @@ void SYS_Init(void)
     /* Set PC11, PC10, PC9 and PC8 multi function pin to SPI1 MOSI0, MISO0, CLK, SS0 */
     SYS->GPC_MFPH &= ~(SYS_GPC_MFPH_PC11MFP_Msk | SYS_GPC_MFPH_PC10MFP_Msk | SYS_GPC_MFPH_PC9MFP_Msk | SYS_GPC_MFPH_PC8MFP_Msk);
     SYS->GPC_MFPH |= (SYS_GPC_MFPH_PC11MFP_SPI1_MOSI0 | SYS_GPC_MFPH_PC10MFP_SPI1_MISO0 | SYS_GPC_MFPH_PC9MFP_SPI1_CLK | SYS_GPC_MFPH_PC8MFP_SPI1_SS0);
-    
+
     /* First Clear PD6 and PD7 multi function pin to '0', and then */
     /* Set PD6 and PD7 multi function pin to SPI1 MOSI1, MISO1     */
     SYS->GPD_MFPL &= ~(SYS_GPD_MFPL_PD6MFP_Msk | SYS_GPD_MFPL_PD7MFP_Msk);
@@ -103,15 +103,15 @@ void SYS_Init(void)
  * @brief       SPI1 interrupt handler
  * @param[in]   None
  * @return      None
- * @details     This function services SPI1 interrupts. 
+ * @details     This function services SPI1 interrupts.
  */
 void SPI1_IRQHandler(void)
 {
     /* Check the unit transfer interrupt flag */
     if( SPI_GET_STATUS(SPI1) & SPI_STATUS_UNITIF_Msk ) {
         /* write '1' to clear SPI1 uint transfer interrupt flag */
-        SPI_CLR_UNIT_TRANS_INT_FLAG(SPI1);   
-        
+        SPI_CLR_UNIT_TRANS_INT_FLAG(SPI1);
+
         /* Set SPI interrupt flag to 1 */
         SPI1_INT_Flag = 1;
     }
@@ -159,8 +159,8 @@ int main(void)
            "Configure SPI0 as a master and SPI1 as a slave.\n"
            "Please connect SPI0 with SPI1, and press any key to start transmission ...");
 
-/* Set PB0, PB1, PB2 and PB3 multi function pin to SPI1 MOSI0, MISO0, CLK, SS0 */
-/* Set PD6 and PD7 multi function pin to SPI1 MOSI1, MISO1     */
+    /* Set PB0, PB1, PB2 and PB3 multi function pin to SPI1 MOSI0, MISO0, CLK, SS0 */
+    /* Set PD6 and PD7 multi function pin to SPI1 MOSI1, MISO1     */
 
     /* Configure SPI0 as a master and SPI1 as a slave   */
     /* The I/O connection for SPI0 loopback :           */
@@ -178,11 +178,11 @@ int main(void)
     /* Enable the SPI1 unit transfer interrupt. */
     SPI_EnableInt(SPI1, SPI_IE_MASK);
     NVIC_EnableIRQ(SPI1_IRQn);
-    
+
     /* Trigger SPI1 transfer */
     SPI_TRIGGER(SPI1);
 
-    u32Err = 0; 
+    u32Err = 0;
     for(u32TestCount=0; u32TestCount<10000; u32TestCount++) {
         /* set the source data and clear the destination buffer */
         for(u32DataCount=0; u32DataCount<TEST_COUNT; u32DataCount++) {
@@ -200,10 +200,10 @@ int main(void)
 
         /* write the first data of source buffer to TX0 register of SPI0. And start transmission. */
         SPI_WRITE_TX0(SPI0, g_au32SourceData[0]);
-        
+
         /* write the first data of source buffer to TX1 register of SPI0. And start transmission. */
         SPI_WRITE_TX1(SPI0, g_au32SourceData[0]);
-        
+
         /* Trigger SPI0 transfer */
         SPI_TRIGGER(SPI0);
 
@@ -225,20 +225,20 @@ int main(void)
 
                     /* Write data to SPI0 TX0 buffer and trigger the transfer */
                     SPI_WRITE_TX0(SPI0, g_au32SourceData[u32DataCount]);
-                  
+
                     /* Write data to SPI0 TX1 buffer and trigger the transfer */
                     SPI_WRITE_TX1(SPI0, g_au32SourceData[u32DataCount]);
-                  
+
                     /* Trigger SPI0 transfer */
                     SPI_TRIGGER(SPI0);
                 } else {
                     /* Just read the previous retrieved data but trigger next transfer, because this is the last transfer. */
                     /* Read SPI RX0 data to g_au32DestinationData0 buffer */
                     g_au32DestinationData0[u32DataCount] = SPI_READ_RX0(SPI1);
-                  
+
                     /* Read SPI RX1 data to g_au32DestinationData1 buffer */
                     g_au32DestinationData1[u32DataCount] = SPI_READ_RX1(SPI1);
-                  
+
                     /* Trigger SPI1 transfer */
                     SPI_TRIGGER(SPI1);
                     break;

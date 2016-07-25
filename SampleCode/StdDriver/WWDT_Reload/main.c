@@ -81,7 +81,7 @@ int32_t main (void)
       enable WWDT counter compare interrupt.
       Whenever WWDT counter down count to compare value(0x20), ISR(WDT_IRQHandler) will reload WWDT counter.
      */
-  
+
     // WWDT register is locked, so it is necessary to unlock protect register before configure WDT
     SYS_UnlockReg();
     // WWDT timeout every 768 * 64 WWDT clock, compare interrupt trigger at 768 * 32 WWDT clock, enable WWDT counter compare interrupt

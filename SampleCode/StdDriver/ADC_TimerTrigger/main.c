@@ -29,37 +29,37 @@ void PDMA_IRQHandler(void) /* PDMA interrupt service routine */
         // Check if PDMA transfer done
         if (PDMA_GET_CH_INT_STS(1) & 0x2)
             g_u32PdmaTDoneInt = 1;
-        // Clear PDMA transfer done interrupt flag 
+        // Clear PDMA transfer done interrupt flag
         PDMA_CLR_CH_INT_FLAG(1, PDMA_CH_INTSTSn_TDIF_Msk);
     } else if (status & 0x4) { /* CH2 */
         // Check if PDMA transfer done
         if (PDMA_GET_CH_INT_STS(2) & 0x2)
             g_u32PdmaTDoneInt = 2;
-        // Clear PDMA transfer done interrupt flag 
+        // Clear PDMA transfer done interrupt flag
         PDMA_CLR_CH_INT_FLAG(2, PDMA_CH_INTSTSn_TDIF_Msk);
     } else if (status & 0x8) { /* CH3 */
         // Check if PDMA transfer done
         if (PDMA_GET_CH_INT_STS(3) & 0x2)
             g_u32PdmaTDoneInt = 3;
-        // Clear PDMA transfer done interrupt flag 
+        // Clear PDMA transfer done interrupt flag
         PDMA_CLR_CH_INT_FLAG(3, PDMA_CH_INTSTSn_TDIF_Msk);
     } else if (status & 0x10) { /* CH4 */
         // Check if PDMA transfer done
         if (PDMA_GET_CH_INT_STS(4) & 0x2)
             g_u32PdmaTDoneInt = 4;
-        // Clear PDMA transfer done interrupt flag 
+        // Clear PDMA transfer done interrupt flag
         PDMA_CLR_CH_INT_FLAG(4, PDMA_CH_INTSTSn_TDIF_Msk);
     } else if (status & 0x20) { /* CH5 */
         // Check if PDMA transfer done
         if (PDMA_GET_CH_INT_STS(5) & 0x2)
             g_u32PdmaTDoneInt = 5;
-        // Clear PDMA transfer done interrupt flag 
+        // Clear PDMA transfer done interrupt flag
         PDMA_CLR_CH_INT_FLAG(5, PDMA_CH_INTSTSn_TDIF_Msk);
     } else if (status & 0x40) { /* CH6 */
         // Check if PDMA transfer done
         if (PDMA_GET_CH_INT_STS(6) & 0x2)
             g_u32PdmaTDoneInt = 6;
-        // Clear PDMA transfer done interrupt flag 
+        // Clear PDMA transfer done interrupt flag
         PDMA_CLR_CH_INT_FLAG(6, PDMA_CH_INTSTSn_TDIF_Msk);
     } else
         printf("unknown interrupt !!\n");
@@ -111,7 +111,7 @@ void SYS_Init(void)
     /* Set PA multi-function pins for ADC */
     SYS->GPA_MFPL &= ~(SYS_GPA_MFPL_PA0MFP_Msk | SYS_GPA_MFPL_PA1MFP_Msk | SYS_GPA_MFPL_PA2MFP_Msk);
     SYS->GPA_MFPL |= SYS_GPA_MFPL_PA0MFP_ADC_CH0 | SYS_GPA_MFPL_PA1MFP_ADC_CH1 | SYS_GPA_MFPL_PA2MFP_ADC_CH2;
-    
+
     /* Disable PA.0 PA.1 PA.2 PA.3 digital input path */
     PA->DINOFF = PA->DINOFF | (((1<<0) | (1<<1) | (1<<2) | (1<<3)) << GPIO_DINOFF_DINOFF0_Pos);
 
@@ -208,7 +208,7 @@ int32_t main (void)
     // Start Timer 0
     TIMER_Start(TIMER0);
 
-    // Wait for PDMA transfer down 
+    // Wait for PDMA transfer down
     while(g_u32PdmaTDoneInt == 0);
 
     // Check PDMA data

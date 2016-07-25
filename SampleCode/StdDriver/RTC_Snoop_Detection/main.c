@@ -26,18 +26,18 @@ volatile uint32_t  g_u32SnoopDetection = 0;
   */
 void RTC_IRQHandler(void)
 {
-	
+
     if (RTC->INTSTS & RTC_INTSTS_SNPDIF_Msk) {      /* snoop interrupt occurred */
         RTC->INTSTS = RTC_INTSTS_SNPDIF_Msk; /* clear interrupt status */
 
         printf("\n Snoop detection interrupt !! ");
-		g_u32SnoopDetection = 1;
+        g_u32SnoopDetection = 1;
     }
 
 }
 
 /**
- *  @brief  Init system clock and I/O multi function . 
+ *  @brief  Init system clock and I/O multi function .
  *  @param  None
  *  @return None
  */
@@ -59,7 +59,7 @@ void SYS_Init(void)
     CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk);
 
     /* Switch HCLK clock source to XTAL */
-	CLK->CLKSEL0 = (CLK->CLKSEL0 &~ CLK_CLKSEL0_HCLKSEL_Msk) | (CLK_CLKSEL0_HCLKSEL_HXT);
+    CLK->CLKSEL0 = (CLK->CLKSEL0 &~ CLK_CLKSEL0_HCLKSEL_Msk) | (CLK_CLKSEL0_HCLKSEL_HXT);
 
     /* Enable IP clock */
     CLK->APBCLK |= CLK_APBCLK_UART0CKEN_Msk; // UART0 Clock Enable
@@ -86,7 +86,7 @@ void SYS_Init(void)
 }
 
 /**
- *  @brief  Config UART0. 
+ *  @brief  Config UART0.
  *  @param  None
  *  @return None
  */
@@ -120,26 +120,26 @@ int32_t main(void)
     RTC_Open(&sInitTime); // start RTC and set initial time
 
     printf("\n RTC Snoop Detection Test \n\n");
-	printf(" Please connect PB.13(snoop pin) to Low level(ex: GND) \n");
-	printf(" Press any key to continue \n");
-	getchar();
+    printf(" Please connect PB.13(snoop pin) to Low level(ex: GND) \n");
+    printf(" Press any key to continue \n");
+    getchar();
 
-	/* Set PB.13 is snoop pin */
-	SYS->GPB_MFPH &= ~SYS_GPB_MFPH_PB13MFP_Msk;
+    /* Set PB.13 is snoop pin */
+    SYS->GPB_MFPH &= ~SYS_GPB_MFPH_PB13MFP_Msk;
     SYS->GPB_MFPH |= (SYS_GPB_MFPH_PB13MFP_SNOOPER);
-	
-    /* Set snoop detection */
-	RTC_EnableTamperDetection(0); // set rising detect 
 
-	g_u32SnoopDetection = 0; // clear snoop detection flag
+    /* Set snoop detection */
+    RTC_EnableTamperDetection(0); // set rising detect
+
+    g_u32SnoopDetection = 0; // clear snoop detection flag
 
     /* Enable RTC Tick Interrupt */
     RTC_EnableInt(RTC_INTEN_SNPDIEN_Msk);
-	RTC->INTSTS = RTC_INTSTS_SNPDIF_Msk; // clear status 
+    RTC->INTSTS = RTC_INTSTS_SNPDIF_Msk; // clear status
     NVIC_EnableIRQ(RTC_IRQn);
 
-	printf(" Please switch PB.13(snoop pin) to High level(ex: Vcc) \n");
-	printf(" Wait snoop detection interrupt \n");
+    printf(" Please switch PB.13(snoop pin) to High level(ex: Vcc) \n");
+    printf(" Wait snoop detection interrupt \n");
 
     while(g_u32SnoopDetection == 0); // wait snoop detected
 

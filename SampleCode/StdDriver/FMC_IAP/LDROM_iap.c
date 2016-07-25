@@ -29,12 +29,12 @@ void SYS_Init(void)
     CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk | CLK_STATUS_LXTSTB_Msk | CLK_STATUS_HIRC0STB_Msk | CLK_STATUS_HIRC1STB_Msk | CLK_STATUS_MIRCSTB_Msk);
 
     CLK_SetCoreClock(32000000);                  /*  Set HCLK frequency 32MHz */
-    
+
     CLK_EnableModuleClock(UART0_MODULE);         /* Enable UART0 input clock */
 
     /* Select IP clock source */
     CLK_SetModuleClock(UART0_MODULE,CLK_CLKSEL1_UART0SEL_HIRC,CLK_UART0_CLK_DIVIDER(1));
-																															
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
@@ -55,8 +55,8 @@ void UART0_Init(void)
 }
 
 
-/* 
- *  Set stack base address to SP register. 
+/*
+ *  Set stack base address to SP register.
  */
 #ifdef __ARMCC_VERSION                 /* for Keil compiler */
 __asm __set_SP(uint32_t _sp)
@@ -85,7 +85,7 @@ int main()
     printf("+----------------------------------------+\n");
 
     SYS_UnlockReg();                   /* Unlock protected registers */
-    
+
     FMC_Open();                        /* Enable FMC ISP function */
 
     printf("\n\nPress any key to branch to APROM...\n");
@@ -100,20 +100,20 @@ int main()
     FMC_SetVectorPageAddr(FMC_APROM_BASE);        /* Vector remap APROM page 0 to address 0. */
     SYS_LockReg();                                /* Lock protected registers */
 
-    /* 
+    /*
      *  The reset handler address of an executable image is located at offset 0x4.
-     *  Thus, this sample get reset handler address of APROM code from FMC_APROM_BASE + 0x4. 
+     *  Thus, this sample get reset handler address of APROM code from FMC_APROM_BASE + 0x4.
      */
     func = (FUNC_PTR *)*(uint32_t *)(FMC_APROM_BASE + 4);
 
-	/* 
-	 *  The stack base address of an executable image is located at offset 0x0.
-	 *  Thus, this sample get stack base address of APROM code from FMC_APROM_BASE + 0x0. 
-	 */
+    /*
+     *  The stack base address of an executable image is located at offset 0x0.
+     *  Thus, this sample get stack base address of APROM code from FMC_APROM_BASE + 0x0.
+     */
     __set_SP(*(uint32_t *)FMC_APROM_BASE);
-    
-    /* 
-     *  Brach to the LDROM code's reset handler in way of function call. 
+
+    /*
+     *  Brach to the LDROM code's reset handler in way of function call.
      */
     func();
 

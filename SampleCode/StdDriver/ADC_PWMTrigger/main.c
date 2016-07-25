@@ -118,11 +118,11 @@ int32_t main (void)
        Besides, we have to configure PWM to trigger ADC.
        Set PWM0 frequency to 100Hz, duty 30%
        Enable PWM0 channel 0 even zero point to trigger ADC
-       Then start PWM0 channel 0. 
-       Whenever the counter of PWM0 channel 0 is zero, 
+       Then start PWM0 channel 0.
+       Whenever the counter of PWM0 channel 0 is zero,
        PWM sends a request to ADC and ADC will do a conversion.
     */
-    
+
     // Enable channel 0
     ADC_Open(ADC, ADC_INPUT_MODE_SINGLE_END, ADC_OPERATION_MODE_SINGLE, ADC_CH_0_MASK);
 
@@ -134,7 +134,7 @@ int32_t main (void)
 
     // Enable PWM trigger
     ADC_EnableHWTrigger(ADC, ADC_TRIGGER_BY_PWM, 0);
-    
+
     // Enable ADC ADC_IF interrupt
     ADC_EnableInt(ADC, ADC_ADF_INT);
     // Enable NVIC ADC interrupt

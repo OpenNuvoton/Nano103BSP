@@ -46,22 +46,22 @@ void SYS_Init(void)
 
     /* Enable IP clock */
     CLK_EnableModuleClock(UART0_MODULE);
-	CLK_EnableModuleClock(I2C0_MODULE);
+    CLK_EnableModuleClock(I2C0_MODULE);
 
     /* Select IP clock source */
     CLK_SetModuleClock(UART0_MODULE,CLK_CLKSEL1_UART0SEL_HIRC,CLK_UART0_CLK_DIVIDER(1));
-																															
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
     /* Set PA multi-function pins for UART0 RXD and TXD */
     SYS->GPB_MFPL &= ~( SYS_GPB_MFPL_PB0MFP_Msk | SYS_GPB_MFPL_PB1MFP_Msk);
     SYS->GPB_MFPL |= (SYS_GPB_MFPL_PB0MFP_UART0_RXD | SYS_GPB_MFPL_PB1MFP_UART0_TXD );
-	
-	/* Set PA multi-function pins for I2C0 */
+
+    /* Set PA multi-function pins for I2C0 */
     /* I2C0: GPA8 - SDA, GPA9 - SCL */
     SYS->GPA_MFPH = (SYS_GPA_MFPH_PA8MFP_I2C0_SDA | SYS_GPA_MFPH_PA9MFP_I2C0_SCL);
-	
+
     /* Lock protected registers */
     SYS_LockReg();
 }
@@ -95,7 +95,7 @@ void I2C0_Init(void)
 int32_t main (void)
 {
     volatile uint8_t u8RxData[3];       // Receive buffer
-    volatile uint8_t u8ReadWrite;       // indicate master wants to read/write before waking up 
+    volatile uint8_t u8ReadWrite;       // indicate master wants to read/write before waking up
 
     /* Init System, IP clock and multi-function I/O */
     SYS_Init();
@@ -119,10 +119,10 @@ int32_t main (void)
 
     /* Un-lock protected register */
     SYS_UnlockReg();
-    
+
     /* Enable wake up interrupt */
     CLK->PWRCTL |= CLK_PWRCTL_PDWKIEN_Msk;
-    
+
     /* System enters power down */
     CLK_PowerDown();
 

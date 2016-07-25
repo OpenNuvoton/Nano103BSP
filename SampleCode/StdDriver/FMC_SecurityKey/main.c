@@ -33,12 +33,12 @@ void SYS_Init(void)
     CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk | CLK_STATUS_LXTSTB_Msk | CLK_STATUS_HIRC0STB_Msk | CLK_STATUS_HIRC1STB_Msk | CLK_STATUS_MIRCSTB_Msk);
 
     CLK_SetCoreClock(32000000);                  /*  Set HCLK frequency 32MHz */
-    
+
     CLK_EnableModuleClock(UART0_MODULE);         /* Enable UART0 input clock */
 
     /* Select IP clock source */
     CLK_SetModuleClock(UART0_MODULE,CLK_CLKSEL1_UART0SEL_HIRC,CLK_UART0_CLK_DIVIDER(1));
-																															
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
@@ -61,27 +61,27 @@ void UART0_Init(void)
 
 void dump_key_status()
 {
-	printf("KEYSTS: 0x%x\n    ", FMC->KEYSTS);        /* FMC_KEYSTS register value */
-	printf("%s ", (FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk) ? "[LOCK]" : "[UNLOCK]");  /* KEYLOCK(FMC_KEY_STS[1] */
-	if (FMC->KEYSTS & FMC_KEYSTS_KEYBUSY_Msk)
-		printf("[BUSY] ");                            /* KEYBUSY(FMC_KEYSTS[0]) */
-	if (FMC->KEYSTS & FMC_KEYSTS_KEYMATCH_Msk)
-		printf("[KEYMATCH] ");                        /* KEYMATCH(FMC_KEYSTS[2]) */
-	if (FMC->KEYSTS & FMC_KEYSTS_FORBID_Msk)
-		printf("[FORBID] ");                          /* FORBID(FMC_KEYSTS[3]) */
-	if (FMC->KEYSTS & FMC_KEYSTS_KEYFLAG_Msk) 
-		printf("[KEY LOCK] ");                        /* KEYFLAG(FMC_KEYSTS[4]) */
-	if (FMC->KEYSTS & FMC_KEYSTS_CFGFLAG_Msk)
-		printf("[CONFIG LOCK] ");                     /* CFGFLAG(FMC_KEYSTS[5]) */
-	if (FMC->KEYSTS & FMC_KEYSTS_SPFLAG_Msk)
-		printf("[SPROM LOCK] \n");                    /* SPFLAG(FMC_KEYSTS[6]) */
+    printf("KEYSTS: 0x%x\n    ", FMC->KEYSTS);        /* FMC_KEYSTS register value */
+    printf("%s ", (FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk) ? "[LOCK]" : "[UNLOCK]");  /* KEYLOCK(FMC_KEY_STS[1] */
+    if (FMC->KEYSTS & FMC_KEYSTS_KEYBUSY_Msk)
+        printf("[BUSY] ");                            /* KEYBUSY(FMC_KEYSTS[0]) */
+    if (FMC->KEYSTS & FMC_KEYSTS_KEYMATCH_Msk)
+        printf("[KEYMATCH] ");                        /* KEYMATCH(FMC_KEYSTS[2]) */
+    if (FMC->KEYSTS & FMC_KEYSTS_FORBID_Msk)
+        printf("[FORBID] ");                          /* FORBID(FMC_KEYSTS[3]) */
+    if (FMC->KEYSTS & FMC_KEYSTS_KEYFLAG_Msk)
+        printf("[KEY LOCK] ");                        /* KEYFLAG(FMC_KEYSTS[4]) */
+    if (FMC->KEYSTS & FMC_KEYSTS_CFGFLAG_Msk)
+        printf("[CONFIG LOCK] ");                     /* CFGFLAG(FMC_KEYSTS[5]) */
+    if (FMC->KEYSTS & FMC_KEYSTS_SPFLAG_Msk)
+        printf("[SPROM LOCK] \n");                    /* SPFLAG(FMC_KEYSTS[6]) */
 
-	printf("KPCNT: 0x%x, KPMAX: 0x%x\n", (FMC->KPCNT & FMC_KPCNT_KPCNT_Msk) >> FMC_KPCNT_KPCNT_Pos,    /* KPCNT(FMC_KPCNT[3:0])  */
-	                                     (FMC->KPCNT & FMC_KPCNT_KPMAX_Msk) >> FMC_KPCNT_KPMAX_Pos);   /* KPMAX(FMC_KPCNT[11:8]) */
-	printf("KECNT: 0x%x, KEMAX: 0x%x\n", (FMC->KECNT & FMC_KECNT_KECNT_Msk) >> FMC_KECNT_KECNT_Pos,    /* KECNT(FMC_KECNT[5:0])  */
-										 (FMC->KECNT & FMC_KECNT_KEMAX_Msk) >> FMC_KECNT_KEMAX_Pos);   /* KEMAX(FMC_KECNT[13:8]) */
-	printf("\nPress any key to continue...\n\n");     /* Wait user press any key on UART0 debug console */
-	getchar();                                        /* block on getting any one character from UART0 */
+    printf("KPCNT: 0x%x, KPMAX: 0x%x\n", (FMC->KPCNT & FMC_KPCNT_KPCNT_Msk) >> FMC_KPCNT_KPCNT_Pos,    /* KPCNT(FMC_KPCNT[3:0])  */
+           (FMC->KPCNT & FMC_KPCNT_KPMAX_Msk) >> FMC_KPCNT_KPMAX_Pos);   /* KPMAX(FMC_KPCNT[11:8]) */
+    printf("KECNT: 0x%x, KEMAX: 0x%x\n", (FMC->KECNT & FMC_KECNT_KECNT_Msk) >> FMC_KECNT_KECNT_Pos,    /* KECNT(FMC_KECNT[5:0])  */
+           (FMC->KECNT & FMC_KECNT_KEMAX_Msk) >> FMC_KECNT_KEMAX_Pos);   /* KEMAX(FMC_KECNT[13:8]) */
+    printf("\nPress any key to continue...\n\n");     /* Wait user press any key on UART0 debug console */
+    getchar();                                        /* block on getting any one character from UART0 */
 }
 
 int main()
@@ -101,45 +101,44 @@ int main()
 
     FMC_Open();                        /* Enable FMC ISP function */
 
-	printf("The current security key status:\n");
-	dump_key_status();                 /* Dump FMC security key status. */
+    printf("The current security key status:\n");
+    dump_key_status();                 /* Dump FMC security key status. */
 
-	/* Setup a new key */
-	if (FMC_SKey_Setup(good_key, KPMAX_VAL, KEMAX_VAL, 0, 0) < 0) {
-		printf("Failed to setup key!\n");   /* error message */
-		FMC_SKey_Compare(good_key);         /* Enter the right key for key comparison. */
-		if (FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk)
-		{
-			printf("Have no right security key!\n");
-			while (1);                     /* Failed to setup security key. Program aborted. */
-		}
-	}
-	
-	printf("The security key status after key setup:\n");
-	dump_key_status();                 /* Dump FMC security key status. */
-	
-	FMC_SKey_Compare(bad_key);         /* Enter a wrong key for key comparison. */
-	printf("The security key status after enter a wrong key:\n");
-	dump_key_status();                 /* Dump FMC security key status. */
+    /* Setup a new key */
+    if (FMC_SKey_Setup(good_key, KPMAX_VAL, KEMAX_VAL, 0, 0) < 0) {
+        printf("Failed to setup key!\n");   /* error message */
+        FMC_SKey_Compare(good_key);         /* Enter the right key for key comparison. */
+        if (FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk) {
+            printf("Have no right security key!\n");
+            while (1);                     /* Failed to setup security key. Program aborted. */
+        }
+    }
 
-	FMC_SKey_Compare(bad_key);         /* Enter a wrong key for key comparison. */
-	printf("The security key status after enter a wrong key second time:\n");
-	dump_key_status();                 /* Dump FMC security key status. */
+    printf("The security key status after key setup:\n");
+    dump_key_status();                 /* Dump FMC security key status. */
 
-	FMC_SKey_Compare(good_key);        /* Enter the right key for key comparison. */
-	printf("The security key status after enter a good key.\n");
-	dump_key_status();                 /* Dump FMC security key status. */
-	
-	printf("Security key can de erased only if it is matched and unlocked.\n"); 
-	printf("Press any key to erase the security key...\n");
-	getchar();
-	
-	/* Erase KPROM setting and keys */
-	FMC_Erase(FMC_KPROM_BASE);
-	FMC_Erase(FMC_KPROM_BASE+FMC_FLASH_PAGE_SIZE);
-	
-	printf("The security key status after erased =>\n");
-	dump_key_status();                 /* Dump FMC security key status. */
+    FMC_SKey_Compare(bad_key);         /* Enter a wrong key for key comparison. */
+    printf("The security key status after enter a wrong key:\n");
+    dump_key_status();                 /* Dump FMC security key status. */
+
+    FMC_SKey_Compare(bad_key);         /* Enter a wrong key for key comparison. */
+    printf("The security key status after enter a wrong key second time:\n");
+    dump_key_status();                 /* Dump FMC security key status. */
+
+    FMC_SKey_Compare(good_key);        /* Enter the right key for key comparison. */
+    printf("The security key status after enter a good key.\n");
+    dump_key_status();                 /* Dump FMC security key status. */
+
+    printf("Security key can de erased only if it is matched and unlocked.\n");
+    printf("Press any key to erase the security key...\n");
+    getchar();
+
+    /* Erase KPROM setting and keys */
+    FMC_Erase(FMC_KPROM_BASE);
+    FMC_Erase(FMC_KPROM_BASE+FMC_FLASH_PAGE_SIZE);
+
+    printf("The security key status after erased =>\n");
+    dump_key_status();                 /* Dump FMC security key status. */
 
     printf("Test done.\n");
     while (1);

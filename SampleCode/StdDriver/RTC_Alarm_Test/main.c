@@ -45,7 +45,7 @@ void RTC_IRQHandler(void)
 }
 
 /**
- *  @brief  Init system clock and I/O multi function . 
+ *  @brief  Init system clock and I/O multi function .
  *  @param  None
  *  @return None
  */
@@ -67,7 +67,7 @@ void SYS_Init(void)
     CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk);
 
     /* Switch HCLK clock source to XTAL */
-	CLK->CLKSEL0 = (CLK->CLKSEL0 &~ CLK_CLKSEL0_HCLKSEL_Msk) | (CLK_CLKSEL0_HCLKSEL_HXT);
+    CLK->CLKSEL0 = (CLK->CLKSEL0 &~ CLK_CLKSEL0_HCLKSEL_Msk) | (CLK_CLKSEL0_HCLKSEL_HXT);
 
     /* Enable IP clock */
     CLK->APBCLK |= CLK_APBCLK_UART0CKEN_Msk; // UART0 Clock Enable
@@ -94,7 +94,7 @@ void SYS_Init(void)
 }
 
 /**
- *  @brief  Config UART0. 
+ *  @brief  Config UART0.
  *  @param  None
  *  @return None
  */
@@ -122,7 +122,7 @@ int32_t main(void)
     sInitTime.u32DayOfWeek  = RTC_TUESDAY; // Set Day of Week
     sInitTime.u32TimeScale  = RTC_CLOCK_24; // Set Time scale 12 or 24 hr
 
-    RTC_Open(&sInitTime); //user maybe need Waiting for RTC settings stable 
+    RTC_Open(&sInitTime); //user maybe need Waiting for RTC settings stable
 
     printf("\n RTC Alarm Test (Alarm after 10 seconds)\n\n");
 

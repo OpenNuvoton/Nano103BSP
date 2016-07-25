@@ -22,13 +22,13 @@ void SC0_IRQHandler(void)
     /* Please don't remove any of the function calls below */
     // Card insert/remove event occurred, no need to check other event...
     if(SCLIB_CheckCDEvent(0))
-        return; 
+        return;
     // Check if there's any timeout event occurs. If so, it usually indicates an error
     SCLIB_CheckTimeOutEvent(0);
     // Check transmit and receive interrupt, all data transmission take place in this function
     SCLIB_CheckTxRxEvent(0);
     /*
-        Check if there's any transmission error occurred (e.g. parity error, frame error...) 
+        Check if there's any transmission error occurred (e.g. parity error, frame error...)
         These errors will induce SCLIB to deactivation smartcard eventually.
     */
     SCLIB_CheckErrorEvent(0);
@@ -117,22 +117,22 @@ int main(void)
 
     // Wait 'til card insert
     while(SC_IsCardInserted(SC0) == FALSE);
-    
+
     /*
         Activate slot 0, and disable EMV2000 check during card activation
-        EMV is a technical standard for smart payment cards and for payment terminals and automated teller 
-        machines that can accept them. It has a stricter checking rule than ISO 7816-3. If the second 
-        parameter set as TRUE, SCLIB will report activation failure for cards comply with ISO 7816 but not EMV2000 
+        EMV is a technical standard for smart payment cards and for payment terminals and automated teller
+        machines that can accept them. It has a stricter checking rule than ISO 7816-3. If the second
+        parameter set as TRUE, SCLIB will report activation failure for cards comply with ISO 7816 but not EMV2000
     */
     retval = SCLIB_Activate(0, FALSE);
 
     if(retval == SCLIB_SUCCESS) {
         /*
             Use SCLIB_GetCardInfo to get information about the card, which includes ATR.
-            
-            An Answer To Reset (ATR) is a message output by a contact Smart Card conforming to 
-            ISO/IEC 7816 standards, following electrical reset of the card's chip by a card reader. 
-            The ATR conveys information about the communication parameters proposed by the card, 
+
+            An Answer To Reset (ATR) is a message output by a contact Smart Card conforming to
+            ISO/IEC 7816 standards, following electrical reset of the card's chip by a card reader.
+            The ATR conveys information about the communication parameters proposed by the card,
             and the card's nature and state.                                --Wikipedia
         */
         SCLIB_GetCardInfo(0, &s_info);

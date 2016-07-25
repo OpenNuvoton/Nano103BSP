@@ -196,7 +196,7 @@ void LIN_HeaderSend(UART_T *tUART,int32_t id)
  *  @param  tUART            The pointer of the specified UART module
  *  @param  checkSumOption   1:  Compute not include ID  (LIN1.1) \n
  *                           2:  Compute n include ID  (LIN2.0)
- *  @param  Pattern[]        response data 
+ *  @param  Pattern[]        response data
  *  @return None
  */
 void LIN_ResponseSend(UART_T *tUART,int32_t checkSumOption,uint8_t Pattern[])
@@ -264,7 +264,7 @@ void LIN_FunctionTest()
 }
 
 /**
- *  @brief  Init system clock and I/O multi function . 
+ *  @brief  Init system clock and I/O multi function .
  *  @param  None
  *  @return None
  */
@@ -291,7 +291,7 @@ void SYS_Init(void)
     /* Select IP clock source */
     CLK->CLKSEL1 &= ~CLK_CLKSEL1_UART0SEL_Msk;
     CLK->CLKSEL1 |= (0x0 << CLK_CLKSEL1_UART0SEL_Pos);// Clock source from external 12 MHz crystal clock
-	CLK->CLKSEL2 &= ~CLK_CLKSEL2_UART1SEL_Msk;
+    CLK->CLKSEL2 &= ~CLK_CLKSEL2_UART1SEL_Msk;
     CLK->CLKSEL2 |= (0x0 << CLK_CLKSEL2_UART1SEL_Pos);// Clock source from external 12 MHz crystal clock
 
     /* Update System Core Clock */
@@ -317,7 +317,7 @@ void SYS_Init(void)
 }
 
 /**
- *  @brief  Config UART0. 
+ *  @brief  Config UART0.
  *  @param  None
  *  @return None
  */
@@ -327,7 +327,7 @@ void UART0_Init()
 }
 
 /**
- *  @brief  Config UART1. 
+ *  @brief  Config UART1.
  *  @param  None
  *  @return None
  */

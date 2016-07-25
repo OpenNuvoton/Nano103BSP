@@ -106,9 +106,9 @@ int32_t main (void)
        The comparison data and condition are set as below
        Comparator 0 : monitor channel 0 input less than 0x200
        Comparator 1 : monitor channel 0 input greater or equal to 0x200
-       When input voltage of channel 0 meet the condition of comparator 0, 
+       When input voltage of channel 0 meet the condition of comparator 0,
        output message shows "Channel 0 input < 0x200".
-       When input voltage of channel 0 meet the condition of comparator 1, 
+       When input voltage of channel 0 meet the condition of comparator 1,
        output message shows "Channel 0 input >= 0x200".
        You can change the input voltage of channel 0 to see the different output message
      */

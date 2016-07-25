@@ -105,7 +105,7 @@ void SYS_Init(void)
     /* Set PA multi-function pins for ADC */
     SYS->GPA_MFPL &= ~(SYS_GPA_MFPL_PA0MFP_Msk | SYS_GPA_MFPL_PA1MFP_Msk | SYS_GPA_MFPL_PA2MFP_Msk);
     SYS->GPA_MFPL |= SYS_GPA_MFPL_PA0MFP_ADC_CH0 | SYS_GPA_MFPL_PA1MFP_ADC_CH1 | SYS_GPA_MFPL_PA2MFP_ADC_CH2;
-    
+
     /* Disable PA.0 PA.1 PA.2 PA.3 digital input path */
     PA->DINOFF = PA->DINOFF | (((1<<0) | (1<<1) | (1<<2) | (1<<3)) << GPIO_DINOFF_DINOFF0_Pos);
 
@@ -176,7 +176,7 @@ int32_t main (void)
        Compare the log of ADC conversion data register with the content of PDMA target buffer.
        Finally, print the test result.
      */
-     
+
     // Enable channel 0,1,2,3
     ADC_Open(ADC, ADC_INPUT_MODE_SINGLE_END, ADC_OPERATION_MODE_SINGLE_CYCLE, ADC_CH_0_MASK | ADC_CH_1_MASK | ADC_CH_2_MASK | ADC_CH_3_MASK);
 

@@ -108,7 +108,7 @@ int32_t main (void)
        Set reference voltage to AVDD.
        It convert channel 0 and print conversion result
     */
-    
+
     // Enable channel 0
     ADC_Open(ADC, ADC_INPUT_MODE_SINGLE_END, ADC_OPERATION_MODE_SINGLE, ADC_CH_0_MASK);
 
@@ -131,7 +131,7 @@ int32_t main (void)
     // Wait for ADC conversion finish
     while (u8ADF == 0);
 
-    // Get conversion data 
+    // Get conversion data
     u32Result = ADC_GET_CONVERSION_DATA(ADC, 0);
     printf("Channel 0 conversion result is 0x%x\n",u32Result);
 

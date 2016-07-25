@@ -31,12 +31,12 @@ void SYS_Init(void)
     CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk | CLK_STATUS_LXTSTB_Msk | CLK_STATUS_HIRC0STB_Msk | CLK_STATUS_HIRC1STB_Msk | CLK_STATUS_MIRCSTB_Msk);
 
     CLK_SetCoreClock(32000000);                  /*  Set HCLK frequency 32MHz */
-    
+
     CLK_EnableModuleClock(UART0_MODULE);         /* Enable UART0 input clock */
 
     /* Select IP clock source */
     CLK_SetModuleClock(UART0_MODULE,CLK_CLKSEL1_UART0SEL_HIRC,CLK_UART0_CLK_DIVIDER(1));
-																															
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
@@ -67,7 +67,7 @@ void UART0_Init(void)
 static int  set_IAP_boot_mode(void)
 {
     uint32_t  au32Config[2];           /* User Configuration */
-	
+
     if (FMC_ReadConfig(au32Config, 2) < 0) {     /* Read User Configuration CONFIG0 and CONFIG1. */
         printf("\nRead User Config failed!\n");
         return -1;                     /* Failed on reading User Configuration */
@@ -84,8 +84,8 @@ static int  set_IAP_boot_mode(void)
 }
 
 
-/* 
- *  Set stack base address to SP register. 
+/*
+ *  Set stack base address to SP register.
  */
 #ifdef __ARMCC_VERSION                 /* for Keil compiler */
 __asm __set_SP(uint32_t _sp)
@@ -111,32 +111,32 @@ static int  load_image_to_flash(uint32_t image_base, uint32_t image_limit, uint3
     u32ImageSize = max_size;           /* Give the maximum size of programmable flash area. */
 
     printf("Program image to flash address 0x%x...", flash_addr);    /* information message */
-    
-    /* 
-     * program the whole image to specified flash area 
+
+    /*
+     * program the whole image to specified flash area
      */
-    pu32Loader = (uint32_t *)image_base;    
+    pu32Loader = (uint32_t *)image_base;
     for (i = 0; i < u32ImageSize; i += FMC_FLASH_PAGE_SIZE)  {
-    	
+
         FMC_Erase(flash_addr + i);     /* erase a flash page */
         for (j = 0; j < FMC_FLASH_PAGE_SIZE; j += 4) {               /* program image to this flash page */
             FMC_Write(flash_addr + i + j, pu32Loader[(i + j) / 4]);
         }
     }
-    printf("OK.\nVerify ...");                   
+    printf("OK.\nVerify ...");
 
     /* Verify loader */
     for (i = 0; i < u32ImageSize; i += FMC_FLASH_PAGE_SIZE) {
         for (j = 0; j < FMC_FLASH_PAGE_SIZE; j += 4) {
             u32Data = FMC_Read(flash_addr + i + j);        /* read a word from flash memory */
-            
+
             if (u32Data != pu32Loader[(i+j)/4]) {          /* check if the word read from flash be matched with original image */
                 printf("data mismatch on 0x%x, [0x%x], [0x%x]\n", flash_addr + i + j, u32Data, pu32Loader[(i+j)/4]);
                 return -1;             /* image program failed */
             }
-            
+
             if (i + j >= u32ImageSize) /* check if it reach the end of image */
-                break;                
+                break;
         }
     }
     printf("OK.\n");
@@ -167,10 +167,10 @@ int main()
 
     FMC_Open();                        /* Enable FMC ISP function */
 
-	/* 
-	 *  Check if User Configuration CBS is boot with IAP mode. 
-	 *  If not, modify it. 
-	 */
+    /*
+     *  Check if User Configuration CBS is boot with IAP mode.
+     *  If not, modify it.
+     */
     if (set_IAP_boot_mode() < 0) {
         printf("Failed to set IAP boot mode!\n");
         goto lexit;                    /* Failed to set IAP boot mode. Program aborted. */
@@ -212,7 +212,7 @@ int main()
         switch (u8Item) {
         case '0':
             FMC_ENABLE_LD_UPDATE();    /* Enable LDROM update capability */
-            /* 
+            /*
              *  The binary image of LDROM code is embedded in this sample.
              *  load_image_to_flash() will program this LDROM code to LDROM.
              */
@@ -234,25 +234,25 @@ int main()
              */
 
             /* FMC_SetVectorPageAddr(FMC_LDROM_BASE) */
-            FMC->ISPCMD = FMC_ISPCMD_VECMAP;              /* ISP command */ 
+            FMC->ISPCMD = FMC_ISPCMD_VECMAP;              /* ISP command */
             FMC->ISPADDR = FMC_LDROM_BASE;                /* Vector remap address */
             FMC->ISPTRG = FMC_ISPTRG_ISPGO_Msk;           /* Trigger ISP command */
             while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) ;  /* Wait for ISP command done. */
 
-	        /* 
-	         *  The reset handler address of an executable image is located at offset 0x4.
-	         *  Thus, this sample get reset handler address of LDROM code from FMC_LDROM_BASE + 0x4. 
-	         */
-            func = (FUNC_PTR *)*(uint32_t *)(FMC_LDROM_BASE + 4);
-	        /* 
-	         *  The stack base address of an executable image is located at offset 0x0.
-	         *  Thus, this sample get stack base address of LDROM code from FMC_LDROM_BASE + 0x0. 
-	         */
-            __set_SP(*(uint32_t *)FMC_LDROM_BASE);
-            /* 
-             *  Brach to the LDROM code's reset handler in way of function call. 
+            /*
+             *  The reset handler address of an executable image is located at offset 0x4.
+             *  Thus, this sample get reset handler address of LDROM code from FMC_LDROM_BASE + 0x4.
              */
-            func();                    
+            func = (FUNC_PTR *)*(uint32_t *)(FMC_LDROM_BASE + 4);
+            /*
+             *  The stack base address of an executable image is located at offset 0x0.
+             *  Thus, this sample get stack base address of LDROM code from FMC_LDROM_BASE + 0x0.
+             */
+            __set_SP(*(uint32_t *)FMC_LDROM_BASE);
+            /*
+             *  Brach to the LDROM code's reset handler in way of function call.
+             */
+            func();
             break;
 
         default :

@@ -23,8 +23,7 @@
  */
 void GPABC_IRQHandler(void)
 {
-    if(GPIO_GET_INT_FLAG(PA, BIT1))     /* To check if PA.1 interrupt occurred */
-    {
+    if(GPIO_GET_INT_FLAG(PA, BIT1)) {   /* To check if PA.1 interrupt occurred */
         GPIO_CLR_INT_FLAG(PA, BIT1);    /* Clear PA.1 interrupt flag */
         printf("PA.1 INT occurred. \n");
 
@@ -108,8 +107,7 @@ int main(void)
     GPIO_EnableInt(PA, 1, GPIO_INT_RISING);     /* Enable PA.1 interrupt by rising edge trigger */
 
     /* Waiting for PA.1 rising-edge interrupt event */
-    while(1)
-    {
+    while(1) {
         printf("Wait PA.1 to low\n");
         while(1)    /* wait PA.1 state to low */
             if (PA1 == 0)   /* If PA.1 state is low, get into power down mode */

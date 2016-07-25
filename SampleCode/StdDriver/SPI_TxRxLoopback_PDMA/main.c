@@ -27,16 +27,16 @@ uint32_t volatile u32IsTestOver = 0;  //Check whether PDMA channel 2 transfer is
  * @brief       PDMA interrupt handler
  * @param[in]   None
  * @return      None
- * @details     This function services PDMA interrupts. 
+ * @details     This function services PDMA interrupts.
  */
 void PDMA_IRQHandler(void)
 {
     uint32_t status = PDMA_GET_INT_STATUS();
 
     if (status & 0x2) { /* done */
-        PDMA_CLR_CH_INT_FLAG(1, PDMA_CH_INTSTSn_TDIF_Msk); // Clear PDMA Channel 1 Interrupt Flag 
+        PDMA_CLR_CH_INT_FLAG(1, PDMA_CH_INTSTSn_TDIF_Msk); // Clear PDMA Channel 1 Interrupt Flag
     } else if (status & 0x4) { /* done */
-        if (PDMA_GET_CH_INT_STS(2) & 0x2) // Get PDMA Channel 2 Interrupt Status 
+        if (PDMA_GET_CH_INT_STS(2) & 0x2) // Get PDMA Channel 2 Interrupt Status
             u32IsTestOver = 1;
         PDMA_CLR_CH_INT_FLAG(2, PDMA_CH_INTSTSn_TDIF_Msk); //Clear PDMA Channel2 Interrupt Flag
     } else
@@ -48,7 +48,7 @@ void PDMA_IRQHandler(void)
  * @brief       Initialize system
  * @param[in]   None
  * @return      None
- * @details     This function set clock and I/O Multi-function 
+ * @details     This function set clock and I/O Multi-function
  */
 void SYS_Init(void)
 {
@@ -69,19 +69,19 @@ void SYS_Init(void)
 
     /* Select UART0 clock source */
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART0SEL_HIRC, CLK_UART0_CLK_DIVIDER(1));
-  
+
     /* Select SPI0 clock source */
     CLK_SetModuleClock(SPI0_MODULE, CLK_CLKSEL1_SPI0SEL_HCLK, 0);
 
     /* Enable UART0 clock */
     CLK_EnableModuleClock(UART0_MODULE);
-    
+
     /* Enable SPI0 clock */
     CLK_EnableModuleClock(SPI0_MODULE);
 
     /* Enable PDMA clock */
     CLK_EnableModuleClock(PDMA_MODULE);
-    
+
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CycylesPerUs automatically. */
     SystemCoreClockUpdate();
@@ -98,7 +98,7 @@ void SYS_Init(void)
     /* Set PC0, PC1, PC2 and PC3 multi function pin to SPI0 MISO0, MOSI0, CLK and SS0 */
     SYS->GPC_MFPL &= ~(SYS_GPC_MFPL_PC0MFP_Msk | SYS_GPC_MFPL_PC1MFP_Msk | SYS_GPC_MFPL_PC2MFP_Msk | SYS_GPC_MFPL_PC3MFP_Msk);
     SYS->GPC_MFPL |= (SYS_GPC_MFPL_PC0MFP_SPI0_SS0 | SYS_GPC_MFPL_PC1MFP_SPI0_CLK | SYS_GPC_MFPL_PC2MFP_SPI0_MISO0 | SYS_GPC_MFPL_PC3MFP_SPI0_MOSI0);
-    
+
     /* First, Clear PD14 and PD15 multi function pin to '0', and then  */
     /* Set PD14 and PD15 multi function pin to SPI0 MISO1, MOSI1       */
     SYS->GPD_MFPH &= ~(SYS_GPD_MFPH_PD14MFP_Msk | SYS_GPD_MFPH_PD15MFP_Msk);
@@ -147,37 +147,37 @@ int main(void)
 
     /* Configure channel 1 */
     PDMA_SetTransferCnt(1, PDMA_WIDTH_32, PDMA_TEST_COUNT);
-    
+
     /* Set channel 1 Transfer Address */
     PDMA_SetTransferAddr(1, (uint32_t)g_au32SrcData, PDMA_SAR_INC, (uint32_t)&SPI0->TX0, PDMA_DAR_FIX);
-    
+
     /* Set channel 1 time-out */
     PDMA_SetTimeOut(1, 0, 0x5555);
-    
+
     /* Enable channel 1 interrupt */
     PDMA_EnableInt(1, PDMA_CH_INTSTSn_TDIF_Msk);
 
     /* Configure channel 2 */
     PDMA_SetTransferCnt(2, PDMA_WIDTH_32, PDMA_TEST_COUNT);
-    
+
     /* Set channel 2 Transfer Address */
     PDMA_SetTransferAddr(2, (uint32_t)&SPI0->RX0, PDMA_SAR_FIX, (uint32_t)g_au32DstData, PDMA_DAR_INC);
-    
+
     /* Set channel 2 time-out */
     PDMA_SetTimeOut(2, 0, 0x5555);
-    
+
     /* Enable channel 2 interrupt */
     PDMA_EnableInt(2, PDMA_CH_INTENn_TDIEN_Msk);
 
     /* Set Channel 1 for SPI0 TX, then start timeout counting */
     PDMA_SetTransferMode(1, PDMA_SPI0_TX, 0, 0);
-    
+
     /* Set Channel 2 for SPI0 RX, then start timeout counting */
     PDMA_SetTransferMode(2, PDMA_SPI0_RX, 0, 0);
 
     /* Trigger PDMA ch1 */
     PDMA_Trigger(1);
-    
+
     /* Trigger PDMA ch2 */
     PDMA_Trigger(2);
 
@@ -186,7 +186,7 @@ int main(void)
 
     /* Trigger SPI0 Rx PDMA */
     SPI_TRIGGER_RX_PDMA(SPI0);
-    
+
     /* Trigger SPI0 Tx PDMA */
     SPI_TRIGGER_TX_PDMA(SPI0);
 

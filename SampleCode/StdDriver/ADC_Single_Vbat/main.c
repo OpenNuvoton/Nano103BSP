@@ -107,13 +107,13 @@ int32_t main (void)
        Set reference voltage to AVDD.
        It convert channel 13(Vbat) and print conversion result(Vbat/2)
     */
-    
+
     // Enable channel 13 (Vbat)
     ADC_Open(ADC, ADC_INPUT_MODE_SINGLE_END, ADC_OPERATION_MODE_SINGLE, ADC_CH_13_MASK);
 
     // Set reference voltage to AVDD
     ADC_SET_REF_VOLTAGE(ADC, ADC_REFSEL_POWER);
-    
+
     // Power on ADC
     ADC_POWER_ON(ADC);
 
@@ -122,25 +122,25 @@ int32_t main (void)
     // Enable NVIC ADC interrupt
     NVIC_EnableIRQ(ADC_IRQn);
 
-  
+
     u8ADF = 0;
 
     while (1) {
         if (ADC_IS_BUSY())
             continue;
-        
+
         // Start conversion
         ADC_START_CONV(ADC);
 
         // Wait for ADC conversion finish
         while (u8ADF == 0);
 
-        // Get conversion data (Vbat/2) 
+        // Get conversion data (Vbat/2)
         u32Result = ADC_GET_CONVERSION_DATA(ADC, 13);
         printf("Vbat/2 = 0x%x\n",u32Result);
         //getchar();
     }
-    
+
 }
 
 /*** (C) COPYRIGHT 2015 Nuvoton Technology Corp. ***/

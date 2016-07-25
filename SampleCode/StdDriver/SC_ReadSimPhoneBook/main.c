@@ -13,7 +13,7 @@
 #include "sclib.h"
 
 /* The definition of commands used in this sample code and directory structures could
-   be found in GSM 11.11 which is free for download from Internet. 
+   be found in GSM 11.11 which is free for download from Internet.
    Different from the command defined in ISO 7816-4, CLS of SIM command is 0xA0,
    So the command defined below starting with 0xA0 */
 
@@ -137,7 +137,7 @@ void read_phoneBook(uint32_t cnt)
 
     /*
         EF_ADN structure looks like below:
-        
+
         Byte            Description                         M/O Length
         1 to X          Alpha Identifier                    O   X bytes
         X+1             Length of BCD number/SSC contents   M   1 byte
@@ -236,10 +236,10 @@ void SYS_Init(void)
 }
 
 
-/* 
+/*
     Each SIM card contains a file system, below is a simplified example
 
-                                MF (Master File)         
+                                MF (Master File)
                                        |
                           -------------+--------------
                           |            |             |
@@ -250,12 +250,12 @@ void SYS_Init(void)
                                             EF       DF      EF
                                                      |
                                                      EF
-    Each file has an two byte ID, where the first byte indicates the type of file 
+    Each file has an two byte ID, where the first byte indicates the type of file
     '3F': Master File
     '7F': Dedicated File
     '2F': Elementary File under the Master File
     '6F': Elementary File under a Dedicated File
-                                                     
+
 */
 
 int main(void)
@@ -296,7 +296,7 @@ int main(void)
     }
 
     // If there is no error during transmission, check the response from card
-    if(len == 2 && buf[0] == 0x9F ) {  
+    if(len == 2 && buf[0] == 0x9F ) {
         // Everything goes fine, SIM card response 0x9F following by the response data length
         au8GetResp[4] = buf[1]; // response data length
         // Issue "get response" command to get the response from SIM card
@@ -308,17 +308,17 @@ int main(void)
         printf("Unknown response\n");
         goto exit;
     }
-    
+
     // Response ends with 0x9000 means command success
     if(buf[len - 2] != 0x90 || buf[len - 1] != 0x00) {
         printf("Cannot select MF\n");
         goto exit;
     }
-    /* 
+    /*
         Response of select MF, DF listed here:
         Byte    Description
         1~2     RFU
-        3~4     Total amount of memory of the selected directory which is not 
+        3~4     Total amount of memory of the selected directory which is not
                 allocated to any of the DFs or EFs under the selected directory
         5~6     File ID
         7       Type of File
@@ -338,8 +338,8 @@ int main(void)
         22      UNBLOCK CHV2 status
         23      RFU
         24~34   Reserved for the administrative management (optional)
-    */ 
-    
+    */
+
     // Read byte 19 listed in above table to check if SIM is locked
     if(buf[18] & 0x80) {
         if((retry = (buf[18] & 0xF)) == 0) { //=> Blocked!!
@@ -347,16 +347,16 @@ int main(void)
             goto exit;
         }
     }
-    
+
     // Select Dedicated File DFTELECOM which contains service related information
     if(SCLIB_StartTransmission(0, (uint8_t *)au8SelectDF_TELECOM, 7, buf, &len) != SCLIB_SUCCESS) {
         printf("Command Select DF failed\n");
         goto exit;
     }
     // Don't care about the response of au8SelectDF_TELECOM command here as long as there's no error.
-    
 
-    /* Select Elementary File ADN, where ADN stands for "Abbreviated dialling numbers", 
+
+    /* Select Elementary File ADN, where ADN stands for "Abbreviated dialling numbers",
        this is the file used to store phone book */
     if(SCLIB_StartTransmission(0, (uint8_t *)au8SelectEF_ADN, 7, buf, &len) != SCLIB_SUCCESS) {
         printf("Command Select EF failed\n");
@@ -375,7 +375,7 @@ int main(void)
         goto exit;
     }
 
-    /* 
+    /*
         Response of select EF listed here:
         Byte    Description
         1~2     RFU
@@ -391,11 +391,11 @@ int main(void)
         13      Length of the following data (byte 14 to the end)
         14      Structure of EF
         15      Length of a record
-    */ 
-    
+    */
+
     au8ReadRec[4] = buf[14]; // Phone book record length
     cnt = ((buf[2] << 8) + buf[3]) / buf[14];   // Phone book record number
-    
+
     // Read or update EF_ADN can be protected by CHV1, so check if CHV1 is enabled
     if((buf[8] & 0x10) == 0x10) {  //Protect by CHV1 ?
         if(unlock_sim(retry) < 0) {
