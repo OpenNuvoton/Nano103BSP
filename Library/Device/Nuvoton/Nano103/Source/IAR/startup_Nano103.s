@@ -17,6 +17,7 @@
     SECTION .intvec:CODE:NOROOT(2);; 4 bytes alignment
 
     EXTERN  __iar_program_start
+    EXTERN  SystemInit
     EXTERN  HardFault_Handler
     PUBLIC  __vector_table
 
@@ -95,7 +96,9 @@ Reset_Handler
         LDR     R2, =0x50000060
         LDR     R1, =0x00005AA5
         STR     R1, [R2]
-
+        ; Unlock PA9 in 32 pin package
+        LDR     R0, =SystemInit
+        BLX     R0
         ; Lock register
         MOVS    R1, #0
         STR     R1, [R0]

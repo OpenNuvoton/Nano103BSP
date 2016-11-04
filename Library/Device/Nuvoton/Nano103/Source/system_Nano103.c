@@ -115,6 +115,31 @@ void SystemCoreClockUpdate (void)
     CyclesPerUs = (SystemCoreClock + 500000) / 1000000;
 }
 
+/**
+ * Initialize the system
+ *
+ * @return none
+ *
+ * @brief  Support PA9 in 32-pin package. Should call with CAP unlocked.
+ */
+void SystemInit (void)
+{
+    // PDID list of 32-pin packages
+    uint32_t u32PDID[] = {0x00110307, 0x00110308, 0x00110309,
+                          0x00110318, 0x00110314, 0x00110315};
+    uint32_t u32MyPDID = SYS->PDID;
+    int i;
 
+    for(i = 0; i < sizeof(u32PDID)/sizeof(uint32_t); i++) {
+        if(u32PDID[i] == u32MyPDID) {
+            CLK->APBCLK |= CLK_APBCLK_RTCCKEN_Msk;
+            RTC->RWEN = RTC_WRITE_KEY;
+            *(unsigned int volatile *)(0x400081F0) = SYS->RPDBCLK;
+            CLK->APBCLK &= ~CLK_APBCLK_RTCCKEN_Msk;
+            break;
+        }
+    }
+
+}
 
 /*** (C) COPYRIGHT 2015 Nuvoton Technology Corp. ***/

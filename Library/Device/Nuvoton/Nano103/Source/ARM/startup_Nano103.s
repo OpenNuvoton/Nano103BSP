@@ -102,6 +102,7 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
 
 Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]
+                IMPORT  SystemInit
                 IMPORT  __main
                 ; Unlock Register
                 LDR     R0, =0x50000100
@@ -116,7 +117,9 @@ Reset_Handler   PROC
                 LDR     R2, =0x50000060
                 LDR     R1, =0x00005AA5
                 STR     R1, [R2]
-
+                ; Unlock PA9 in 32 pin package
+                LDR     R0, =SystemInit
+                BLX     R0
                 ; Lock register
                 MOVS    R1, #0
                 STR     R1, [R0]
