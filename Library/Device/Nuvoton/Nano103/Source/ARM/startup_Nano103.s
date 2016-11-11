@@ -121,6 +121,7 @@ Reset_Handler   PROC
                 LDR     R0, =SystemInit
                 BLX     R0
                 ; Lock register
+                LDR     R0, =0x50000100
                 MOVS    R1, #0
                 STR     R1, [R0]
 
