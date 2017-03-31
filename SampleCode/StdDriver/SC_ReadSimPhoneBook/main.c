@@ -6,7 +6,7 @@
  * @brief    Demonstrate how to read phone book information in the SIM card.
  *
  * @note
- * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2017 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include <stdio.h>
 #include "Nano103.h"
@@ -261,7 +261,7 @@ void SYS_Init(void)
 int main(void)
 {
     int retval;
-    int retry = 0, cnt;
+    int retry = 0, cnt, chv1_disbled = 0;
 
     /* Init System, IP clock and multi-function I/O
        In the end of SYS_Init() will issue SYS_LockReg()
@@ -347,6 +347,11 @@ int main(void)
             goto exit;
         }
     }
+    // Some SIM cards has file protect by CHV1, but CHV1 disabled.
+    if(buf[13] & 0x80) {
+        printf("CHV1 disabled\n");
+        chv1_disbled = 1;
+    }
 
     // Select Dedicated File DFTELECOM which contains service related information
     if(SCLIB_StartTransmission(0, (uint8_t *)au8SelectDF_TELECOM, 7, buf, &len) != SCLIB_SUCCESS) {
@@ -397,7 +402,7 @@ int main(void)
     cnt = ((buf[2] << 8) + buf[3]) / buf[14];   // Phone book record number
 
     // Read or update EF_ADN can be protected by CHV1, so check if CHV1 is enabled
-    if((buf[8] & 0x10) == 0x10) {  //Protect by CHV1 ?
+    if(((buf[8] & 0x10) == 0x10) && (chv1_disbled == 0)) {  //Protect by CHV1 ?
         if(unlock_sim(retry) < 0) {
             printf("Unlock SIM card failed\n");
             goto exit;
@@ -410,6 +415,6 @@ exit:
     while(1);
 }
 
-/*** (C) COPYRIGHT 2015 Nuvoton Technology Corp. ***/
+/*** (C) COPYRIGHT 2017 Nuvoton Technology Corp. ***/
 
 
