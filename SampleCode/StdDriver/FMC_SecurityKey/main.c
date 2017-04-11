@@ -73,8 +73,6 @@ void dump_key_status()
         printf("[KEY LOCK] ");                        /* KEYFLAG(FMC_KEYSTS[4]) */
     if (FMC->KEYSTS & FMC_KEYSTS_CFGFLAG_Msk)
         printf("[CONFIG LOCK] ");                     /* CFGFLAG(FMC_KEYSTS[5]) */
-    if (FMC->KEYSTS & FMC_KEYSTS_SPFLAG_Msk)
-        printf("[SPROM LOCK] \n");                    /* SPFLAG(FMC_KEYSTS[6]) */
 
     printf("KPCNT: 0x%x, KPMAX: 0x%x\n", (FMC->KPCNT & FMC_KPCNT_KPCNT_Msk) >> FMC_KPCNT_KPCNT_Pos,    /* KPCNT(FMC_KPCNT[3:0])  */
            (FMC->KPCNT & FMC_KPCNT_KPMAX_Msk) >> FMC_KPCNT_KPMAX_Pos);   /* KPMAX(FMC_KPCNT[11:8]) */
@@ -105,7 +103,7 @@ int main()
     dump_key_status();                 /* Dump FMC security key status. */
 
     /* Setup a new key */
-    if (FMC_SKey_Setup(good_key, KPMAX_VAL, KEMAX_VAL, 0, 0) < 0) {
+    if (FMC_SKey_Setup(good_key, KPMAX_VAL, KEMAX_VAL, 0) < 0) {
         printf("Failed to setup key!\n");   /* error message */
         FMC_SKey_Compare(good_key);         /* Enter the right key for key comparison. */
         if (FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk) {
