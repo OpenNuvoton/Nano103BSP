@@ -57,12 +57,16 @@ void RS485_INT_HANDLE(void)
     volatile char addr;
     volatile char regRX;
 
-    if((UART1->INTSTS & UART_INTSTS_RLSIF_Msk) && (UART1->INTSTS & UART_INTSTS_RDAIF_Msk)) {  /* RLS INT & RDA INT */
-        if((UART1->TRSR & UART_TRSR_ADDRDETF_Msk) && (UART1->FUNCSEL & 0x3)) { /* ADD_IF, RS485 mode */
+    if((UART1->INTSTS & UART_INTSTS_RLSIF_Msk) && (UART1->INTSTS & UART_INTSTS_RDAIF_Msk))    /* RLS INT & RDA INT */
+    {
+        if((UART1->TRSR & UART_TRSR_ADDRDETF_Msk) && (UART1->FUNCSEL & 0x3))   /* ADD_IF, RS485 mode */
+        {
             addr = UART1->DAT;
             UART1->TRSR |= UART_TRSR_ADDRDETF_Msk;             /* clear ADD_IF flag */
         }
-    } else if((UART1->INTSTS & UART_INTSTS_RDAIF_Msk)) { /* Rx Ready */
+    }
+    else if((UART1->INTSTS & UART_INTSTS_RDAIF_Msk))     /* Rx Ready */
+    {
         /* RDA INT */
         regRX = UART1->DAT;
 
@@ -70,7 +74,9 @@ void RS485_INT_HANDLE(void)
             UART1->DAT  = regRX;  // transfer data
         else
             u8RecData[r_pointer++] = regRX;  // receive data
-    } else if((UART1->INTSTS & UART_INTSTS_RXTOIF_Msk)) { /* Rx Ready */
+    }
+    else if((UART1->INTSTS & UART_INTSTS_RXTOIF_Msk))     /* Rx Ready */
+    {
         /* Time-out INT */
         regRX = UART1->DAT;
 
@@ -78,7 +84,9 @@ void RS485_INT_HANDLE(void)
             UART1->DAT  = regRX;  // transfer data
         else
             u8RecData[r_pointer++] = regRX;  // receive data
-    } else if(UART1->INTSTS & UART_INTSTS_BUFERRIF_Msk) {       /* Buff Error INT */
+    }
+    else if(UART1->INTSTS & UART_INTSTS_BUFERRIF_Msk)           /* Buff Error INT */
+    {
         printf("\nBuffer Error...\n");
         while(1);
     }
@@ -91,7 +99,8 @@ void RS485_INT_HANDLE(void)
  */
 void UART1_IRQHandler(void)
 {
-    if((UART1->FUNCSEL & 0x3) == 0x3) { // RS485 function
+    if((UART1->FUNCSEL & 0x3) == 0x3)   // RS485 function
+    {
         RS485_INT_HANDLE();
     }
 }
@@ -140,8 +149,10 @@ void RS485_ReceiveTest()
     while(r_pointer<(RXBUFSIZE-1));
 
     /* Compare Data */
-    for(i=0; i<(RXBUFSIZE-1); i++) {
-        if(u8RecData[i] != ((i+1)&0xFF) ) {
+    for(i=0; i<(RXBUFSIZE-1); i++)
+    {
+        if(u8RecData[i] != ((i+1)&0xFF) )
+        {
             printf("Compare Data Failed\n");
         }
     }

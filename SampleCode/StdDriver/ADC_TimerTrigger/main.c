@@ -25,43 +25,55 @@ void PDMA_IRQHandler(void) /* PDMA interrupt service routine */
     uint32_t status = PDMA_GET_INT_STATUS();  /* Get PDMA interrupt status */
 
     // Check PDMA interrupt status
-    if (status & 0x2) { /* CH1 */
+    if (status & 0x2)   /* CH1 */
+    {
         // Check if PDMA transfer done
         if (PDMA_GET_CH_INT_STS(1) & 0x2)
             g_u32PdmaTDoneInt = 1;
         // Clear PDMA transfer done interrupt flag
         PDMA_CLR_CH_INT_FLAG(1, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else if (status & 0x4) { /* CH2 */
+    }
+    else if (status & 0x4)     /* CH2 */
+    {
         // Check if PDMA transfer done
         if (PDMA_GET_CH_INT_STS(2) & 0x2)
             g_u32PdmaTDoneInt = 2;
         // Clear PDMA transfer done interrupt flag
         PDMA_CLR_CH_INT_FLAG(2, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else if (status & 0x8) { /* CH3 */
+    }
+    else if (status & 0x8)     /* CH3 */
+    {
         // Check if PDMA transfer done
         if (PDMA_GET_CH_INT_STS(3) & 0x2)
             g_u32PdmaTDoneInt = 3;
         // Clear PDMA transfer done interrupt flag
         PDMA_CLR_CH_INT_FLAG(3, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else if (status & 0x10) { /* CH4 */
+    }
+    else if (status & 0x10)     /* CH4 */
+    {
         // Check if PDMA transfer done
         if (PDMA_GET_CH_INT_STS(4) & 0x2)
             g_u32PdmaTDoneInt = 4;
         // Clear PDMA transfer done interrupt flag
         PDMA_CLR_CH_INT_FLAG(4, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else if (status & 0x20) { /* CH5 */
+    }
+    else if (status & 0x20)     /* CH5 */
+    {
         // Check if PDMA transfer done
         if (PDMA_GET_CH_INT_STS(5) & 0x2)
             g_u32PdmaTDoneInt = 5;
         // Clear PDMA transfer done interrupt flag
         PDMA_CLR_CH_INT_FLAG(5, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else if (status & 0x40) { /* CH6 */
+    }
+    else if (status & 0x40)     /* CH6 */
+    {
         // Check if PDMA transfer done
         if (PDMA_GET_CH_INT_STS(6) & 0x2)
             g_u32PdmaTDoneInt = 6;
         // Clear PDMA transfer done interrupt flag
         PDMA_CLR_CH_INT_FLAG(6, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else
+    }
+    else
         printf("unknown interrupt !!\n");
 }
 

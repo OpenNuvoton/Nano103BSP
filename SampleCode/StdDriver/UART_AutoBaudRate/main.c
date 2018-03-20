@@ -35,11 +35,12 @@ extern char GetChar(void);
   */
 uint32_t GetUartClk(void)
 {
-    uint32_t clk =0 , div;
+    uint32_t clk =0, div;
 
     div = ( (CLK->CLKDIV0 & CLK_CLKDIV0_UART1DIV_Msk) >> CLK_CLKDIV0_UART1DIV_Pos) + 1; /* Get UART clock divider */
 
-    switch (CLK->CLKSEL2 & CLK_CLKSEL2_UART1SEL_Msk) { /* Get UART selected clock source */
+    switch (CLK->CLKSEL2 & CLK_CLKSEL2_UART1SEL_Msk)   /* Get UART selected clock source */
+    {
     case 0:
         clk = __HXT; /* HXT */
         break;
@@ -52,7 +53,8 @@ uint32_t GetUartClk(void)
     case 3:
         if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)
             clk = __HIRC36M; /* HIRC 36M Hz*/
-        else {
+        else
+        {
             if(CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk)
                 clk = __HIRC16M; /* HIRC 16M Hz*/
             else
@@ -78,7 +80,8 @@ void UART_ABAUD_INT_HANDLE(void)
 
     g_bWait = FALSE;
 
-    if (UART1->TRSR & UART_TRSR_ABRDIF_Msk) { /* Auto baud-rate INT */
+    if (UART1->TRSR & UART_TRSR_ABRDIF_Msk)   /* Auto baud-rate INT */
+    {
         UART1->TRSR = UART_TRSR_ABRDIF_Msk;
 
         clk = GetUartClk(); /* Get UART clock */
@@ -87,7 +90,8 @@ void UART_ABAUD_INT_HANDLE(void)
         printf("> BAUD Rate = %d\n", result); /* print real baud rate */
     }
 
-    if (UART1->TRSR & UART_TRSR_ABRDTOIF_Msk) { /* Auto baud-rate flag */
+    if (UART1->TRSR & UART_TRSR_ABRDTOIF_Msk)   /* Auto baud-rate flag */
+    {
         UART1->TRSR = UART_TRSR_ABRDTOIF_Msk; /* clear auto baud-rate flag */
         printf("\nFailed -- Auto Baud Rate Time Out...");
     }
@@ -101,7 +105,8 @@ void UART_ABAUD_INT_HANDLE(void)
  */
 void UART1_IRQHandler(void)
 {
-    if(UART1->INTSTS & UART_INTSTS_ABRIF_Msk) {
+    if(UART1->INTSTS & UART_INTSTS_ABRIF_Msk)
+    {
         UART_ABAUD_INT_HANDLE();
     }
 }

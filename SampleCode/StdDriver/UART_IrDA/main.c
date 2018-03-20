@@ -42,11 +42,13 @@ void IRDA_FunctionTest()
     /* Set IrDA mode */
     UART_SelectIrDAMode(UART1, 57600, 1); /* Select IrDA mode and set baudrate */
 
-    do {
+    do
+    {
         bInChar[0] = getchar(); /* Get data from debug port */
         printf("   Input: %c , Send %c out\n",bInChar[0],bInChar[0]);
         UART_Write(UART1,bInChar,1); /* Send data */
-    } while(bInChar[0] !='0'); /* wait user input '0' to exit test */
+    }
+    while(bInChar[0] !='0');   /* wait user input '0' to exit test */
 
     printf("\nIrDA Sample Demo End.\n");
 

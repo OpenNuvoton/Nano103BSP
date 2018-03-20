@@ -21,7 +21,8 @@ void PWM0_IRQHandler(void)  // PWM0 interrupt service routine
 
     // Channel 0 frequency is 100Hz, every 1 second enter this IRQ handler 100 times.
     // enable/disable PWM0 output every 1 second.
-    if(++cnt == 100) {
+    if(++cnt == 100)
+    {
         if(out)
             PWM_EnableOutput(PWM0, 0x3F);
         else

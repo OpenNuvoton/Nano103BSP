@@ -73,7 +73,8 @@ int main(void)
     SYS_UnlockReg(); /* Unlock protected registers */
 
     /* Timer0 Wake up Test */
-    while(1) {
+    while(1)
+    {
         CLK_PowerDown(); /* Let system enter to Power-down mode */
         printf("System has been waken-up.\n"); /* System wake-up from Power-down mode */
         while(!UART_IS_TX_EMPTY(UART0));

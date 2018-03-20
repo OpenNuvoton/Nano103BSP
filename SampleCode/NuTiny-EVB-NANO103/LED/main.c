@@ -57,7 +57,8 @@ int main (void)
     /* Configure PB.14 as Output mode */
     GPIO_SetMode(PA, BIT14, GPIO_PMD_OUTPUT);
 
-    while(1) {
+    while(1)
+    {
         PA14 = 0;
         CLK_SysTickDelay(500000);
         PA14 = 1;

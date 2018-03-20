@@ -22,12 +22,15 @@
  */
 void GPABC_IRQHandler(void)
 {
-    if (PC->INTSRC & BIT3) {    /* To check if PC.3 interrupt occurred */
+    if (PC->INTSRC & BIT3)      /* To check if PC.3 interrupt occurred */
+    {
         PC->INTSRC = BIT3;      /* Clear PC.3 interrupt flag */
         PD6 = PD6 ^ 1;          /* Toggle PD6 for LED control */
         printf("PC.3 INT occurred. \n");
 
-    } else {    /* Unexpected interrupt. Just clear all PORTA, PORTB, PORTC interrupts */
+    }
+    else        /* Unexpected interrupt. Just clear all PORTA, PORTB, PORTC interrupts */
+    {
         PA->INTSRC = PA->INTSRC;    /* clear all flags of GPA interrupt */
         PB->INTSRC = PB->INTSRC;    /* clear all flags of GPB interrupt */
         PC->INTSRC = PC->INTSRC;    /* clear all flags of GPC interrupt */
@@ -47,11 +50,14 @@ void GPABC_IRQHandler(void)
  */
 void GPDEF_IRQHandler(void)
 {
-    if (PE->INTSRC & BIT5) {    /* To check if PE.5 interrupt occurred */
+    if (PE->INTSRC & BIT5)      /* To check if PE.5 interrupt occurred */
+    {
         PE->INTSRC = BIT5;      /* clear PE.5 interrupt flag */
         PD6 = PD6 ^ 1;          /* Toggle PD6 for LED control */
         printf("PE.5 INT occurred. \n");
-    } else {    /* Unexpected interrupt. Just clear all PORTD, PORTE and PORTF interrupts */
+    }
+    else        /* Unexpected interrupt. Just clear all PORTD, PORTE and PORTF interrupts */
+    {
         PD->INTSRC = PD->INTSRC;    /* clear all flags of GPD interrupt */
         PE->INTSRC = PE->INTSRC;    /* clear all flags of GPE interrupt */
         PF->INTSRC = PF->INTSRC;    /* clear all flags of GPF interrupt */
@@ -177,20 +183,25 @@ int main (void)
     /* Use Pin Data Input/Output Control to pull specified I/O or get I/O pin status */
     PA0 = 0;                /* Output low */
     CLK_SysTickDelay(10);   /* wait for IO stable */
-    if (PD7 != 0) {         /* check if the PD7 state is low */
+    if (PD7 != 0)           /* check if the PD7 state is low */
+    {
         i32Err = 1;
     }
 
     PA0 = 1;                /* Output high */
     CLK_SysTickDelay(10);   /* wait for IO stable */
-    if (PD7 != 1) {         /* check if the PD7 state is high */
+    if (PD7 != 1)           /* check if the PD7 state is high */
+    {
         i32Err = 1;
     }
 
     /* show the result */
-    if ( i32Err ) {
+    if ( i32Err )
+    {
         printf("  [FAIL] --- Please make sure PA.0 and PD.7 are connected. \n");
-    } else {
+    }
+    else
+    {
         printf("  [OK] \n");
     }
 

@@ -140,7 +140,8 @@ int32_t main (void)
     /* I2C can release SCK pin and enter I2C normal operation */
     I2C_CLEAR_WAKEUP_ACK_DONE_FLAG(I2C0);
 
-    if(u8ReadWrite) {   // master wants to read
+    if(u8ReadWrite)     // master wants to read
+    {
         /* 1st data */
         I2C_SET_CONTROL_REG(I2C0, I2C_SI | I2C_AA); // trigger it
 
@@ -158,7 +159,9 @@ int32_t main (void)
         I2C_WAIT_READY(I2C0);                       // wait if interrupt happens
         I2C_SET_CONTROL_REG(I2C0, I2C_SI | I2C_STO);// trigger it
         while(I2C0->CTL & I2C_CTL_STO_Msk);        // wait until STOP happens
-    } else {        // master wants to write
+    }
+    else            // master wants to write
+    {
         /* 1st data */
         I2C_SET_CONTROL_REG(I2C0, I2C_SI | I2C_AA); // trigger it
         I2C_WAIT_READY(I2C0);                       // wait if interrupt happens

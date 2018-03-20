@@ -158,13 +158,15 @@ void UART1_TEST_HANDLE()
     uint32_t u32IntSts= UART1->INTSTS;
 
     /* Check Receive line status */
-    if(u32IntSts & UART_INTSTS_RLSIF_Msk) {
+    if(u32IntSts & UART_INTSTS_RLSIF_Msk)
+    {
         printf("\n UART1 Receive Line error!!");
         UART1->FIFOSTS = (UART_FIFOSTS_PEF_Msk | UART_FIFOSTS_FEF_Msk | UART_FIFOSTS_BIF_Msk);
     }
 
     /*Check Buffer error */
-    if(u32IntSts & UART_INTSTS_BUFERRIF_Msk) {
+    if(u32IntSts & UART_INTSTS_BUFERRIF_Msk)
+    {
         printf("\n UART1 Buffer Overflow error");
         UART1->FIFOSTS = (UART_FIFOSTS_RXOVIF_Msk | UART_FIFOSTS_TXOVIF_Msk);
     }
@@ -179,15 +181,19 @@ void PDMA_IRQHandler(void)
 {
     uint32_t status = PDMA_GET_INT_STATUS();
 
-    if (status & 0x2) { /* CH1 */
+    if (status & 0x2)   /* CH1 */
+    {
         if (PDMA_GET_CH_INT_STS(1) & 0x2)
             u32IsTestOver = 1;
         PDMA_CLR_CH_INT_FLAG(1, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else if (status & 0x4) { /* CH2 */
+    }
+    else if (status & 0x4)     /* CH2 */
+    {
         if (PDMA_GET_CH_INT_STS(2) & 0x2)
             u32IsTestOver = 2;
         PDMA_CLR_CH_INT_FLAG(2, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else
+    }
+    else
         printf("unknown interrupt !!\n");
 }
 
@@ -216,7 +222,8 @@ void UART_PDMATest()
         This test function will compare Tx and Rx buffer data.
     */
 
-    for(i = 0; i < TEST_SIZE; i++) {
+    for(i = 0; i < TEST_SIZE; i++)
+    {
         TX_Buffer[i] = (i & 0xff);
         RX_Buffer[i] = 0;
     }
@@ -254,8 +261,10 @@ void UART_PDMATest()
     while(u32IsTestOver != 2); // wait transfer finish
 
     /* Compare Data */
-    for(i = 0; i < TEST_SIZE; i++) {
-        if(TX_Buffer[i] != RX_Buffer[i]) {
+    for(i = 0; i < TEST_SIZE; i++)
+    {
+        if(TX_Buffer[i] != RX_Buffer[i])
+        {
             printf("\n Test fail!!");
             while(1);
         }

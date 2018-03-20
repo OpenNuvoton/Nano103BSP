@@ -127,38 +127,46 @@ void PowerDown_Check()
 
     NVIC->ICER[0] = 0xFFFFFFFF; //disables a device-specific interrupt in the NVIC interrupt controller
 
-    for(j = 0; j < 11; j++) { /* Check MFP is set GPIO mode or not */
+    for(j = 0; j < 11; j++)   /* Check MFP is set GPIO mode or not */
+    {
         SYS_MFP = *((volatile unsigned int *)(SYS_BASE + 0x30 + (j *4)));
 
-        for(i = 0; i < 8; i++) {
-            if(SYS_MFP & (0x7 << (i*4))) {
+        for(i = 0; i < 8; i++)
+        {
+            if(SYS_MFP & (0x7 << (i*4)))
+            {
                 gpio_error_count++;
                 printf("\nGP%s Pin %d not set GPIO !!", symbo_gpio[(j/2)], (i+(8*(j%2))) );
             }
         }
     }
 
-    if( (SYS->GPF_MFPL & SYS_GPF_MFPL_PF3MFP_XT1_IN) != SYS_GPF_MFPL_PF3MFP_XT1_IN) { /* Check HXT_OUT pin */
+    if( (SYS->GPF_MFPL & SYS_GPF_MFPL_PF3MFP_XT1_IN) != SYS_GPF_MFPL_PF3MFP_XT1_IN)   /* Check HXT_OUT pin */
+    {
         printf("\nGPF Pin 2 not set HXT_OUT !!!");
         printf("\nPlease Check GPF Pin 2 not connect crystal !!!");
     }
 
-    if( (SYS->GPF_MFPL & SYS_GPF_MFPL_PF2MFP_XT1_OUT) != SYS_GPF_MFPL_PF2MFP_XT1_OUT) { /* Check HXT_IN pin */
+    if( (SYS->GPF_MFPL & SYS_GPF_MFPL_PF2MFP_XT1_OUT) != SYS_GPF_MFPL_PF2MFP_XT1_OUT)   /* Check HXT_IN pin */
+    {
         printf("\nGPF Pin 3 not set HXT_IN !!!");
         printf("\nPlease Check GPF Pin 3 not connect crystal !!!");
     }
 
-    for(j = 0; j < 6; j++) {
+    for(j = 0; j < 6; j++)
+    {
         tGPIO =(GPIO_T*)((uint32_t)PA + (j * (0x40)));
 
-        for(i = 0; i < 16; i++) {
+        for(i = 0; i < 16; i++)
+        {
             if((j == 4) & (i > 9)) // GPE
                 break;
 
             if((j == 5) & (i > 5)) // GPF
                 break;
 
-            if(!(tGPIO->PIN & (1 << i))) { /* Check Pin status */
+            if(!(tGPIO->PIN & (1 << i)))   /* Check Pin status */
+            {
                 gpio_error_count++;
                 printf("\nGP%s Pin %d can not pull high!!", symbo_gpio[j], i);
             }

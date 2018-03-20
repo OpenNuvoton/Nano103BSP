@@ -20,7 +20,8 @@ void ADC_IRQHandler(void)  //ADC interrupt service routine
     // Get ADC conversion finish interrupt flag
     u32Flag = ADC_GET_INT_FLAG(ADC, ADC_ADF_INT);
     // Check ADF flag
-    if(u32Flag & ADC_ADF_INT) {
+    if(u32Flag & ADC_ADF_INT)
+    {
         uint32_t u32Result;
         // Show channel 0,1,2 conversion result
         u32Result = ADC_GET_CONVERSION_DATA(ADC, 0);

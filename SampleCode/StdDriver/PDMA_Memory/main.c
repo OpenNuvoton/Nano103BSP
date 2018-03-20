@@ -31,23 +31,31 @@ void PDMA_IRQHandler(void)
 {
     uint32_t status = PDMA_GET_INT_STATUS();   /* Get interrupt status */
 
-    if (status & 0x2) {         /* CH1 */
+    if (status & 0x2)           /* CH1 */
+    {
         if (PDMA_GET_CH_INT_STS(1) & 0x2)   /* Transfer down interrupt */
             u32IsTestOver = 1;              /* channel 1 interrupt occurred */
         PDMA_CLR_CH_INT_FLAG(1, PDMA_CH_INTSTSn_TDIF_Msk);  /* Clear transfer down interrupt */
-    } else if (status & 0x4) {  /* CH2 */
+    }
+    else if (status & 0x4)      /* CH2 */
+    {
         if (PDMA_GET_CH_INT_STS(2) & 0x2)   /* Transfer down interrupt */
             u32IsTestOver = 2;              /* channel 2 interrupt occurred */
         PDMA_CLR_CH_INT_FLAG(2, PDMA_CH_INTSTSn_TDIF_Msk);  /* Clear transfer down interrupt */
-    } else if (status & 0x8) {  /* CH3 */
+    }
+    else if (status & 0x8)      /* CH3 */
+    {
         if (PDMA_GET_CH_INT_STS(3) & 0x2)   /* Transfer down interrupt */
             u32IsTestOver = 3;              /* channel 3 interrupt occurred */
         PDMA_CLR_CH_INT_FLAG(3, PDMA_CH_INTSTSn_TDIF_Msk);  /* Clear transfer down interrupt */
-    } else if (status & 0x10) { /* CH4 */
+    }
+    else if (status & 0x10)     /* CH4 */
+    {
         if (PDMA_GET_CH_INT_STS(4) & 0x2)   /* Transfer down interrupt */
             u32IsTestOver = 4;              /* channel 4 interrupt occurred */
         PDMA_CLR_CH_INT_FLAG(4, PDMA_CH_INTSTSn_TDIF_Msk);  /* Clear transfer down interrupt */
-    } else  /* unknown interrupt occurred */
+    }
+    else    /* unknown interrupt occurred */
         printf("unknown interrupt !!\n");
 }
 

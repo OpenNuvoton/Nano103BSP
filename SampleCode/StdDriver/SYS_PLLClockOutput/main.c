@@ -48,14 +48,16 @@ int32_t pi(void)
     for(; b - c;)
         f[b++] = a / 5;
 
-    for(; d = 0, g = c * 2; c -= 14, piResult[i++] = e + d / a, e = d % a) {
+    for(; d = 0, g = c * 2; c -= 14, piResult[i++] = e + d / a, e = d % a)
+    {
         if(i == 19)
             break;
 
         for(b = c; d += f[b] * a, f[b] = d % --g, d /= g--, --b; d *= b);
     }
 
-    for(i = 0; i < 19; i++) {
+    for(i = 0; i < 19; i++)
+    {
         if(piTbl[i] != piResult[i])
             i32Err = -1;
     }
@@ -68,13 +70,15 @@ void Delay(uint32_t x)
     int32_t i;
 
     /* Generate a delay loop */
-    for(i = 0; i < x; i++) {
+    for(i = 0; i < x; i++)
+    {
         __NOP();
         __NOP();
     }
 }
 
-uint32_t g_au32PllSetting[] = {
+uint32_t g_au32PllSetting[] =
+{
     16000000,  /* PLL = 16MHz */
     18000000,  /* PLL = 18MHz */
     20000000,  /* PLL = 20MHz */
@@ -96,7 +100,8 @@ void SYS_PLL_Test(void)
 
     printf("\n-----------------------[ Test PLL ]---------------------------\n");
 
-    for(i = 0; i < sizeof(g_au32PllSetting) / sizeof(g_au32PllSetting[0]) ; i++) {
+    for(i = 0; i < sizeof(g_au32PllSetting) / sizeof(g_au32PllSetting[0]) ; i++)
+    {
         /* Select HCLK clock source from PLL.
            PLL will be configured to twice specified frequency.
            And HCLK clock source divider will be set to 2.
@@ -108,9 +113,12 @@ void SYS_PLL_Test(void)
 
         Delay(0x400000); /* The delay loop is used to check if the CPU speed is increasing */
 
-        if(pi()) { /* Calculating lots of digits of pi */
+        if(pi())   /* Calculating lots of digits of pi */
+        {
             printf("[FAIL]\n");
-        } else {
+        }
+        else
+        {
             printf("[OK]\n");
         }
 
@@ -181,7 +189,8 @@ int32_t main (void)
     printf("+----------------------------------------+\n");
     printf("|    Nano103 System Driver Sample Code   |\n");
     printf("+----------------------------------------+\n");
-    if (M32(FLAG_ADDR) == SIGNATURE) {
+    if (M32(FLAG_ADDR) == SIGNATURE)
+    {
         printf("  CPU Reset success!\n");
         M32(FLAG_ADDR) = 0;
         printf("  Press any key to continue ...\n");
@@ -200,7 +209,8 @@ int32_t main (void)
     SYS_UnlockReg(); /* Unlock protected registers for Brown-Out Detector and power down settings */
 
     /* Check if the write-protected registers are unlocked before BOD setting and CPU Reset */
-    if (SYS->REGLCTL != 0) {
+    if (SYS->REGLCTL != 0)
+    {
         printf("Protected Address is Unlocked\n");
     }
 

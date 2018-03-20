@@ -81,7 +81,8 @@ int32_t main (void)
     /* Output selected clock to CKO */
     CLK_EnableCKO(CLK_CLKSEL2_CLKOSEL_HCLK, 0, 1);
 
-    while(1) {
+    while(1)
+    {
         SYS->RPDBCLK |= SYS_RPDBCLK_RSTPDBCLK_Msk; // Reset pin setting, HIRC0 is selected as reset pin debounce clock.
         CLK->CLKSEL0 &= ~(CLK_CLKSEL0_ISPSEL_Msk); // ISP Clock Source from HIRC0
         SYS->LDOCTL = (SYS->LDOCTL & ~(SYS_LDOCTL_FMCLVEN_Msk));// Flash memory low voltage(1.2V) mode Disabled

@@ -25,43 +25,55 @@ void PDMA_IRQHandler(void) /* PDMA interrupt service routine */
     uint32_t status = PDMA_GET_INT_STATUS();  /* Get PDMA interrupt status */
 
     //Check PDMA interrupt status
-    if (status & 0x2) { /* CH1 */
+    if (status & 0x2)   /* CH1 */
+    {
         //Check if transfer done
         if (PDMA_GET_CH_INT_STS(1) & 0x2)
             g_u32PdmaTDoneInt = 1;
         //Clear transfer done flag
         PDMA_CLR_CH_INT_FLAG(1, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else if (status & 0x4) { /* CH2 */
+    }
+    else if (status & 0x4)     /* CH2 */
+    {
         //Check if transfer done
         if (PDMA_GET_CH_INT_STS(2) & 0x2)
             g_u32PdmaTDoneInt = 2;
         //Clear transfer done flag
         PDMA_CLR_CH_INT_FLAG(2, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else if (status & 0x8) { /* CH3 */
+    }
+    else if (status & 0x8)     /* CH3 */
+    {
         //Check if transfer done
         if (PDMA_GET_CH_INT_STS(3) & 0x2)
             g_u32PdmaTDoneInt = 3;
         //Clear transfer done flag
         PDMA_CLR_CH_INT_FLAG(3, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else if (status & 0x10) { /* CH4 */
+    }
+    else if (status & 0x10)     /* CH4 */
+    {
         //Check if transfer done
         if (PDMA_GET_CH_INT_STS(4) & 0x2)
             g_u32PdmaTDoneInt = 4;
         //Clear transfer done flag
         PDMA_CLR_CH_INT_FLAG(4, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else if (status & 0x20) { /* CH5 */
+    }
+    else if (status & 0x20)     /* CH5 */
+    {
         //Check if transfer done
         if (PDMA_GET_CH_INT_STS(5) & 0x2)
             g_u32PdmaTDoneInt = 5;
         //Clear transfer done flag
         PDMA_CLR_CH_INT_FLAG(5, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else if (status & 0x40) { /* CH6 */
+    }
+    else if (status & 0x40)     /* CH6 */
+    {
         //Check if transfer done
         if (PDMA_GET_CH_INT_STS(6) & 0x2)
             g_u32PdmaTDoneInt = 6;
         //Clear transfer done flag
         PDMA_CLR_CH_INT_FLAG(6, PDMA_CH_INTSTSn_TDIF_Msk);
-    } else
+    }
+    else
         printf("unknown interrupt !!\n");
 }
 
@@ -207,15 +219,18 @@ int32_t main (void)
     ADC_START_CONV(ADC);
 
     /* Continuously trigger ADC until u32DataCount >= PDMA transfer count (ADC_TEST_COUNT) */
-    while(1) {
+    while(1)
+    {
         uint32_t u32Ch;
         /* Check ADC conversion finish flag */
-        if(ADC_GET_INT_FLAG(ADC,ADC_ADF_INT) == 1) {
+        if(ADC_GET_INT_FLAG(ADC,ADC_ADF_INT) == 1)
+        {
             /* Clear ADC conversion finish flag */
             ADC_CLR_INT_FLAG(ADC, ADC_ADF_INT);
 
             /* Get conversion data from ADC data register */
-            for (u32Ch = 0; u32Ch < 4; u32Ch++) {
+            for (u32Ch = 0; u32Ch < 4; u32Ch++)
+            {
                 au32AdcData[u32DataCount++] = ADC_GET_CONVERSION_DATA(ADC, u32Ch);
                 if(u32DataCount >= ADC_TEST_COUNT)
                     break;
@@ -232,8 +247,10 @@ int32_t main (void)
     while(g_u32PdmaTDoneInt == 0);
 
     /* Compare the log of ADC conversion data register with the content of PDMA target buffer */
-    for(u32DataCount = 0; u32DataCount < ADC_TEST_COUNT; u32DataCount++) {
-        if( au32AdcData[u32DataCount] != (g_au32RxPDMADestination[u32DataCount] & 0xFFF) ) {
+    for(u32DataCount = 0; u32DataCount < ADC_TEST_COUNT; u32DataCount++)
+    {
+        if( au32AdcData[u32DataCount] != (g_au32RxPDMADestination[u32DataCount] & 0xFFF) )
+        {
             printf("*** Count %d, conversion result: 0x%X, PDMA result: 0x%X.\n",
                    u32DataCount, au32AdcData[u32DataCount], g_au32RxPDMADestination[u32DataCount]);
             u32ErrorCount++;

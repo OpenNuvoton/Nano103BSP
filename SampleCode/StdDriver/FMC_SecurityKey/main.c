@@ -103,10 +103,12 @@ int main()
     dump_key_status();                 /* Dump FMC security key status. */
 
     /* Setup a new key */
-    if (FMC_SKey_Setup(good_key, KPMAX_VAL, KEMAX_VAL, 0) < 0) {
+    if (FMC_SKey_Setup(good_key, KPMAX_VAL, KEMAX_VAL, 0) < 0)
+    {
         printf("Failed to setup key!\n");   /* error message */
         FMC_SKey_Compare(good_key);         /* Enter the right key for key comparison. */
-        if (FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk) {
+        if (FMC->KEYSTS & FMC_KEYSTS_KEYLOCK_Msk)
+        {
             printf("Have no right security key!\n");
             while (1);                     /* Failed to setup security key. Program aborted. */
         }

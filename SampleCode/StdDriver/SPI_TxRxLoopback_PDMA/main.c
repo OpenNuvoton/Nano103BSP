@@ -33,13 +33,17 @@ void PDMA_IRQHandler(void)
 {
     uint32_t status = PDMA_GET_INT_STATUS();
 
-    if (status & 0x2) { /* done */
+    if (status & 0x2)   /* done */
+    {
         PDMA_CLR_CH_INT_FLAG(1, PDMA_CH_INTSTSn_TDIF_Msk); // Clear PDMA Channel 1 Interrupt Flag
-    } else if (status & 0x4) { /* done */
+    }
+    else if (status & 0x4)     /* done */
+    {
         if (PDMA_GET_CH_INT_STS(2) & 0x2) // Get PDMA Channel 2 Interrupt Status
             u32IsTestOver = 1;
         PDMA_CLR_CH_INT_FLAG(2, PDMA_CH_INTSTSn_TDIF_Msk); //Clear PDMA Channel2 Interrupt Flag
-    } else
+    }
+    else
         printf("unknown interrupt, status=0x%x !!\n", status); //Unknown status
 }
 
@@ -198,8 +202,10 @@ int main(void)
         printf("PDMA error !\n");
 
     /* Check Rx Data */
-    for(i=0; i<PDMA_TEST_COUNT; i++) {
-        if(g_au32SrcData[i] != g_au32DstData[i]) {
+    for(i=0; i<PDMA_TEST_COUNT; i++)
+    {
+        if(g_au32SrcData[i] != g_au32DstData[i])
+        {
             u32Err ++;
         }
     }

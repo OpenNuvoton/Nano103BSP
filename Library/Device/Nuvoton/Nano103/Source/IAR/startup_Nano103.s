@@ -1,13 +1,13 @@
-;/******************************************************************************
+;/****************************************************************************//**
 ; * @file     startup_Nano103.s
 ; * @version  V1.00
 ; * $Revision: 4 $
-; * $Date: 16/01/28 3:56p $ 
+; * $Date: 16/01/28 3:56p $
 ; * @brief    CMSIS ARM Cortex-M0 Core Device Startup File
 ; *
 ; * @note
 ; * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
-;*****************************************************************************/  
+;*****************************************************************************/
 
     MODULE  ?cstartup
 
@@ -92,9 +92,12 @@ Reset_Handler
         LDR     R1, =0x88
         STR     R1, [R0]
 
-        ; Init POR
+        ; Disable POR
         LDR     R2, =0x50000060
         LDR     R1, =0x00005AA5
+        STR     R1, [R2]
+        LDR     R2, =0x50000014
+        LDR     R1, =0x000000C0
         STR     R1, [R2]
         ; Unlock PA9 in 32 pin package
         LDR     R0, =SystemInit

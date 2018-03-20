@@ -26,31 +26,37 @@ void HIRC_IRQHandler()
     uint32_t status_HIRC0, status_HIRC1, status_MIRC;
 
     status_HIRC0 = SYS_GET_IRC0TRIM_INT_FLAG(); /* Gets the HIRC0 trim status */
-    if(status_HIRC0 & BIT1) { /* Get Trim Failure Interrupt */
+    if(status_HIRC0 & BIT1)   /* Get Trim Failure Interrupt */
+    {
         printf("HIRC0 Trim Failure Interrupt\n");               /* Display HIRC0 trim status */
         SYS_CLEAR_IRC0TRIM_INT_FLAG(SYS_IRCTISTS_FAIL_INT);     /* Clear Trim Failure Interrupt */
     }
-    if(status_HIRC0 & BIT2) { /* Get LXT Clock Error Interrupt */
+    if(status_HIRC0 & BIT2)   /* Get LXT Clock Error Interrupt */
+    {
         printf("LXT Clock Error Interrupt\n");                  /* Display HIRC0 trim status */
         SYS_CLEAR_IRC0TRIM_INT_FLAG(SYS_IRCTISTS_32KERR_INT);   /* Clear LXT Clock Error Interrupt */
     }
 
     status_HIRC1 = SYS_GET_IRC1TRIM_INT_FLAG(); /* Gets the HIRC1 trim status */
-    if(status_HIRC1 & BIT1) { /* Get Trim Failure Interrupt */
+    if(status_HIRC1 & BIT1)   /* Get Trim Failure Interrupt */
+    {
         printf("HIRC1 Trim Failure Interrupt\n");              /* Display HIRC1 trim status */
         SYS_CLEAR_IRC1TRIM_INT_FLAG(SYS_IRCTISTS_FAIL_INT);    /* Clear Trim Failure Interrupt */
     }
-    if(status_HIRC1 & BIT2) { /* Get LXT Clock Error Interrupt */
+    if(status_HIRC1 & BIT2)   /* Get LXT Clock Error Interrupt */
+    {
         printf("LXT Clock Error Interrupt\n"); /* Display HIRC1 trim status */
         SYS_CLEAR_IRC1TRIM_INT_FLAG(SYS_IRCTISTS_32KERR_INT);  /* Clear LXT Clock Error Interrupt */
     }
 
     status_MIRC = SYS_GET_MIRCTRIM_INT_FLAG(); /* Gets the MIRC trim status */
-    if(status_MIRC & BIT1) { /* Get Trim Failure Interrupt */
+    if(status_MIRC & BIT1)   /* Get Trim Failure Interrupt */
+    {
         printf("MIRC Trim Failure Interrupt\n");              /* Display MIRC trim status */
         SYS_CLEAR_MIRCTRIM_INT_FLAG(SYS_IRCTISTS_FAIL_INT);   /* Clear Trim Failure Interrupt */
     }
-    if(status_MIRC & BIT2) { /* Get LXT Clock Error Interrupt */
+    if(status_MIRC & BIT2)   /* Get LXT Clock Error Interrupt */
+    {
         printf("LXT Clock Error Interrupt\n");                /* Display MIRC trim status */
         SYS_CLEAR_MIRCTRIM_INT_FLAG(SYS_IRCTISTS_32KERR_INT); /* Clear LXT Clock Error Interrupt */
     }
@@ -115,8 +121,10 @@ void TrimHIRC0(uint32_t IRCType)
     CLK_SysTickDelay(2000); /* Waiting for HIRC0 Frequency Lock */
 
     /* Get HIRC0 Frequency Lock */
-    while(1) {
-        if(SYS_GET_IRC0TRIM_INT_FLAG() & BIT0) {
+    while(1)
+    {
+        if(SYS_GET_IRC0TRIM_INT_FLAG() & BIT0)
+        {
             printf("HIRC0 Frequency Lock\n");
             break;
         }
@@ -146,8 +154,10 @@ void TrimHIRC1(void)
     CLK_SysTickDelay(2000); /* Waiting for HIRC1 Frequency Lock */
 
     /* Get HIRC1 Frequency Lock */
-    while(1) {
-        if(SYS_GET_IRC1TRIM_INT_FLAG() & BIT0) {
+    while(1)
+    {
+        if(SYS_GET_IRC1TRIM_INT_FLAG() & BIT0)
+        {
             printf("HIRC1 Frequency Lock\n");
             CLK_SetHCLK(CLK_CLKSEL0_HCLKSEL_HIRC1, CLK_HCLK_CLK_DIVIDER(1));  // HCLK = HIRC1(36MHz)
             break;
@@ -178,8 +188,10 @@ void TrimMIRC(void)
     CLK_SysTickDelay(2000); /* Waiting for MIRC Frequency Lock */
 
     /* Get MIRC Frequency Lock */
-    while(1) {
-        if(SYS_GET_MIRCTRIM_INT_FLAG() & BIT0) {
+    while(1)
+    {
+        if(SYS_GET_MIRCTRIM_INT_FLAG() & BIT0)
+        {
             printf("MIRC Frequency Lock\n");
             break;
         }
@@ -224,7 +236,8 @@ int32_t main (void)
     /* Enable Interrupt */
     NVIC_EnableIRQ(HIRC_IRQn);
 
-    switch(u8Item) {
+    switch(u8Item)
+    {
     case '1':
         TrimHIRC0(SYS_IRC0TCTL_TRIM_11_0592M); /* Trim HIRC to 11.0592MHz */
         break;

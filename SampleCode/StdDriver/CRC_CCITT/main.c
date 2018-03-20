@@ -29,17 +29,22 @@ void PDMA_IRQHandler(void)
     uint32_t status = CRC_GET_INT_FLAG();   /* Get interrupt status */
 
     /* check which interrupt occurred */
-    if (status & DMA_CRC_DMAISTS_TDIF_Msk) {    /* Is Data transfer done interrupt? */
+    if (status & DMA_CRC_DMAISTS_TDIF_Msk)      /* Is Data transfer done interrupt? */
+    {
 
         CRC_CLR_INT_FLAG(DMA_CRC_DMAISTS_TDIF_Msk); /* Clear Block Transfer Done Interrupt Flag */
 
         g_u8IsBlockTransferDoneINTFlag++;
-    } else if (status & DMA_CRC_DMAISTS_TABTIF_Msk) {   /* Is Target abort interrupt? */
+    }
+    else if (status & DMA_CRC_DMAISTS_TABTIF_Msk)       /* Is Target abort interrupt? */
+    {
 
         CRC_CLR_INT_FLAG(DMA_CRC_DMAISTS_TABTIF_Msk);   /* Clear Target Abort Interrupt Flag */
 
         g_u8IsTargetAbortINTFlag++;
-    } else {
+    }
+    else
+    {
         printf("Un-expected interrupts. \n");   /* unexpected interrupt occurred */
     }
 }
@@ -136,12 +141,15 @@ void CRC_CCITTPolyModeTest(uint32_t u32SrcAddr, uint32_t u32TransByteCount)
     CRC_StartDMATransfer(u32SrcAddr, u32TransByteCount);
 
     /* Wait CRC Interrupt Flag occurred */
-    while (1) {
-        if (g_u8IsTargetAbortINTFlag == 1) {    /* target abort occurred */
+    while (1)
+    {
+        if (g_u8IsTargetAbortINTFlag == 1)      /* target abort occurred */
+        {
             printf("DMA Target Abort Interrupt occurred. \n");
             break;
         }
-        if (g_u8IsBlockTransferDoneINTFlag == 1) {  /* data transfer done */
+        if (g_u8IsBlockTransferDoneINTFlag == 1)    /* data transfer done */
+        {
             break;
         }
     }
@@ -151,7 +159,8 @@ void CRC_CCITTPolyModeTest(uint32_t u32SrcAddr, uint32_t u32TransByteCount)
 
     /* Get CRC Checksum value */
     u32CalChecksum = CRC_GetChecksum();
-    if (g_u8IsBlockTransferDoneINTFlag == 1) {
+    if (g_u8IsBlockTransferDoneINTFlag == 1)
+    {
         printf("CRC checksum is 0x%X ... %s.\n\n", u32CalChecksum, (u32CalChecksum==u32TargetChecksum)?"PASS":"FAIL");
     }
 }
@@ -194,7 +203,8 @@ void CRC_CRC8PolyModeTest(uint32_t u32SrcAddr, uint32_t u32TransByteCount)
     CRC_Open(CRC_8, 0, 0x5A, CRC_CPU_WDATA_8);
 
     /* In CPU mode, user need to write data into data port */
-    for (i=0; i<u32TransByteCount; i++) {
+    for (i=0; i<u32TransByteCount; i++)
+    {
         CRC_WRITE_DATA((p8SrcAddr[i]&0xFF));    /* write data into data port */
     }
 

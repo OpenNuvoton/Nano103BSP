@@ -98,7 +98,8 @@ int main()
      *  length is FMC_LDROM_SIZE. The CRC32 calculation result will be put in u32ChkSum.
      */
     ret = FMC_GetChkSum(FMC_LDROM_BASE, FMC_LDROM_SIZE, &u32ChkSum);
-    if (ret < 0)  {
+    if (ret < 0)
+    {
         printf("Failed on calculating LDROM CRC32 checksum!\n");
         goto lexit;                    /* failed */
     }
@@ -111,7 +112,8 @@ int main()
      *  length is FMC_APROM_END. The CRC32 calculation result will be put in u32ChkSum.
      */
     ret = FMC_GetChkSum(FMC_APROM_BASE, FMC_APROM_END - FMC_APROM_BASE, &u32ChkSum);
-    if (ret < 0)  {
+    if (ret < 0)
+    {
         printf("Failed on calculating APROM CRC32 checksum!\n");
         goto lexit;
     }

@@ -57,12 +57,16 @@ void RS485_INT_HANDLE(void)
     volatile char addr;
     volatile char regRX;
 
-    if((UART1->INTSTS & UART_INTSTS_RLSIF_Msk) && (UART1->INTSTS & UART_INTSTS_RDAIF_Msk)) {  /* RLS INT & RDA INT */
-        if((UART1->TRSR & UART_TRSR_ADDRDETF_Msk) && (UART1->FUNCSEL & 0x3)) { /* ADD_IF, RS485 mode */
+    if((UART1->INTSTS & UART_INTSTS_RLSIF_Msk) && (UART1->INTSTS & UART_INTSTS_RDAIF_Msk))    /* RLS INT & RDA INT */
+    {
+        if((UART1->TRSR & UART_TRSR_ADDRDETF_Msk) && (UART1->FUNCSEL & 0x3))   /* ADD_IF, RS485 mode */
+        {
             addr = UART1->DAT;
             UART1->TRSR |= UART_TRSR_ADDRDETF_Msk;             /* clear ADD_IF flag */
         }
-    } else if((UART1->INTSTS & UART_INTSTS_RDAIF_Msk)) { /* Rx Ready */
+    }
+    else if((UART1->INTSTS & UART_INTSTS_RDAIF_Msk))     /* Rx Ready */
+    {
         /* RDA INT */
         regRX = UART1->DAT;
 
@@ -70,7 +74,9 @@ void RS485_INT_HANDLE(void)
             UART1->DAT  = regRX; // transfer data
         else
             u8RecData[r_pointer++] = regRX; // receive data
-    } else if((UART1->INTSTS & UART_INTSTS_RXTOIF_Msk)) { /* Rx Ready */
+    }
+    else if((UART1->INTSTS & UART_INTSTS_RXTOIF_Msk))     /* Rx Ready */
+    {
         /* Time-out INT */
         regRX = UART1->DAT;
 
@@ -78,7 +84,9 @@ void RS485_INT_HANDLE(void)
             UART1->DAT  = regRX; // transfer data
         else
             u8RecData[r_pointer++] = regRX; // receive data
-    } else if(UART1->INTSTS & UART_INTSTS_BUFERRIF_Msk) {       /* Buff Error INT */
+    }
+    else if(UART1->INTSTS & UART_INTSTS_BUFERRIF_Msk)           /* Buff Error INT */
+    {
         printf("\nBuffer Error...\n");
         while(1);
     }
@@ -91,7 +99,8 @@ void RS485_INT_HANDLE(void)
  */
 void UART1_IRQHandler(void)
 {
-    if((UART1->FUNCSEL & 0x3) == 0x3) { // RS485 function
+    if((UART1->FUNCSEL & 0x3) == 0x3)   // RS485 function
+    {
         RS485_INT_HANDLE();
     }
 }
@@ -105,7 +114,8 @@ void RS485Send(uint8_t *BufferPtr, uint32_t Length)
 {
     uint32_t i;
 
-    for ( i = 0; i < Length; i++ ) {
+    for ( i = 0; i < Length; i++ )
+    {
         /* Check Tx transfer done */
         while ( !(UART1->FIFOSTS & UART_FIFOSTS_TXENDF_Msk) );
 
@@ -157,7 +167,8 @@ void RS485_TransmitTest()
 
     u8RecData[0] = 0xC0;                            /* RS485_SLAVE_ADR; */
 
-    for(i=1; i<RXBUFSIZE; i++) {
+    for(i=1; i<RXBUFSIZE; i++)
+    {
         u8RecData[i] = i & 0xFF;
     }
 

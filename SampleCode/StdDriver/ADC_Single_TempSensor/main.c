@@ -124,7 +124,8 @@ int32_t main (void)
 
     u8ADF = 0;
 
-    while (1) {
+    while (1)
+    {
         if (ADC_IS_BUSY())
             continue;
 

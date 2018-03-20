@@ -16,7 +16,8 @@ void PWM0_IRQHandler(void);  // PWM0 interrupt service routine
 
 void PWM0_IRQHandler(void)  // PWM0 interrupt service routine
 {
-    if(PWM_GetCaptureIntFlag(PWM0, 0) > 1) { // Get capture interrupt flag
+    if(PWM_GetCaptureIntFlag(PWM0, 0) > 1)   // Get capture interrupt flag
+    {
         PWM_ClearCaptureIntFlag(PWM0, 0, PWM_CAPTURE_INT_FALLING_LATCH); // Clear capture interrupt flag
     }
 }
@@ -51,7 +52,8 @@ void CalPeriodTime(PWM_T *PWM, uint32_t u32Ch)
 
     u32i = 0;
 
-    while(u32i < 4) {
+    while(u32i < 4)
+    {
         /* Wait for Capture Falling Indicator */
         while(PWM_GetCaptureIntFlag(PWM, u32Ch) < 2);
 
@@ -164,7 +166,8 @@ int32_t main(void)
     printf("    PWM0_CH0(PA.12 PWM0 channel 0) <--> PWM0_CH2(PA.14 PWM0 channel 2)\n\n");
     printf("Use PWM0 Channel 0(PA.12) to capture the PWM0 Channel 2(PA.14) Waveform\n");
 
-    while(1) {
+    while(1)
+    {
         printf("Press any key to start PWM Capture Test\n");
         getchar();
 

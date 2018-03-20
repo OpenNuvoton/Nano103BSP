@@ -27,7 +27,8 @@ volatile uint32_t  g_u32SnoopDetection = 0;
 void RTC_IRQHandler(void)
 {
 
-    if (RTC->INTSTS & RTC_INTSTS_SNPDIF_Msk) {      /* snoop interrupt occurred */
+    if (RTC->INTSTS & RTC_INTSTS_SNPDIF_Msk)        /* snoop interrupt occurred */
+    {
         RTC->INTSTS = RTC_INTSTS_SNPDIF_Msk; /* clear interrupt status */
 
         printf("\n Snoop detection interrupt !! ");

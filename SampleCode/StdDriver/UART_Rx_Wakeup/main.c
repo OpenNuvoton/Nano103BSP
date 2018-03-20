@@ -39,7 +39,8 @@ void PDWU_IRQHandler()
 void GPABC_IRQHandler(void)
 {
     /* To check if PB.0 interrupt occurred */
-    if (PB->INTSRC & BIT0) {
+    if (PB->INTSRC & BIT0)
+    {
         PB->INTSRC = BIT0;
         printf("PB.0 INT occurred. \n");
 
@@ -58,7 +59,8 @@ void UART0_IRQHandler(void)
     u32IntStatus = UART0->INTSTS;
 
     /* Wake Up */
-    if (u32IntStatus & UART_INTSTS_WKUPIF_Msk) {
+    if (u32IntStatus & UART_INTSTS_WKUPIF_Msk)
+    {
         printf("UART_Wakeup. \n");
         UART0->INTSTS = UART_INTSTS_WKUPIF_Msk; //clear status
 
@@ -199,7 +201,8 @@ int32_t main(void)
     /* Enter power down mode */
     Enter_PowerDown();
 
-    if (_Wakeup_Flag == 1) {
+    if (_Wakeup_Flag == 1)
+    {
         _Wakeup_Flag = 0;
 
         printf("\n Wakeup OK!!");
