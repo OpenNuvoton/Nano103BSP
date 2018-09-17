@@ -48,7 +48,6 @@ uint8_t testPattern[] = {0x00,0x55,0xAA,0xFF,0x00,0x55,0xFF,0xAA};
 /*---------------------------------------------------------------------------------------------------------*/
 /* Define functions prototype                                                                              */
 /*---------------------------------------------------------------------------------------------------------*/
-void UART_INT_HANDLE(uint32_t u32IntStatus);
 int32_t DataCompare(uint8_t InBuffer[],uint8_t OutBuffer[],int32_t len);
 extern char GetChar(void);
 
@@ -135,7 +134,7 @@ int8_t Parity(int i)
 
     if(i>=64)
         printf("The ID is not match protocol\n");
-    for(mask=0; mask<7; mask++)
+    for(mask=0; mask<6; mask++)
         ID[mask] = (i & (1<<mask))>>mask;
 
     p_Bit[0] = (ID[0] + ID[1] + ID[2] + ID[4])%2;

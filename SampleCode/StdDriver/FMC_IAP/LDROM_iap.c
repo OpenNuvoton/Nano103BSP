@@ -14,6 +14,32 @@
 
 typedef void (FUNC_PTR)(void);
 
+/**
+ * @brief    Routine to get a char
+ * @param    None
+ * @returns  Get value from UART debug port or semihost
+ * @details  Wait UART debug port or semihost to input a char.
+ */
+static char GetChar(void)
+{
+    while(1)
+    {
+        if ((UART0->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk) == 0)
+        {
+            return (UART0->DAT);
+        }
+    }
+}
+
+extern void SendChar_ToUART(int ch);
+
+static void PutString(char *str)
+{
+    while (*str != '\0')
+    {
+        SendChar_ToUART(*str++);
+    }
+}
 
 void SYS_Init(void)
 {
@@ -69,49 +95,59 @@ __asm __set_SP(uint32_t _sp)
 
 int main()
 {
-    FUNC_PTR    *func;                 /* function pointer */
+    FUNC_PTR    *func;                 /* function pointer                                */
+    uint32_t    sp;                    /* stack base address                              */
 
-    SYS_Init();                        /* Init System, IP clock and multi-function I/O */
-    UART0_Init();                      /* Initialize UART 0. */
+    SYS_Init();                        /* Init System, IP clock and multi-function I/O    */
+    UART0_Init();                      /* Initialize UART 0.                              */
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* SAMPLE CODE                                                                                             */
     /*---------------------------------------------------------------------------------------------------------*/
 
-    printf("\n\n");
-    printf("+----------------------------------------+\n");
-    printf("|     Nano103 FMC IAP Sample Code        |\n");
-    printf("|           [LDROM code]                 |\n");
-    printf("+----------------------------------------+\n");
+    PutString("\n\n");
+    PutString("+----------------------------------------+\n");
+    PutString("|     Nano103 FMC IAP Sample Code        |\n");
+    PutString("|           [LDROM code]                 |\n");
+    PutString("+----------------------------------------+\n");
 
     SYS_UnlockReg();                   /* Unlock protected registers */
 
     FMC_Open();                        /* Enable FMC ISP function */
 
-    printf("\n\nPress any key to branch to APROM...\n");
-    getchar();                         /* block on waiting for any one character input from UART0 */
+    PutString("\n\nPress any key to branch to APROM...\n");
+    GetChar();                         /* block on waiting for any one character input from UART0 */
 
-    printf("\n\nChange VECMAP and branch to LDROM...\n");
+    PutString("\n\nChange VECMAP and branch to APROM...\n");
     while (!(UART0->FIFOSTS & UART_FIFOSTS_TXEMPTY_Msk));       /* wait until UART0 TX FIFO is empty */
-
-    /*  NOTE!
-     *     Before change VECMAP, user MUST disable all interrupts.
-     */
-    FMC_SetVectorPageAddr(FMC_APROM_BASE);        /* Vector remap APROM page 0 to address 0. */
-    SYS_LockReg();                                /* Lock protected registers */
-
-    /*
-     *  The reset handler address of an executable image is located at offset 0x4.
-     *  Thus, this sample get reset handler address of APROM code from FMC_APROM_BASE + 0x4.
-     */
-    func = (FUNC_PTR *)*(uint32_t *)(FMC_APROM_BASE + 4);
 
     /*
      *  The stack base address of an executable image is located at offset 0x0.
      *  Thus, this sample get stack base address of APROM code from FMC_APROM_BASE + 0x0.
      */
-    __set_SP(*(uint32_t *)FMC_APROM_BASE);
+    sp = FMC_Read(FMC_APROM_BASE);
 
+    /*
+     *  The reset handler address of an executable image is located at offset 0x4.
+     *  Thus, this sample get reset handler address of APROM code from FMC_APROM_BASE + 0x4.
+     */
+    func =  (FUNC_PTR *)FMC_Read(FMC_APROM_BASE+4);
+
+    /*  NOTE!
+     *     Before change VECMAP, user MUST disable all interrupts.
+     */
+
+    FMC->ISPCMD  = FMC_ISPCMD_VECMAP;              /* Vector remap APROM page 0 to address 0. */
+    FMC->ISPADDR = FMC_APROM_BASE;
+    FMC->ISPTRG  = FMC_ISPTRG_ISPGO_Msk;
+    while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) ;
+    SYS_LockReg();                                /* Lock protected registers */
+
+#if defined (__GNUC__) && !defined(__ARMCC_VERSION) /* for GNU C compiler */
+    asm("msr msp, %0" : : "r" (sp));
+#else
+    __set_SP(sp);
+#endif
     /*
      *  Brach to the LDROM code's reset handler in way of function call.
      */

@@ -23,17 +23,21 @@
  */
 void GPABC_IRQHandler(void)
 {
-    if(GPIO_GET_INT_FLAG(PA, BIT1))     /* To check if PA.1 interrupt occurred */
-    {
+    uint32_t reg;
+    if(GPIO_GET_INT_FLAG(PA, BIT1))
+    {   /* To check if PA.1 interrupt occurred */
         GPIO_CLR_INT_FLAG(PA, BIT1);    /* Clear PA.1 interrupt flag */
         printf("PA.1 INT occurred. \n");
 
     }
-    else        /* Un-expected interrupt. Just clear all PORTA, PORTB, PORTC interrupts */
-    {
-        PA->INTSRC = PA->INTSRC;    /* clear all flags of GPA interrupt */
-        PB->INTSRC = PB->INTSRC;    /* clear all flags of GPB interrupt */
-        PC->INTSRC = PC->INTSRC;    /* clear all flags of GPC interrupt */
+    else
+    {    /* Un-expected interrupt. Just clear all PORTA, PORTB, PORTC interrupts */
+        reg = PA->INTSRC;
+        PA->INTSRC = reg;
+        reg = PB->INTSRC;
+        PB->INTSRC = reg;
+        reg = PC->INTSRC;
+        PC->INTSRC = reg;
         printf("Un-expected interrupts. \n");
     }
 }

@@ -260,7 +260,11 @@ int main()
              *  The stack base address of an executable image is located at offset 0x0.
              *  Thus, this sample get stack base address of LDROM code from FMC_LDROM_BASE + 0x0.
              */
+#if defined (__GNUC__) && !defined(__ARMCC_VERSION) /* for GNU C compiler */
+            asm("msr msp, %0" : : "r" (*(uint32_t *)FMC_LDROM_BASE));
+#else
             __set_SP(*(uint32_t *)FMC_LDROM_BASE);
+#endif
             /*
              *  Brach to the LDROM code's reset handler in way of function call.
              */

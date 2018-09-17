@@ -22,18 +22,23 @@
  */
 void GPABC_IRQHandler(void)
 {
-    if (PC->INTSRC & BIT3)      /* To check if PC.3 interrupt occurred */
-    {
+
+    uint32_t reg;
+    if (PC->INTSRC & BIT3)
+    {    /* To check if PC.3 interrupt occurred */
         PC->INTSRC = BIT3;      /* Clear PC.3 interrupt flag */
         PD6 = PD6 ^ 1;          /* Toggle PD6 for LED control */
         printf("PC.3 INT occurred. \n");
-
     }
-    else        /* Unexpected interrupt. Just clear all PORTA, PORTB, PORTC interrupts */
-    {
-        PA->INTSRC = PA->INTSRC;    /* clear all flags of GPA interrupt */
-        PB->INTSRC = PB->INTSRC;    /* clear all flags of GPB interrupt */
-        PC->INTSRC = PC->INTSRC;    /* clear all flags of GPC interrupt */
+    else
+    {    /* Unexpected interrupt. Just clear all PORTA, PORTB, PORTC interrupts */
+        /* Un-expected interrupt. Just clear all PORTA, PORTB, PORTC interrupts */
+        reg = PA->INTSRC;
+        PA->INTSRC = reg;
+        reg = PB->INTSRC;
+        PB->INTSRC = reg;
+        reg = PC->INTSRC;
+        PC->INTSRC = reg;
         printf("Unexpected interrupts. \n");
     }
 }
@@ -50,18 +55,23 @@ void GPABC_IRQHandler(void)
  */
 void GPDEF_IRQHandler(void)
 {
-    if (PE->INTSRC & BIT5)      /* To check if PE.5 interrupt occurred */
-    {
+    uint32_t reg;
+    if (PE->INTSRC & BIT5)
+    {    /* To check if PE.5 interrupt occurred */
         PE->INTSRC = BIT5;      /* clear PE.5 interrupt flag */
         PD6 = PD6 ^ 1;          /* Toggle PD6 for LED control */
         printf("PE.5 INT occurred. \n");
     }
-    else        /* Unexpected interrupt. Just clear all PORTD, PORTE and PORTF interrupts */
-    {
-        PD->INTSRC = PD->INTSRC;    /* clear all flags of GPD interrupt */
-        PE->INTSRC = PE->INTSRC;    /* clear all flags of GPE interrupt */
-        PF->INTSRC = PF->INTSRC;    /* clear all flags of GPF interrupt */
-        printf("Unexpected interrupts. \n");
+    else
+    {    /* Unexpected interrupt. Just clear all PORTD, PORTE and PORTF interrupts */
+        /* Un-expected interrupt. Just clear all PORTD, PORTE and PORTF interrupts */
+        reg = PD->INTSRC;
+        PD->INTSRC = reg;
+        reg = PE->INTSRC;
+        PE->INTSRC = reg;
+        reg = PF->INTSRC;
+        PF->INTSRC = reg;
+        printf("Un-expected interrupts. \n");
     }
 }
 

@@ -116,7 +116,7 @@ void UART1_Init()
  *  @param  None
  *  @return None
  */
-int main(void)
+int32_t main(void)
 {
     /* Init System, IP clock and multi-function I/O */
     SYS_Init();

@@ -11,6 +11,10 @@
 #include <stdio.h>
 #include "Nano103.h"
 
+#if defined (__GNUC__) && !defined(__ARMCC_VERSION) && defined(OS_USE_SEMIHOSTING)
+extern void initialise_monitor_handles(void);
+#endif
+
 /**
  *  @brief  Init system clock and I/O multi function .
  *  @param  None
@@ -27,9 +31,9 @@ void SYS_Init(void)
     /* Enable External XTAL (4~24 MHz) */
     CLK->PWRCTL |= CLK_PWRCTL_HXTEN_Msk; // HXT Enabled
 
-    while((CLK->STATUS & CLK_STATUS_HXTSTB_Msk) != CLK_STATUS_HXTSTB_Msk) /* Waiting for 12MHz clock ready */
+    while((CLK->STATUS & CLK_STATUS_HXTSTB_Msk) != CLK_STATUS_HXTSTB_Msk); /* Waiting for 12MHz clock ready */
 
-        CLK->CLKSEL0 = (CLK->CLKSEL0 &~ CLK_CLKSEL0_HCLKSEL_Msk) | (CLK_CLKSEL0_HCLKSEL_HXT); /* Switch HCLK clock source to XTAL */
+    CLK->CLKSEL0 = (CLK->CLKSEL0 &~ CLK_CLKSEL0_HCLKSEL_Msk) | (CLK_CLKSEL0_HCLKSEL_HXT); /* Switch HCLK clock source to XTAL */
 
     /* Enable IP clock */
 
@@ -61,6 +65,10 @@ int32_t main()
 
     /* Init System, IP clock and multi-function I/O */
     SYS_Init();
+
+#if defined (__GNUC__) && !defined(__ARMCC_VERSION) && defined(OS_USE_SEMIHOSTING)
+    initialise_monitor_handles();
+#endif
 
     printf("\n Start SEMIHOST test: \n");
 
