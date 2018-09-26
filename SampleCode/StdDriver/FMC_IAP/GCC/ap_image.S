@@ -20,7 +20,7 @@
 .text
 
 loaderImage1Base:
-.incbin  "..\\..\\LDROM_code.bin"
+.incbin  "../../LDROM_code.bin"
 loaderImage1Limit:
 .space   4
 
