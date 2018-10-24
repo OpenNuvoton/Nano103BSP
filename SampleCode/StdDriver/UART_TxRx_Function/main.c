@@ -167,7 +167,7 @@ void UART1_TEST_HANDLE()
     uint32_t u32IntSts= UART1->INTSTS;
 
     /* Check Receive Data */
-    if(u32IntSts & UART_INTSTS_RDAIF_Msk)
+    if((u32IntSts & UART_INTSTS_RDAIF_Msk) || (u32IntSts & UART_INTSTS_RXTOIF_Msk))
     {
         printf("\nInput:");
 
@@ -234,6 +234,12 @@ void UART_FunctionTest()
         UART1 will print the received char on screen.
     */
 
+    /* Set RX Trigger Level = 8 */
+    UART1->LINE = (UART1->LINE &~ UART_LINE_RFITL_Msk) | UART_LINE_RFITL_8BYTES;
+
+    /* Set Timeout time 0x3E bit-time */
+    UART_SetTimeoutCnt(UART1,0x3E);
+
     /* Enable Interrupt */
     UART_ENABLE_INT(UART1, (UART_INTEN_RDAIEN_Msk | UART_INTEN_THREIEN_Msk | UART_INTEN_RXTOIEN_Msk));
     NVIC_EnableIRQ(UART1_IRQn);
@@ -242,6 +248,10 @@ void UART_FunctionTest()
     /* Disable Interrupt */
     UART_DISABLE_INT(UART1, (UART_INTEN_RDAIEN_Msk | UART_INTEN_THREIEN_Msk | UART_INTEN_RXTOIEN_Msk));
     NVIC_DisableIRQ(UART1_IRQn);
+
+    /* Reset RX Trigger Level */
+    UART1->LINE &= ~UART_LINE_RFITL_Msk;
+
     g_bWait =TRUE;
     printf("\nUART Sample Demo End.\n");
 

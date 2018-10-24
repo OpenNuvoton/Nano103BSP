@@ -224,11 +224,11 @@ void UART_FunctionTest()
 
     UART_EnableFlowCtrl(UART1); /* Enable Flow control */
 
-    UART_ENABLE_INT(UART1, (UART_INTEN_RDAIEN_Msk | UART_INTEN_THREIEN_Msk | UART_INTEN_RXTOIEN_Msk)); /* Enable interrupt */
+    UART_ENABLE_INT(UART1, (UART_INTEN_RDAIEN_Msk | UART_INTEN_THREIEN_Msk)); /* Enable interrupt */
     NVIC_EnableIRQ(UART1_IRQn); /* Enable NVIC IRQ */
     while(g_bWait); /* wait user press '0' to exit test function */
 
-    UART_DISABLE_INT(UART1, (UART_INTEN_RDAIEN_Msk | UART_INTEN_THREIEN_Msk | UART_INTEN_RXTOIEN_Msk)); /* Disable interrupt */
+    UART_DISABLE_INT(UART1, (UART_INTEN_RDAIEN_Msk | UART_INTEN_THREIEN_Msk)); /* Disable interrupt */
     NVIC_DisableIRQ(UART1_IRQn); /* Disable NVIC IRQ */
     g_bWait =TRUE;
     printf("\nUART Sample Demo End.\n");
