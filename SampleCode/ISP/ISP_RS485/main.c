@@ -14,7 +14,7 @@
 #define PLL_CLOCK       36000000
 
 #define nRTSPin                 (PA13)
-#define REVEIVE_MODE            (0)
+#define RECEIVE_MODE            (0)
 #define TRANSMIT_MODE           (1)
 
 /**
@@ -47,8 +47,8 @@ void SYS_Init(void)
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
     /* Set PA13 for RTS  */
-    PA->MODE = (PA->MODE & ~(0x3ul << (13 << 1))) | (GPIO_PMD_OUTPUT << (13 << 1));
-    nRTSPin = REVEIVE_MODE;
+    PA->MODE = (PA->MODE & ~GPIO_MODE_MODE13_Msk) | (GPIO_PMD_OUTPUT << GPIO_MODE_MODE13_Pos);
+    nRTSPin = RECEIVE_MODE;
 
     /* Set PA multi-function pins for UART0 RXD and TXD  */
     SYS->GPA_MFPH &= ~(SYS_GPA_MFPH_PA14MFP_Msk | SYS_GPA_MFPH_PA15MFP_Msk);
@@ -114,9 +114,9 @@ int main(void)
             ParseCmd(uart_rcvbuf, 64);
             PutString();
 
-            while ((UART0->FIFOSTS & UART_FIFOSTS_TXEMPTY_Msk) == 0);
+            while ((UART0->FIFOSTS & UART_FIFOSTS_TXENDF_Msk) == 0);
 
-            nRTSPin = REVEIVE_MODE;
+            nRTSPin = RECEIVE_MODE;
             NVIC_EnableIRQ(UART0_IRQn);
         }
     }
