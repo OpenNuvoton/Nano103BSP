@@ -8,17 +8,49 @@
 #include <stdio.h>
 #include <string.h>
 #include "targetdev.h"
-
-uint32_t Pclk0;
-uint32_t Pclk1;
-
-#define TEST_COUNT 16
-
-uint32_t u32DataCount;
-uint32_t *_response_buff;
-uint32_t spi_rcvbuf[TEST_COUNT];
+#include "spi_transfer.h"
 
 #define PLL_CLOCK       36000000
+
+__weak uint32_t TIMER_Open(TIMER_T *timer, uint32_t u32Mode, uint32_t u32Freq)
+{
+    uint32_t u32Clk = __HXT; // TIMER_GetModuleClock(timer);
+    uint32_t u32Cmpr = 0UL, u32Prescale = 0UL;
+
+    /* Fastest possible timer working freq is (u32Clk / 2). While cmpr = 2, prescaler = 0. */
+    if (u32Freq > (u32Clk / 2UL))
+    {
+        u32Cmpr = 2UL;
+    }
+    else
+    {
+        u32Cmpr = u32Clk / u32Freq;
+        u32Prescale = (u32Cmpr >> 24);  /* for 24 bits CMPDAT */
+
+        if (u32Prescale > 0UL)
+        {
+            u32Cmpr = u32Cmpr / (u32Prescale + 1UL);
+        }
+    }
+
+    timer->CTL = u32Mode | u32Prescale;
+    timer->CMP = u32Cmpr;
+    return (u32Clk / (u32Cmpr * (u32Prescale + 1UL)));
+}
+
+void TIMER3_Init(void)
+{
+    /* Enable IP clock */
+    CLK->APBCLK |= CLK_APBCLK_TMR3_EN;
+    /* Select IP clock source */
+    CLK->CLKSEL2 = (CLK->CLKSEL2 & (~CLK_CLKSEL2_TMR3SEL_Msk)) | CLK_CLKSEL2_TMR3SEL_HXT;
+    // Set timer frequency to 3HZ
+    TIMER_Open(TIMER3, TIMER_PERIODIC_MODE, 3);
+    // Enable timer interrupt
+    TIMER_EnableInt(TIMER3);
+    // Start Timer 3
+    TIMER_Start(TIMER3);
+}
 
 uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
 {
@@ -48,6 +80,8 @@ uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
 
 void SYS_Init(void)
 {
+    SYS_UnlockReg();
+
     CLK->PWRCTL |= (CLK_PWRCTL_HXTEN_Msk | CLK_PWRCTL_MIRCEN_Msk);
     while ((!(CLK->STATUS & CLK_STATUS_MIRCSTB_Msk)));
     CLK_EnablePLL(CLK_PLLCTL_PLL_SRC_MIRC, PLL_CLOCK);
@@ -55,11 +89,8 @@ void SYS_Init(void)
     CLK->CLKDIV0 = (CLK->CLKDIV0 & ~CLK_CLKDIV0_HCLKDIV_Msk) | CLK_HCLK_CLK_DIVIDER(1);
     CLK->CLKSEL0 = (CLK->CLKSEL0 & ~(CLK_CLKSEL0_HIRCSEL_Msk | CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_CLKSEL0_HCLKSEL_PLL;
 
-    /* Enable IP clock */
-    CLK->APBCLK |= CLK_APBCLK_SPI1_EN; // SPI1 Clock Enable
-
-    /* Select SPI1 clock source */
-    CLK->CLKSEL2 = (CLK->CLKSEL2 & ~(CLK_CLKSEL2_SPI1SEL_Msk))| CLK_CLKSEL2_SPI1SEL_PLL;
+    /* Enable SPI1 peripheral clock */
+    CLK->APBCLK |= CLK_APBCLK_SPI1_EN;
 
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CycylesPerUs automatically. */
@@ -74,74 +105,49 @@ void SYS_Init(void)
     SYS->GPB_MFPL |= (SYS_GPB_MFPL_PB0MFP_SPI1_MOSI0 | SYS_GPB_MFPL_PB1MFP_SPI1_MISO0 | SYS_GPB_MFPL_PB2MFP_SPI1_CLK | SYS_GPB_MFPL_PB3MFP_SPI1_SS0);
 }
 
-void SPI_Init(void)
-{
-    /* Configure as a slave, clock idle low, 32-bit transaction, drive output on falling clock edge and latch input on rising edge. */
-    /* Configure SPI1 as a low level active device. */
-    /* Default setting: slave selection signal is low level active. */
-    SPI1->SSCTL = SPI_SS0_ACTIVE_LOW | SPI_SSCTL_SSLTRIG_Msk;
-    /* Default setting: MSB first, disable unit transfer interrupt, SP_CYCLE = 0. */
-    SPI1->CTL = SPI_SLAVE | ((32 & 0x1F) << SPI_CTL_DWIDTH_Pos) | (SPI_MODE_0);
-    /* Set DIVIDER = 0 */
-    SPI1->CLKDIV = 0U;
-}
-
 int main(void)
 {
-    /* Unlock protected registers */
-    SYS_UnlockReg();
-
+    uint32_t cmd_buff[16];
     SYS_Init();
-
     CLK->AHBCLK |= CLK_AHBCLK_ISPCKEN_Msk;
-    FMC->ISPCTL |= FMC_ISPCTL_ISPEN_Msk | FMC_ISPCTL_APUEN_Msk;    // (1ul << 0)
+    //FMC->ISPCTL |= FMC_ISPCTL_ISPEN_Msk | FMC_ISPCTL_APUEN_Msk;    // (1ul << 0)
+    FMC->ISPCTL |= FMC_ISPCTL_ISPEN_Msk;    // (1ul << 0)
     g_apromSize = GetApromSize();
     GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
     SPI_Init();
+    GPIO_Init();
+    TIMER3_Init();
 
-    /* Get APROM size, data flash size and address */
-    g_apromSize = GetApromSize();
-    GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
-
-_ISP:
-    u32DataCount = 0;
-
-    SysTick->CTRL = 0UL;
-
-    /* Check data count */
-    while(u32DataCount < TEST_COUNT)
+    while (1)
     {
-        /* Write to TX register */
-        SPI1->TX0 = _response_buff[u32DataCount];
-        /* Trigger SPI data transfer */
-        SPI1->CTL |= SPI_CTL_GOBUSY_Msk;
-        /* Check SPI1 busy status */
-        while((SPI1->CTL & SPI_CTL_GOBUSY_Msk))
+        if (bSpiDataReady == 1)
         {
-            if(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)
-            {
-                goto _ISP;
-            }
+            goto _ISP;
         }
 
-        /* Read RX register */
-        spi_rcvbuf[u32DataCount] = SPI1->RX0;
-        u32DataCount++;
-
-        SysTick->LOAD = 1000 * CyclesPerUs;
-        SysTick->VAL  = (0x00);
-        SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+        if (TIMER3->INTSTS & TIMER_INTSTS_CNTIF_Msk)
+        {
+            goto _APROM;
+        }
     }
 
-    /* Disable SysTick counter */
-    SysTick->CTRL = 0UL;
+_ISP:
 
-    if((u32DataCount == TEST_COUNT) && ((spi_rcvbuf[0] & 0xFFFFFF00) == 0x53504900))
+    while (1)
     {
-        spi_rcvbuf[0] &= 0x000000FF;
-        ParseCmd((unsigned char *)spi_rcvbuf, 64);
+        if (bSpiDataReady == 1)
+        {
+            memcpy(cmd_buff, spi_rcvbuf, 64);
+            bSpiDataReady = 0;
+            ParseCmd((unsigned char *)cmd_buff, 64);
+        }
     }
 
-    goto _ISP;
+_APROM:
+    outpw(&SYS->RSTSTS, 3);//clear bit
+    outpw(&FMC->ISPCTL, inpw(&FMC->ISPCTL) & 0xFFFFFFFC);
+    outpw(&SCB->AIRCR, (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ));
 
+    /* Trap the CPU */
+    while (1);
 }
