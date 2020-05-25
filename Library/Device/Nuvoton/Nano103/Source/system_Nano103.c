@@ -6,6 +6,7 @@
  * @brief    Nano103 system clock init code.
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
  * Copyright (C) 2015~2018 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 
