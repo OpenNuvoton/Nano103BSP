@@ -47,7 +47,7 @@
    *
    * <b>Copyright Notice</b>
    *
-   * Copyright (C) 2015~2018 Nuvoton Technology Corp. All rights reserved.
+   * Copyright (C) 2015~2020 Nuvoton Technology Corp. All rights reserved.
    */
 #ifndef __NANO103_H__
 #define __NANO103_H__
