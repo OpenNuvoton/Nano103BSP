@@ -318,8 +318,11 @@ extern "C"
 #define SC0_MODULE       (( 1UL<<31)|( 2<<29)|(            7<<25)|(16<<20)|( 0<<18)|(          0xF<<10)|(28<<5)|(30<<0)) /*!< SC0 Module  \hideinitializer */
 #define SC1_MODULE       (( 1UL<<31)|( 2<<29)|(            7<<25)|(20<<20)|( 1<<18)|(          0xF<<10)|( 0<<5)|(31<<0)) /*!< SC1 Module  \hideinitializer */
 
+#define CLK_TIMEOUT_ERR            (-1)     /*!< Clock timeout error value \hideinitializer */
+
 /*@}*/ /* end of group NANO103_CLK_EXPORTED_CONSTANTS */
 
+extern int32_t g_CLK_i32ErrCode;
 
 /** @addtogroup NANO103_CLK_EXPORTED_FUNCTIONS CLK Exported Functions
   @{

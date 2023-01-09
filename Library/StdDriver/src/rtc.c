@@ -42,10 +42,26 @@ static volatile uint32_t g_u32hiHour,g_u32loHour,g_u32hiMin,g_u32loMin,g_u32hiSe
 
 void RTC_RWEN(void)
 {
-    RTC->RWEN = RTC_WRITE_KEY;
-    while(!(RTC->RWEN & RTC_RWEN_RWENF_Msk)) RTC->RWEN = RTC_WRITE_KEY;
+    uint32_t u32TimeOutCount = SystemCoreClock; // 1 second timeout
+    uint32_t i = 0;
 
-    while(RTC->RWEN & RTC_RWEN_RTCBUSY_Msk);
+    RTC->RWEN = RTC_WRITE_KEY;
+	
+    //while(!(RTC->RWEN & RTC_RWEN_RWENF_Msk)) RTC->RWEN = RTC_WRITE_KEY;
+    while(!(RTC->RWEN & RTC_RWEN_RWENF_Msk))
+    {
+		RTC->RWEN = RTC_WRITE_KEY;
+        i++;
+        if(i > u32TimeOutCount) break;
+    }
+
+    u32TimeOutCount = SystemCoreClock;
+    i = 0;
+    while(RTC->RWEN & RTC_RWEN_RTCBUSY_Msk)
+    {
+        i++;
+        if(i > u32TimeOutCount) break;
+    }
 }
 
 /// @endcond HIDDEN_SYMBOLS
@@ -101,11 +117,12 @@ void RTC_32KCalibration(int32_t i32FrequencyX10000)
  *                     u32TimeScale: [ \ref RTC_CLOCK_12 / \ref RTC_CLOCK_24]                                  \n
  *                     u8AmPm: [ \ref RTC_AM / \ref RTC_PM]                                                    \n
  *
- *  @return   None
- *
+ *  @retval 0: SUCCESS
+ *  @retval -1: Initialize RTC module fail
  */
-void RTC_Open (S_RTC_TIME_DATA_T *sPt)
+int32_t RTC_Open(S_RTC_TIME_DATA_T *sPt)
 {
+    uint32_t u32TimeOutCount = SystemCoreClock; // 1 second timeout
     uint32_t u32Reg;
 
     RTC->INIT = RTC_INIT_KEY;
@@ -114,11 +131,15 @@ void RTC_Open (S_RTC_TIME_DATA_T *sPt)
     {
         RTC->INIT = RTC_INIT_KEY;
 
-        while(RTC->INIT != 0x1);
+        while(RTC->INIT != 0x1)
+        {
+            if(u32TimeOutCount == 0) return -1;
+            u32TimeOutCount--;
+        }
     }
 
     if(sPt == NULL)
-        return;
+        return -1;
 
     /*-----------------------------------------------------------------------------------------------------*/
     /* Second, set RTC 24/12 hour setting                                                                  */
@@ -171,6 +192,7 @@ void RTC_Open (S_RTC_TIME_DATA_T *sPt)
     RTC_RWEN();
     RTC->WEEKDAY = sPt->u32DayOfWeek;
 
+    return 0;
 }
 
 /**
@@ -786,7 +808,7 @@ void RTC_DisableInt(uint32_t u32IntFlagMask)
  *  @return   None
  *
  */
-void RTC_Close (void)
+void RTC_Close(void)
 {
     CLK->APBCLK  &= ~CLK_APBCLK_RTCCKEN_Msk;
 }

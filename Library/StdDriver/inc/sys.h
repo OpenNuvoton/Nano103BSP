@@ -614,11 +614,14 @@ extern "C"
   */
 __STATIC_INLINE void SYS_UnlockReg(void)
 {
+    uint32_t u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+
     while(SYS->REGLCTL != SYS_REGLCTL_REGLCTL_Msk)
     {
         SYS->REGLCTL = 0x59;
         SYS->REGLCTL = 0x16;
         SYS->REGLCTL = 0x88;
+        if(--u32TimeOutCnt == 0) break;
     }
 }
 
@@ -714,6 +717,7 @@ void SYS_EnableHIRC1Trim(uint32_t u32TrimSel,uint32_t u32TrimEnInt);
 void SYS_DisableHIRC1Trim(void);
 void SYS_EnableMIRCTrim(uint32_t u32TrimSel,uint32_t u32TrimEnInt);
 void SYS_DisableMIRCTrim(void);
+
 /*@}*/ /* end of group NANO103_SYS_EXPORTED_FUNCTIONS */
 
 /*@}*/ /* end of group NANO103_SYS_Driver */

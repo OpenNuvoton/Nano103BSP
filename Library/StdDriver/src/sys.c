@@ -40,7 +40,7 @@
   */
 void SYS_ClearResetSrc(uint32_t u32Src)
 {
-    SYS->RSTSTS |= u32Src;
+    SYS->RSTSTS = u32Src;
 }
 
 /**

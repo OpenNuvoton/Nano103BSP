@@ -19,6 +19,7 @@
   @{
 */
 
+int32_t g_CLK_i32ErrCode = 0;    /*!< CLK global error code */
 
 /** @addtogroup NANO103_CLK_EXPORTED_FUNCTIONS CLK Exported Functions
   @{
@@ -650,19 +651,28 @@ void CLK_DisableSysTick(void)
   *           - \ref CLK_STATUS_HXTSTB_Msk
   * @return   0  clock is not stable
   *           1  clock is stable
-  *
-  * @details  To wait for clock ready by specified CLKSTATUS bit or timeout (~5ms)
+  * @details    To wait for clock ready by specified clock source stable flag or timeout (~500ms)
+  * @note       This function sets g_CLK_i32ErrCode to CLK_TIMEOUT_ERR if clock source status is not stable
   */
 uint32_t CLK_WaitClockReady(uint32_t u32ClkMask)
 {
-    int32_t i32TimeOutCnt=2160000;
+    uint32_t u32TimeOutCnt = SystemCoreClock / 2;
+    uint32_t u32Ret = 1U;
 
+    g_CLK_i32ErrCode = 0;
     while((CLK->STATUS & u32ClkMask) != u32ClkMask)
     {
-        if(i32TimeOutCnt-- <= 0)
-            return 0;
+        if(--u32TimeOutCnt == 0)
+        {
+            u32Ret = 0U;
+            break;
+        }
     }
-    return 1;
+
+    if(u32TimeOutCnt == 0)
+        g_CLK_i32ErrCode = CLK_TIMEOUT_ERR;
+
+    return u32Ret;
 }
 
 

@@ -201,7 +201,7 @@ typedef struct
 #define RTC_GET_TAMPER_FLAG()    ( (RTC->INTSTS & RTC_INTSTS_SNPDIF_Msk) >> RTC_INTSTS_SNPDIF_Pos)
 
 
-void RTC_Open(S_RTC_TIME_DATA_T *sPt);
+int32_t RTC_Open(S_RTC_TIME_DATA_T *sPt);
 void RTC_Close(void);
 void RTC_32KCalibration(int32_t i32FrequencyX100);
 void RTC_SetTickPeriod(uint32_t u32TickSelection);
