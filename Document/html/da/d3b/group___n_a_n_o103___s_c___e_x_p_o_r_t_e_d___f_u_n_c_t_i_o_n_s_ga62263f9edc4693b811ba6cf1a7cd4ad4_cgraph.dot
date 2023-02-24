@@ -1,0 +1,10 @@
+digraph "SC_GetInterfaceClock"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="SC_GetInterfaceClock",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="This function gets smartcard clock frequency."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="CLK_GetPLLClockFreq",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d91/group___n_a_n_o103___c_l_k___e_x_p_o_r_t_e_d___f_u_n_c_t_i_o_n_s.html#gaf42f850d36900fcf77e4643f2db5470b",tooltip="This function get PLL frequency. The frequency unit is Hz."];
+}

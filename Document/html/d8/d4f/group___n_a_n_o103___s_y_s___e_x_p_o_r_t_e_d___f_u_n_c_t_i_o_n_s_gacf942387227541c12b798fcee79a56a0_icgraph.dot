@@ -1,0 +1,16 @@
+digraph "SYS_UnlockReg"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="SYS_UnlockReg",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Disable register write-protection function."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="PWM_ClearFaultBrakeIntFlag",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d15/group___n_a_n_o103___p_w_m___e_x_p_o_r_t_e_d___f_u_n_c_t_i_o_n_s.html#gaab6d61eae3fc38728d9717dcd474bd23",tooltip="This function clear fault brake interrupt of selected source."];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="PWM_DisableFaultBrakeInt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d15/group___n_a_n_o103___p_w_m___e_x_p_o_r_t_e_d___f_u_n_c_t_i_o_n_s.html#ga5aab6d49035029b38b0fd3ce2d8c8648",tooltip="This function disable fault brake interrupt."];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="PWM_EnableFaultBrake",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d15/group___n_a_n_o103___p_w_m___e_x_p_o_r_t_e_d___f_u_n_c_t_i_o_n_s.html#ga995653b7cb7abbd050bf4ecfc8370064",tooltip="This function enable fault brake of selected channel(s)"];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="PWM_EnableFaultBrakeInt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d15/group___n_a_n_o103___p_w_m___e_x_p_o_r_t_e_d___f_u_n_c_t_i_o_n_s.html#gaddc9fc1cf3a17dae5f3804fac99a7837",tooltip="This function enable fault brake interrupt."];
+}

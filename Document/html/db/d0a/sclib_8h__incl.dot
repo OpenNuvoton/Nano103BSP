@@ -1,0 +1,51 @@
+digraph "SmartcardLib/Include/sclib.h"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="SmartcardLib/Include\l/sclib.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Smartcard library header file."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Nano103.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/dea/_nano103_8h.html",tooltip="NANO103 peripheral access layer header file. This file contains all the peripheral register's definit..."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="core_cm0.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="system_Nano103.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/dcb/system___nano103_8h.html",tooltip="Nano103 system clock definition file."];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="stdint.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="sys.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d87/sys_8h.html",tooltip="NANO103 Series system control header file."];
+  Node2 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="clk.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d89/clk_8h.html",tooltip="NANO103 series CLK driver header file."];
+  Node2 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="acmp.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d2f/acmp_8h.html",tooltip="NANO103 series Analog Comparator(ACMP) driver header file."];
+  Node2 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="adc.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d19/adc_8h.html",tooltip="NANO103 series ADC driver header file."];
+  Node2 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="fmc.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d00/fmc_8h.html",tooltip="NANO103 Series Flash Memory Controller Driver Header File."];
+  Node2 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="gpio.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d7c/gpio_8h.html",tooltip="NANO103 series GPIO driver header file."];
+  Node2 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="i2c.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/daf/i2c_8h.html",tooltip="NANO103 series I2C driver header file."];
+  Node2 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="crc.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/de6/crc_8h.html",tooltip="NANO103 series CRC driver header file."];
+  Node2 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="pdma.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d47/pdma_8h.html",tooltip="NANO103 series PDMA driver header file."];
+  Node2 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="pwm.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/db9/pwm_8h.html",tooltip="NANO103 series PWM driver header file."];
+  Node2 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="rtc.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d1b/rtc_8h.html",tooltip="NANO103 series RTC driver header file."];
+  Node2 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="sc.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d50/sc_8h.html",tooltip="NANO103 series Smartcard (SC) driver header file."];
+  Node2 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="scuart.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d0b/scuart_8h.html",tooltip=" "];
+  Node2 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="spi.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d87/spi_8h.html",tooltip="NANO103 series SPI driver header file."];
+  Node2 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="timer.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dd0/timer_8h.html",tooltip="NANO103 series TIMER driver header file."];
+  Node2 -> Node21 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="uart.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d86/uart_8h.html",tooltip="NANO103 Series UART control header file."];
+  Node2 -> Node22 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="wdt.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/de2/wdt_8h.html",tooltip="NANO103 series WDT driver header file."];
+  Node2 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="wwdt.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d09/wwdt_8h.html",tooltip="NANO103 series WWDT driver header file."];
+}
