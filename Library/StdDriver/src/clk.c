@@ -588,7 +588,7 @@ void CLK_DisablePLL(void)
 /**
   * @brief  This function execute delay function.
   * @param[in]  us  Delay time. The Max value is 2^24 / CPU Clock(MHz). Ex:
-  *                             50MHz => 335544us, 48MHz => 349525us, 28MHz => 699050us ...
+  *                             50MHz => 335544us, 48MHz => 349525us, 24MHz => 699050us ...
   * @return None
   * @details    Use the SysTick to generate the delay time and the UNIT is in us.
   *             The SysTick clock source is from HCLK, i.e the same as system core clock.
