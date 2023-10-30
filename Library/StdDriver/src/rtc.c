@@ -129,8 +129,6 @@ int32_t RTC_Open(S_RTC_TIME_DATA_T *sPt)
 
     if(RTC->INIT != 0x1)
     {
-        RTC->INIT = RTC_INIT_KEY;
-
         while(RTC->INIT != 0x1)
         {
             if(u32TimeOutCount == 0) return -1;
