@@ -74,10 +74,10 @@ void dump_key_status()
     if (FMC->KEYSTS & FMC_KEYSTS_CFGFLAG_Msk)
         printf("[CONFIG LOCK] ");                     /* CFGFLAG(FMC_KEYSTS[5]) */
 
-    printf("KPCNT: 0x%x, KPMAX: 0x%x\n", (FMC->KPCNT & FMC_KPCNT_KPCNT_Msk) >> FMC_KPCNT_KPCNT_Pos,    /* KPCNT(FMC_KPCNT[3:0])  */
-           (FMC->KPCNT & FMC_KPCNT_KPMAX_Msk) >> FMC_KPCNT_KPMAX_Pos);   /* KPMAX(FMC_KPCNT[11:8]) */
-    printf("KECNT: 0x%x, KEMAX: 0x%x\n", (FMC->KECNT & FMC_KECNT_KECNT_Msk) >> FMC_KECNT_KECNT_Pos,    /* KECNT(FMC_KECNT[5:0])  */
-           (FMC->KECNT & FMC_KECNT_KEMAX_Msk) >> FMC_KECNT_KEMAX_Pos);   /* KEMAX(FMC_KECNT[13:8]) */
+    printf("KPCNT: 0x%x, KPMAX: 0x%x\n", (uint32_t)((FMC->KPCNT & FMC_KPCNT_KPCNT_Msk) >> FMC_KPCNT_KPCNT_Pos),    /* KPCNT(FMC_KPCNT[3:0])  */
+           (uint32_t)((FMC->KPCNT & FMC_KPCNT_KPMAX_Msk) >> FMC_KPCNT_KPMAX_Pos));   /* KPMAX(FMC_KPCNT[11:8]) */
+    printf("KECNT: 0x%x, KEMAX: 0x%x\n", (uint32_t)((FMC->KECNT & FMC_KECNT_KECNT_Msk) >> FMC_KECNT_KECNT_Pos),    /* KECNT(FMC_KECNT[5:0])  */
+           (uint32_t)((FMC->KECNT & FMC_KECNT_KEMAX_Msk) >> FMC_KECNT_KEMAX_Pos));   /* KEMAX(FMC_KECNT[13:8]) */
     printf("\nPress any key to continue...\n\n");     /* Wait user press any key on UART0 debug console */
     getchar();                                        /* block on getting any one character from UART0 */
 }

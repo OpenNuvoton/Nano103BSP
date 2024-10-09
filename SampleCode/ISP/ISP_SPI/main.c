@@ -12,7 +12,7 @@
 
 #define PLL_CLOCK       36000000
 
-__weak uint32_t TIMER_Open(TIMER_T *timer, uint32_t u32Mode, uint32_t u32Freq)
+__attribute__((weak)) uint32_t TIMER_Open(TIMER_T *timer, uint32_t u32Mode, uint32_t u32Freq)
 {
     uint32_t u32Clk = __HXT; // TIMER_GetModuleClock(timer);
     uint32_t u32Cmpr = 0UL, u32Prescale = 0UL;

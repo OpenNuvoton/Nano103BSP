@@ -90,10 +90,9 @@ static int  set_IAP_boot_mode(void)
  *  Set stack base address to SP register.
  */
 #ifdef __ARMCC_VERSION                 /* for Keil compiler */
-__asm __set_SP(uint32_t _sp)
+void __set_SP(uint32_t _sp)
 {
-    MSR MSP, r0
-    BX lr
+    __set_MSP(_sp);
 }
 #endif
 

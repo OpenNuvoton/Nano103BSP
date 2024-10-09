@@ -46,7 +46,7 @@ void RTC_RWEN(void)
     uint32_t i = 0;
 
     RTC->RWEN = RTC_WRITE_KEY;
-	
+
     //while(!(RTC->RWEN & RTC_RWEN_RWENF_Msk)) RTC->RWEN = RTC_WRITE_KEY;
     while(!(RTC->RWEN & RTC_RWEN_RWENF_Msk))
     {
@@ -743,7 +743,7 @@ void RTC_SetTickPeriod(uint32_t u32TickSelection)
 {
     RTC_RWEN();
 
-    RTC->TICK = RTC->TICK & ~RTC_TICK_TICK_Msk | u32TickSelection;
+    RTC->TICK = (RTC->TICK & ~RTC_TICK_TICK_Msk) | u32TickSelection;
 }
 
 /**
