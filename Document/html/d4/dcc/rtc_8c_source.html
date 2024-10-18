@@ -19,7 +19,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="../../M0Banner_v2.jpg"/></td>
   <td id="projectalign">
-   <div id="projectname">NANO103 BSP<span id="projectnumber">&#160;V3.01.004</span>
+   <div id="projectname">NANO103 BSP<span id="projectnumber">&#160;V3.02.000</span>
    </div>
    <div id="projectbrief">The Board Support Package for Nano103 Series</div>
   </td>
@@ -567,7 +567,7 @@ $(function() {
 <div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>{</div>
 <div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>    RTC_RWEN();</div>
 <div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span> </div>
-<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>    <a class="code hl_define" href="../../db/d44/group___n_a_n_o103___p_e_r_i_p_h_e_r_a_l___d_e_c_l_a_r_a_t_i_o_n.html#ga5359a088f5d8b20ce74d920e46059304">RTC</a>-&gt;TICK = <a class="code hl_define" href="../../db/d44/group___n_a_n_o103___p_e_r_i_p_h_e_r_a_l___d_e_c_l_a_r_a_t_i_o_n.html#ga5359a088f5d8b20ce74d920e46059304">RTC</a>-&gt;TICK &amp; ~RTC_TICK_TICK_Msk | u32TickSelection;</div>
+<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>    <a class="code hl_define" href="../../db/d44/group___n_a_n_o103___p_e_r_i_p_h_e_r_a_l___d_e_c_l_a_r_a_t_i_o_n.html#ga5359a088f5d8b20ce74d920e46059304">RTC</a>-&gt;TICK = (<a class="code hl_define" href="../../db/d44/group___n_a_n_o103___p_e_r_i_p_h_e_r_a_l___d_e_c_l_a_r_a_t_i_o_n.html#ga5359a088f5d8b20ce74d920e46059304">RTC</a>-&gt;TICK &amp; ~RTC_TICK_TICK_Msk) | u32TickSelection;</div>
 <div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>}</div>
 <div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span> </div>
 <div class="line"><a id="l00760" name="l00760"></a><span class="lineno"><a class="line" href="../../dd/da1/group___n_a_n_o103___r_t_c___e_x_p_o_r_t_e_d___f_u_n_c_t_i_o_n_s.html#ga04757169c2ecc5daf11616e7a94b103d">  760</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../dd/da1/group___n_a_n_o103___r_t_c___e_x_p_o_r_t_e_d___f_u_n_c_t_i_o_n_s.html#ga04757169c2ecc5daf11616e7a94b103d">RTC_EnableInt</a>(uint32_t u32IntFlagMask)</div>
@@ -712,7 +712,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 18 2024 16:28:13 for NANO103 BSP by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3
+Generated on Thu Oct 17 2024 18:22:14 for NANO103 BSP by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3
 </small></address>
 </body>
 </html>
